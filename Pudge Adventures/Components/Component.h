@@ -1,5 +1,6 @@
 #pragma once
 
+
 enum COMPONENT_TYPE {
 	TRANSFORM,
 	SPRITE,
@@ -18,10 +19,6 @@ public:
 
 public:
 	GameObject* mpOwner;
-
-
-private:
-
 
 private:
 	unsigned int mType;

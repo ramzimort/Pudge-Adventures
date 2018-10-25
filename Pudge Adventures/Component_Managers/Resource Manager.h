@@ -12,8 +12,7 @@ Author: Ramzi Mourtada, ramzi.mourtada, 60001618
 Creation date: 10/18/2018
 - End Header --------------------------------------------------------*/
 
-#ifndef Resource_Manager_H
-#define Resource_Manager_H
+#pragma once
 
 #include <string>
 #include<unordered_map>
@@ -25,10 +24,10 @@ public:
 	ResourceManager();
 	~ResourceManager();
 
-	SDL_Surface* LoadSurface(char* pFilePath);
+	SDL_Surface* LoadSurface(const char* pFilePath);
 
 private:
 	std::unordered_map<std::string, SDL_Surface*> mSurfaces;
 };
 
-#endif // !Resource_Manager_H
+

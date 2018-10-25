@@ -1,12 +1,14 @@
-
 #include "GameObject.h"
 #include "Transform.h"
 #include "Sprite.h"
 #include "Controller.h"
 
-GameObject::GameObject() {
-	
+
+/*
+GameObject::GameObject()
+{
 }
+*/
 
 GameObject::~GameObject() {
 	for (auto c : mComponents)
@@ -35,11 +37,10 @@ void GameObject::AddComponent(unsigned int Type) {
 		break;
 	}
 
-	if (nullptr != pNewComponent) {
+	if (pNewComponent != nullptr) {
 		mComponents.push_back(pNewComponent);
 		pNewComponent->mpOwner = this;
 	}
-
 }
 
 Component* GameObject::GetComponent(unsigned int Type) {

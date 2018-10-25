@@ -13,7 +13,7 @@ Creation date: 10/18/2018
 - End Header --------------------------------------------------------*/
 
 #include "Input Manager.h"
-#include "SDL_keyboard.h"
+#include "..\Include\SDL2\SDL_keyboard.h"
 
 Input_Manager::Input_Manager() {
 	SDL_memset(mCurrentState, 0, 512 * sizeof(Uint8));

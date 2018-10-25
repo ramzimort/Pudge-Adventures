@@ -14,7 +14,7 @@ Creation date: 10/18/2018
 
 
 #include "Resource Manager.h"
-#include "SDL_surface.h"
+#include "..\Include\SDL2\SDL_surface.h"
 
 ResourceManager::ResourceManager() {
 	
@@ -27,7 +27,7 @@ ResourceManager::~ResourceManager() {
 	mSurfaces.clear();
 }
 
-SDL_Surface* ResourceManager::LoadSurface(char* pFilePath) {
+SDL_Surface* ResourceManager::LoadSurface(const char* pFilePath) {
 
 	// Check hash map
 	SDL_Surface* pSurface = mSurfaces[pFilePath];

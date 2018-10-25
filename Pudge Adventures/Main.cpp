@@ -15,16 +15,22 @@ Creation date: 10/18/2018
 - End Header --------------------------------------------------------*/
 
 #include <Windows.h>
-#include <SDL2/SDL.h>
+#include "Include/SDL2/SDL.h"
 #include "stdio.h"
 #include "Component_Managers/Input Manager.h"
 #include "Component_Managers/FrameRateController.h"
 #include "Component_Managers/Resource Manager.h"
 #include "Component_Managers/GameObjectManager.h"
+
+#include "Components/Component.h"
 #include "Components/GameObject.h"
 #include "Components/Sprite.h"
 #include "Components/Transform.h"
 #include "Components/Controller.h"
+
+#include <iostream>
+
+
 
 FILE _iob[] = { *stdin, *stdout, *stderr };
 
@@ -43,7 +49,8 @@ GameObjectManager* gpGameObjectManager;
 int main(int argc, char* args[])
 {
 
-	/* Initialization */
+	/* 	=============================================== Initialization Object Start ==================================================================== */
+	
 	SDL_Window *pWindow;										// Window object pointer
 	SDL_Surface* pWindowSurface;								// Window surface object
 	SDL_Surface* pImage = NULL;									// Image pointer, loaded from resource manager
@@ -61,7 +68,6 @@ int main(int argc, char* args[])
 	if (AllocConsole())
 	{
 		FILE* file;
-
 		freopen_s(&file, "CONOUT$", "wt", stdout);
 		freopen_s(&file, "CONOUT$", "wt", stderr);
 		freopen_s(&file, "CONOUT$", "wt", stdin);
@@ -72,7 +78,7 @@ int main(int argc, char* args[])
 	int error = 0;												// Set error code to 0
 	bool appIsRunning = true;									// Set app running to true
 
-	if ((error = SDL_Init(SDL_INIT_VIDEO)) < 0)				// Initialize SDL
+	if ((error = SDL_Init(SDL_INIT_VIDEO)) < 0)					// Initialize SDL
 	{
 		printf("Couldn't initialize SDL, error %i\n", error);
 		system("Pause");
@@ -96,9 +102,13 @@ int main(int argc, char* args[])
 	}
 
 	pWindowSurface = SDL_GetWindowSurface(pWindow);				// Get Window Surface
+	/* Object Loading */
 
 	// Refresh the window
 	SDL_UpdateWindowSurface(pWindow);							// Initialize Surface
+
+
+	/* 	=============================================== Initialization Object End ===================================================================== */
 
 	// Create Game Object 1
 	{
@@ -110,12 +120,13 @@ int main(int argc, char* args[])
 		pObject1->AddComponent(TRANSFORM);
 		Transform* pTr = static_cast<Transform*>(pObject1->GetComponent(TRANSFORM));
 
-		pObject1->mpSprite = new Sprite();
-		pObject1->mpSprite->mpSurface = pResourceManager->LoadSurface("..\\Resources\\Happy.bmp");
+		pObject1->AddComponent(SPRITE);
+		Sprite* pSp = static_cast<Sprite*>(pObject1->GetComponent(SPRITE));
+		pSp->mpSurface = gpResourceManager->LoadSurface("..\\Resources\\Happy.bmp");
 
-		pGameObjectManager->mGameObjects.push_back(pObject1);
+		pObject1->AddComponent(CONTROLLER);
 
-		pObject1->mpController = new Controller();
+		gpGameObjectManager->mGameObjects.push_back(pObject1);
 
 	}
 
@@ -138,24 +149,19 @@ int main(int argc, char* args[])
 		}
 
 		gpInputManager->Update();
-
+		
 		for (auto go : gpGameObjectManager->mGameObjects) {
-			if (go->mpSprite != nullptr && go->mpTransform != nullptr) {
+			go->Update();
+			if (go->GetComponent(SPRITE) != nullptr && go->GetComponent(TRANSFORM) != nullptr) {
 				// Update object positions here, and update surface
 				SDL_Rect destinationRect;
-				destinationRect.x = (int)go->mpTransform->mPosX;
-				destinationRect.y = (int)go->mpTransform->mPosY;
-				SDL_BlitSurface(go->mpSprite->mpSurface, NULL, pWindowSurface, &destinationRectangle);
+				destinationRect.x = (int)static_cast<Transform*>(go->GetComponent(TRANSFORM))->mPosX;
+				destinationRect.y = (int)static_cast<Transform*>(go->GetComponent(TRANSFORM))->mPosY;
+				std::cout << destinationRect.x << ' ' << destinationRect.y << std::endl;
+				SDL_BlitSurface(static_cast<Sprite*>(go->GetComponent(SPRITE))->mpSurface, NULL, pWindowSurface, &destinationRect);
 				SDL_UpdateWindowSurface(pWindow);							// Update object and window
-
-
 			}
 		}
-
-
-		destinationRectangle.x = posX;
-		destinationRectangle.y = posY;
-		SDL_BlitSurface(pImage, NULL, pWindowSurface, &destinationRectangle);
 		SDL_UpdateWindowSurface(pWindow);							// Update object and window
 
 		gpFRC->FrameEnd();											// Frame End

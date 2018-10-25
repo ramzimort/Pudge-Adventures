@@ -6,6 +6,10 @@ Transform::Transform() : Component(TRANSFORM){
 }
 
 Transform::~Transform(){
+	
+}
 
+void Transform::Update()
+{
 
 }

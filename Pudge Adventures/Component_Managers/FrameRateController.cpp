@@ -12,8 +12,8 @@ Author: Ramzi Mourtada, ramzi.mourtada, 60001618
 Creation date: 10/18/2018
 - End Header --------------------------------------------------------*/
 
-#include"FrameRateController.h"
-#include "SDL_timer.h"
+#include "FrameRateController.h"
+#include "..\Include\SDL2\SDL_timer.h"
 
 FrameRateController::FrameRateController(Uint32 MaxFramerate) {
 	mTickEnd = mTickStart = 0;

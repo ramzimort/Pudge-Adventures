@@ -12,12 +12,11 @@ Author: Ramzi Mourtada, ramzi.mourtada, 60001618
 Creation date: 10/18/2018
 - End Header --------------------------------------------------------*/
 
-#ifndef FRAME_RATE_CONTROLLER_H
-#define FRAME_RATE_CONTROLLER_H
+#pragma once
 
-#include "SDL_stdinc.h"
+#include "..\Include\SDL2\SDL_stdinc.h"
 
-class FrameRateController{
+class FrameRateController {
 public:
 	FrameRateController(Uint32 MaxFrameRate);
 	~FrameRateController();
@@ -34,4 +33,3 @@ private:
 	Uint32 mFrameTime;
 
 };
-#endif // ! FRAME_RATE_CONTROLLER_H

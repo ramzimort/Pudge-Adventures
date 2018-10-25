@@ -1,13 +1,16 @@
 
 
 #include "Sprite.h"
-#include "..\Include\SDL2\SDL_surface.h"
 
-Sprite::Sprite() {
+
+Sprite::Sprite() : Component(SPRITE) {
 	mpSurface = NULL;
-
 }
 
 Sprite::~Sprite() {
 
+}
+
+void Sprite::Update()
+{
 }

@@ -12,10 +12,9 @@ Author: Ramzi Mourtada, ramzi.mourtada, 60001618
 Creation date: 10/18/2018
 - End Header --------------------------------------------------------*/
 
-#ifndef INPUT_MANAGER_H
-#define INPUT_MANAGER_H
+#pragma once
 
-#include "SDL_stdinc.h"
+#include "..\Include\SDL2\SDL_stdinc.h"
 
 class Input_Manager
 {
@@ -33,4 +32,4 @@ private:
 	Uint8 mPreviousState[512];
 };
 
-#endif // !INPUT_MANAGER_H
+

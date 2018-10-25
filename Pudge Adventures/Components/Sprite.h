@@ -1,8 +1,10 @@
 #pragma once
 
-class SDL_Surface;
+#include"Component.h"
+#include "..\Include\SDL2\SDL_surface.h"
 
-class Sprite {
+
+class Sprite : public Component {
 
 public:
 	Sprite();

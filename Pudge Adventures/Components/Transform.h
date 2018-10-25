@@ -1,5 +1,6 @@
 #pragma once
-#include"Component.h"
+
+#include "Component.h"
 
 class Transform : public Component{
 public:
