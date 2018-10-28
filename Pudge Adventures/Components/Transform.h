@@ -9,6 +9,8 @@ public:
 
 	void Update();
 
+	void Serialize(std::ifstream &inFile);
+
 	float mPosX;
 	float mPosY;
 };

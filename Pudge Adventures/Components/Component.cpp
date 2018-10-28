@@ -4,3 +4,4 @@
 Component::Component(unsigned int Type) {
 	mType = Type;
 }
+

@@ -152,7 +152,9 @@
     <ClCompile Include="Components\Transform.cpp" />
     <ClCompile Include="Component_Managers\FrameRateController.cpp" />
     <ClCompile Include="Component_Managers\GameObjectManager.cpp" />
+    <ClCompile Include="Component_Managers\GraphicsManager.cpp" />
     <ClCompile Include="Component_Managers\Input Manager.cpp" />
+    <ClCompile Include="Component_Managers\ObjectFactory.cpp" />
     <ClCompile Include="Component_Managers\Resource Manager.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
@@ -164,8 +166,13 @@
     <ClInclude Include="Components\Transform.h" />
     <ClInclude Include="Component_Managers\FrameRateController.h" />
     <ClInclude Include="Component_Managers\GameObjectManager.h" />
+    <ClInclude Include="Component_Managers\GraphicsManager.h" />
     <ClInclude Include="Component_Managers\Input Manager.h" />
+    <ClInclude Include="Component_Managers\ObjectFactory.h" />
     <ClInclude Include="Component_Managers\Resource Manager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

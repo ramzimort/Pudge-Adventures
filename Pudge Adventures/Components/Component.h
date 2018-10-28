@@ -1,5 +1,7 @@
 #pragma once
 
+#include <fstream>
+
 
 enum COMPONENT_TYPE {
 	TRANSFORM,
@@ -16,6 +18,8 @@ public:
 
 	virtual void Update() = 0;
 	unsigned int getType() { return mType; }
+
+	virtual void Serialize(std::ifstream &inFile) {}
 
 public:
 	GameObject* mpOwner;

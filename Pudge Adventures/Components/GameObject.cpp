@@ -4,11 +4,11 @@
 #include "Controller.h"
 
 
-/*
+
 GameObject::GameObject()
 {
 }
-*/
+
 
 GameObject::~GameObject() {
 	for (auto c : mComponents)
@@ -21,7 +21,7 @@ void GameObject::Update() {
 		c->Update();
 }
 
-void GameObject::AddComponent(unsigned int Type) {
+Component* GameObject::AddComponent(unsigned int Type) {
 	Component* pNewComponent;
 	switch (Type) {
 	case TRANSFORM:
@@ -41,6 +41,7 @@ void GameObject::AddComponent(unsigned int Type) {
 		mComponents.push_back(pNewComponent);
 		pNewComponent->mpOwner = this;
 	}
+	return pNewComponent;
 }
 
 Component* GameObject::GetComponent(unsigned int Type) {

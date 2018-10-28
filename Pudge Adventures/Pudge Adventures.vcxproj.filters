@@ -13,66 +13,99 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{3246b72e-febf-44f8-8b08-87500305d32b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Source Files">
+      <UniqueIdentifier>{f2fad7c3-d782-4ce2-8272-2a1c03fb8835}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component Managers">
+      <UniqueIdentifier>{d3f69a04-3610-4007-893d-93df377b489f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component Managers\Source Files">
+      <UniqueIdentifier>{36bfbddf-d7d7-4975-ad0d-3931d397417c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component Managers\Header Files">
+      <UniqueIdentifier>{41b845a5-235a-45e2-8034-26e4a25f6e7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Header Files">
+      <UniqueIdentifier>{47c1c5fe-0b0c-46ea-b480-cd50da14ec2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Components\Component.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Components\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Components\Controller.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Components\Sprite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Components\Transform.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Component_Managers\Resource Manager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Component_Managers\FrameRateController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Component_Managers\GameObjectManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Component_Managers\Input Manager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Components\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Components\GameObject.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Components\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Sprite.cpp">
+      <Filter>Components\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Transform.cpp">
+      <Filter>Components\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Component_Managers\Input Manager.cpp">
+      <Filter>Component Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Component_Managers\GraphicsManager.cpp">
+      <Filter>Component Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Component_Managers\GameObjectManager.cpp">
+      <Filter>Component Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Component_Managers\FrameRateController.cpp">
+      <Filter>Component Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Component_Managers\ObjectFactory.cpp">
+      <Filter>Component Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Component_Managers\Resource Manager.cpp">
+      <Filter>Component Managers\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\Component.h">
-      <Filter>Header Files</Filter>
+      <Filter>Components\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Components\Controller.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\Sprite.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\Transform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Component_Managers\FrameRateController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Component_Managers\GameObjectManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Component_Managers\Input Manager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Component_Managers\Resource Manager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Components\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Components\GameObject.h">
-      <Filter>Header Files</Filter>
+      <Filter>Components\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Components\Sprite.h">
+      <Filter>Components\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Transform.h">
+      <Filter>Components\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Component_Managers\Resource Manager.h">
+      <Filter>Component Managers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Component_Managers\ObjectFactory.h">
+      <Filter>Component Managers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Component_Managers\Input Manager.h">
+      <Filter>Component Managers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Component_Managers\GraphicsManager.h">
+      <Filter>Component Managers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Component_Managers\GameObjectManager.h">
+      <Filter>Component Managers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Component_Managers\FrameRateController.h">
+      <Filter>Component Managers\Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

@@ -21,6 +21,7 @@ Creation date: 10/18/2018
 #include "Component_Managers/FrameRateController.h"
 #include "Component_Managers/Resource Manager.h"
 #include "Component_Managers/GameObjectManager.h"
+#include "Component_Managers/ObjectFactory.h"
 
 #include "Components/Component.h"
 #include "Components/GameObject.h"
@@ -29,6 +30,7 @@ Creation date: 10/18/2018
 #include "Components/Controller.h"
 
 #include <iostream>
+#include <stdio.h>
 
 
 
@@ -45,11 +47,13 @@ Input_Manager* gpInputManager;
 FrameRateController* gpFRC;
 ResourceManager* gpResourceManager;
 GameObjectManager* gpGameObjectManager;
+ObjectFactory* gpObjectFactory;
+
 
 int main(int argc, char* args[])
 {
 
-	/* 	=============================================== Initialization Object Start ==================================================================== */
+	// Load Manager Start =================================================================================================================================================================================
 	
 	SDL_Window *pWindow;										// Window object pointer
 	SDL_Surface* pWindowSurface;								// Window surface object
@@ -64,6 +68,7 @@ int main(int argc, char* args[])
 	gpFRC = new FrameRateController(100);						// Load FrameRateController
 	gpResourceManager = new ResourceManager();					// Load Resource Manager
 	gpGameObjectManager = new GameObjectManager();				// Load GameObjectManager
+	gpObjectFactory = new ObjectFactory();						// Load ObjectFactory
 
 	if (AllocConsole())
 	{
@@ -108,28 +113,14 @@ int main(int argc, char* args[])
 	SDL_UpdateWindowSurface(pWindow);							// Initialize Surface
 
 
-	/* 	=============================================== Initialization Object End ===================================================================== */
+	// Load Managers End	=================================================================================================================================================================================
 
-	// Create Game Object 1
-	{
-		GameObject* pObject1 = new GameObject();
-		//pObject1->mpTransform = new Transform();
-		//pObject1->mpTransform->mPosX = 200.f;
-		//pObject1->mpTransform->mPosY = 200.f;
+	// Load Objects Start =================================================================================================================================================================================
+	
+	std::string objPath = ".\\Resources\\Level1.txt";
+	gpObjectFactory->LoadLevel(objPath);
 
-		pObject1->AddComponent(TRANSFORM);
-		Transform* pTr = static_cast<Transform*>(pObject1->GetComponent(TRANSFORM));
-
-		pObject1->AddComponent(SPRITE);
-		Sprite* pSp = static_cast<Sprite*>(pObject1->GetComponent(SPRITE));
-		pSp->mpSurface = gpResourceManager->LoadSurface("..\\Resources\\Happy.bmp");
-
-		pObject1->AddComponent(CONTROLLER);
-
-		gpGameObjectManager->mGameObjects.push_back(pObject1);
-
-	}
-
+	// Load Objects End =================================================================================================================================================================================
 
 	while (true == appIsRunning)									// Game loop
 	{
@@ -157,7 +148,6 @@ int main(int argc, char* args[])
 				SDL_Rect destinationRect;
 				destinationRect.x = (int)static_cast<Transform*>(go->GetComponent(TRANSFORM))->mPosX;
 				destinationRect.y = (int)static_cast<Transform*>(go->GetComponent(TRANSFORM))->mPosY;
-				std::cout << destinationRect.x << ' ' << destinationRect.y << std::endl;
 				SDL_BlitSurface(static_cast<Sprite*>(go->GetComponent(SPRITE))->mpSurface, NULL, pWindowSurface, &destinationRect);
 				SDL_UpdateWindowSurface(pWindow);							// Update object and window
 			}
@@ -171,6 +161,7 @@ int main(int argc, char* args[])
 	delete gpInputManager;					// Clear Input Manager
 	delete gpResourceManager;				// Clear Resource Manager
 	delete gpGameObjectManager;				// Clear Game Object Manager
+	delete gpObjectFactory;					// Clear Game Object Factory
 
 	SDL_FreeSurface(pWindowSurface);		// Clear Window Surface
 	SDL_DestroyWindow(pWindow);				// Close and destroy the window

@@ -13,3 +13,9 @@ void Transform::Update()
 {
 
 }
+
+void Transform::Serialize(std::ifstream &inFile)
+{
+	inFile >> mPosX;
+	inFile >> mPosY;
+}

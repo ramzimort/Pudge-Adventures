@@ -5,12 +5,11 @@ class Component;
 
 class GameObject {
 public:
-	GameObject() {};
+	GameObject();
 	~GameObject();
 
 	void Update();
-	void test123() {};
-	void AddComponent(unsigned int Type);
+	Component* AddComponent(unsigned int Type);
 	Component* GetComponent(unsigned int Type);
 
 public:

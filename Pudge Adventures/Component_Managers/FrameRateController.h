@@ -31,5 +31,4 @@ private:
 	Uint32 mTickEnd;
 	Uint32 mNeededTicksPerFrame;
 	Uint32 mFrameTime;
-
 };
