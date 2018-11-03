@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Component.h"
+#include <glm/vec2.hpp>
+#include <glm/glm.hpp>
 
 class Transform : public Component{
 public:
@@ -11,6 +13,7 @@ public:
 
 	void Serialize(std::ifstream &inFile);
 
-	float mPosX;
-	float mPosY;
+	glm::vec3				mPosition;			// Current position
+	glm::vec3				mScale;				// Current scale
+	float					mAngle;				// Currenting value
 };

@@ -1,4 +1,3 @@
-
 /* Start Header -------------------------------------------------------
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
@@ -14,22 +13,27 @@ Creation date: 10/18/2018
 
 #pragma once
 
-#include "..\Include\SDL2\SDL_stdinc.h"
+#include <SDL2/SDL_stdinc.h>
+#include <SDL2/SDL_events.h>
 
 class Input_Manager
 {
 public: 
-	Input_Manager();
+	Input_Manager() ;
 	~Input_Manager();
 
 	void Update();
 	bool isPressed(unsigned int KeyScanCode);
 	bool isTriggered(unsigned int KeyScanCode);
 	bool isReleased(unsigned int KeyScanCode);
+	bool isQuit();
+
 
 private:
+	SDL_Event event;
 	Uint8 mCurrentState[512];
 	Uint8 mPreviousState[512];
+	bool quit = { false };
 };
 
 

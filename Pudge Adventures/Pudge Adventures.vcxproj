@@ -88,7 +88,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Pudge Adventures\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -117,7 +117,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Pudge Adventures\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -145,10 +145,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Components\AI.cpp" />
+    <ClCompile Include="Components\Camera.cpp" />
     <ClCompile Include="Components\Component.cpp" />
     <ClCompile Include="Components\Controller.cpp" />
     <ClCompile Include="Components\GameObject.cpp" />
+    <ClCompile Include="Components\Shader.cpp" />
     <ClCompile Include="Components\Sprite.cpp" />
+    <ClCompile Include="Components\TextureObject.cpp" />
     <ClCompile Include="Components\Transform.cpp" />
     <ClCompile Include="Component_Managers\FrameRateController.cpp" />
     <ClCompile Include="Component_Managers\GameObjectManager.cpp" />
@@ -156,13 +160,18 @@
     <ClCompile Include="Component_Managers\Input Manager.cpp" />
     <ClCompile Include="Component_Managers\ObjectFactory.cpp" />
     <ClCompile Include="Component_Managers\Resource Manager.cpp" />
+    <ClCompile Include="Include\GLAD\glad.c" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Components\AI.h" />
+    <ClInclude Include="Components\Camera.h" />
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\Controller.h" />
     <ClInclude Include="Components\GameObject.h" />
+    <ClInclude Include="Components\Shader.h" />
     <ClInclude Include="Components\Sprite.h" />
+    <ClInclude Include="Components\TextureObject.h" />
     <ClInclude Include="Components\Transform.h" />
     <ClInclude Include="Component_Managers\FrameRateController.h" />
     <ClInclude Include="Component_Managers\GameObjectManager.h" />
@@ -170,6 +179,7 @@
     <ClInclude Include="Component_Managers\Input Manager.h" />
     <ClInclude Include="Component_Managers\ObjectFactory.h" />
     <ClInclude Include="Component_Managers\Resource Manager.h" />
+    <ClInclude Include="Include\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

@@ -16,18 +16,20 @@ Creation date: 10/18/2018
 
 #include <string>
 #include<unordered_map>
+#include "..\Components\Shader.h"
 
 struct SDL_Surface;
+class Texture;
 
 class ResourceManager {
 public:
 	ResourceManager();
 	~ResourceManager();
 
-	SDL_Surface* LoadSurface(const char* pFilePath);
+	Texture* LoadTexture(std::string& pFilePath);
 
 private:
-	std::unordered_map<std::string, SDL_Surface*> mSurfaces;
+	std::unordered_map<std::string, Texture*> mTextures;
 };
 
 

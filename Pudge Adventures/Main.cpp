@@ -22,12 +22,16 @@ Creation date: 10/18/2018
 #include "Component_Managers/Resource Manager.h"
 #include "Component_Managers/GameObjectManager.h"
 #include "Component_Managers/ObjectFactory.h"
+#include "Component_Managers/GraphicsManager.h"
+#include "Component_Managers/PhysicsManager.h"
+#include "Component_Managers/CollisionManager.h"
 
 #include "Components/Component.h"
 #include "Components/GameObject.h"
 #include "Components/Sprite.h"
 #include "Components/Transform.h"
 #include "Components/Controller.h"
+#include "Components/Body.h"
 
 #include <iostream>
 #include <stdio.h>
@@ -48,6 +52,9 @@ FrameRateController* gpFRC;
 ResourceManager* gpResourceManager;
 GameObjectManager* gpGameObjectManager;
 ObjectFactory* gpObjectFactory;
+GraphicsManager* gpGfxManager;
+//PhysicsManager* gpPhysicsManager;
+//CollisionManager* gpCollisionManager;
 
 
 int main(int argc, char* args[])
@@ -65,95 +72,48 @@ int main(int argc, char* args[])
 		moveSpeed = 1;											// Movement/msec
 
 	gpInputManager = new Input_Manager();						// Load Input Manager
-	gpFRC = new FrameRateController(100);						// Load FrameRateController
+	gpFRC = new FrameRateController(100);						// Load FrameRate Controller
 	gpResourceManager = new ResourceManager();					// Load Resource Manager
-	gpGameObjectManager = new GameObjectManager();				// Load GameObjectManager
-	gpObjectFactory = new ObjectFactory();						// Load ObjectFactory
+	gpGameObjectManager = new GameObjectManager();				// Load Game Object Manager
+	gpObjectFactory = new ObjectFactory();						// Load Object Factory
+	gpGfxManager = new GraphicsManager();						// Load Graphics Manager
+	//gpPhysicsManager = new PhysicsManager();
+	//gpCollisionManager = new CollisionManager();
 
-	if (AllocConsole())
-	{
-		FILE* file;
-		freopen_s(&file, "CONOUT$", "wt", stdout);
-		freopen_s(&file, "CONOUT$", "wt", stderr);
-		freopen_s(&file, "CONOUT$", "wt", stdin);
+	//// Load Managers End	=================================================================================================================================================================================
 
-		SetConsoleTitle(L"SDL 2.0 Test");
-	}
+	//// Load Objects Start =================================================================================================================================================================================
+	//
+	std::string lvlPath = "Resources\\Level1.txt";
+	gpObjectFactory->LoadLevel(lvlPath);
 
-	int error = 0;												// Set error code to 0
-	bool appIsRunning = true;									// Set app running to true
-
-	if ((error = SDL_Init(SDL_INIT_VIDEO)) < 0)					// Initialize SDL
-	{
-		printf("Couldn't initialize SDL, error %i\n", error);
-		system("Pause");
-		return 1;
-	}
-
-
-	pWindow = SDL_CreateWindow("SDL2 window",					// window title
-		SDL_WINDOWPOS_UNDEFINED,								// initial x position
-		SDL_WINDOWPOS_UNDEFINED,								// initial y position
-		800,													// width, in pixels
-		600,													// height, in pixels
-		SDL_WINDOW_SHOWN);
-
-
-	if (NULL == pWindow)										// Check that the window was successfully made
-	{
-
-		printf("Could not create window: %s\n", SDL_GetError());
-		return 1;
-	}
-
-	pWindowSurface = SDL_GetWindowSurface(pWindow);				// Get Window Surface
-	/* Object Loading */
-
-	// Refresh the window
-	SDL_UpdateWindowSurface(pWindow);							// Initialize Surface
-
-
-	// Load Managers End	=================================================================================================================================================================================
-
-	// Load Objects Start =================================================================================================================================================================================
+	//// Load Objects End =================================================================================================================================================================================
 	
-	std::string objPath = ".\\Resources\\Level1.txt";
-	gpObjectFactory->LoadLevel(objPath);
-
-	// Load Objects End =================================================================================================================================================================================
-
-	while (true == appIsRunning)									// Game loop
+	
+	while (!gpInputManager->isQuit())									// Game loop
 	{
 
 		gpFRC->FrameStart();										// Frame Start
-		printf("Frame Time: %d ms\n", gpFRC->GetFrameTime());
-		SDL_FillRect(pWindowSurface, NULL, 0x000000);
-		SDL_Event e;
-		while (SDL_PollEvent(&e) != 0)
-		{
-			//User requests quit
-			if (e.type == SDL_QUIT)
-			{
-				appIsRunning = false;
-			}
+		//std::cout << "Frame Time: " << gpFRC->GetFrameTime() << "ms" << std::endl;
 
-		}
 
 		gpInputManager->Update();
-		
+		gpGfxManager->clearColor();
+
+
+		//gpPhysicsManager->Update(gpFRC->GetFrameTime());
+
+		// Update all game objects
 		for (auto go : gpGameObjectManager->mGameObjects) {
 			go->Update();
-			if (go->GetComponent(SPRITE) != nullptr && go->GetComponent(TRANSFORM) != nullptr) {
-				// Update object positions here, and update surface
-				SDL_Rect destinationRect;
-				destinationRect.x = (int)static_cast<Transform*>(go->GetComponent(TRANSFORM))->mPosX;
-				destinationRect.y = (int)static_cast<Transform*>(go->GetComponent(TRANSFORM))->mPosY;
-				SDL_BlitSurface(static_cast<Sprite*>(go->GetComponent(SPRITE))->mpSurface, NULL, pWindowSurface, &destinationRect);
-				SDL_UpdateWindowSurface(pWindow);							// Update object and window
+			if (go->GetComponent(SPRITE) != nullptr && go->GetComponent(TRANSFORM) != nullptr)
+			{
+				gpGfxManager->Draw(go);
 			}
 		}
-		SDL_UpdateWindowSurface(pWindow);							// Update object and window
-
+		
+		gpGfxManager->refreshWindow();
+		
 		gpFRC->FrameEnd();											// Frame End
 	}
 
@@ -162,9 +122,12 @@ int main(int argc, char* args[])
 	delete gpResourceManager;				// Clear Resource Manager
 	delete gpGameObjectManager;				// Clear Game Object Manager
 	delete gpObjectFactory;					// Clear Game Object Factory
+	delete gpGfxManager;					// Clear Graphics Manager
+	//delete gpPhysicsManager;
+	//delete gpCollisionManager;
 
-	SDL_FreeSurface(pWindowSurface);		// Clear Window Surface
-	SDL_DestroyWindow(pWindow);				// Close and destroy the window
+	//SDL_FreeSurface(pWindowSurface);		// Clear Window Surface
+	//SDL_DestroyWindow(pWindow);				// Close and destroy the window
 
 	SDL_Quit();								// Quit SDL subsystems	
 	return 0;

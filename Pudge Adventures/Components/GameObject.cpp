@@ -2,6 +2,8 @@
 #include "Transform.h"
 #include "Sprite.h"
 #include "Controller.h"
+#include "Body.h"
+#include "AI.h"
 
 
 
@@ -35,6 +37,12 @@ Component* GameObject::AddComponent(unsigned int Type) {
 	case CONTROLLER:
 		pNewComponent = new Controller();
 		break;
+	case BOTAI:
+		pNewComponent = new botAI();
+		break;
+	//case BODY:
+	//	pNewComponent = new Body();
+	//	break;
 	}
 
 	if (pNewComponent != nullptr) {

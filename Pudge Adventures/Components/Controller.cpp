@@ -23,19 +23,19 @@ void Controller::Update()
 		Transform *pTr = static_cast<Transform*>(mpOwner->GetComponent(COMPONENT_TYPE::TRANSFORM));
 		if (pTr != nullptr) {
 			if (gpInputManager->isPressed(SDL_SCANCODE_W)) {				// When you press W
-				pTr->mPosY -= gpFRC->GetFrameTime();
+				pTr->mPosition.y += gpFRC->GetFrameTime() * 100 ;
 			}
 			else
 			if (gpInputManager->isPressed(SDL_SCANCODE_S)) {				// When you press S
-				pTr->mPosY += gpFRC->GetFrameTime();
+				pTr->mPosition.y -= gpFRC->GetFrameTime() * 100;
 			}
 			else
 			if (gpInputManager->isPressed(SDL_SCANCODE_A)) {				// When you press A
-				pTr->mPosX -= gpFRC->GetFrameTime();
+				pTr->mPosition.x -= gpFRC->GetFrameTime() * 100;
 			}
 			else
 			if (gpInputManager->isPressed(SDL_SCANCODE_D)) {				// When you press D
-				pTr->mPosX += gpFRC->GetFrameTime();
+				pTr->mPosition.x += gpFRC->GetFrameTime() * 100;
 			}
 		}
 	}

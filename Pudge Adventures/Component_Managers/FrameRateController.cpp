@@ -16,7 +16,7 @@ Creation date: 10/18/2018
 #include "..\Include\SDL2\SDL_timer.h"
 
 FrameRateController::FrameRateController(Uint32 MaxFramerate) {
-	mTickEnd = mTickStart = 0;
+	mTickEnd = mTickStart = mFrameTime = 0;
 	if (0 != MaxFramerate)
 		mNeededTicksPerFrame = 1000 / MaxFramerate;
 	else
@@ -40,6 +40,6 @@ void FrameRateController::FrameEnd() {
 	mFrameTime = mTickEnd - mTickStart;
 }
 
-Uint32 FrameRateController::GetFrameTime() {
-	return mFrameTime;
+float FrameRateController::GetFrameTime() {
+	return mFrameTime/1000;
 }

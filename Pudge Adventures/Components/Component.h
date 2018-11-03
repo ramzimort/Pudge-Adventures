@@ -6,7 +6,11 @@
 enum COMPONENT_TYPE {
 	TRANSFORM,
 	SPRITE,
-	CONTROLLER
+	CONTROLLER,
+	CAMERA,
+	BODY,
+	BOTAI
+
 };
 
 class GameObject;
@@ -17,7 +21,7 @@ public:
 	virtual ~Component() {}
 
 	virtual void Update() = 0;
-	unsigned int getType() { return mType; }
+	unsigned int getType();
 
 	virtual void Serialize(std::ifstream &inFile) {}
 

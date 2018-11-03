@@ -13,7 +13,9 @@ Creation date: 10/18/2018
 - End Header --------------------------------------------------------*/
 
 #include "Input Manager.h"
-#include "..\Include\SDL2\SDL_keyboard.h"
+#include <SDL2\SDL_keyboard.h>
+#include <iostream>
+
 
 Input_Manager::Input_Manager() {
 	SDL_memset(mCurrentState, 0, 512 * sizeof(Uint8));
@@ -26,6 +28,13 @@ Input_Manager::~Input_Manager() {
 }
 
 void Input_Manager::Update() {
+	
+	while (SDL_PollEvent(&event)) {
+		if (event.type == SDL_QUIT) {
+			quit = true;
+		}
+
+	}
 
 	int numberOffFetchedKeys = 0;
 	const Uint8* pCurrentKeyStates = SDL_GetKeyboardState(&numberOffFetchedKeys);
@@ -33,6 +42,7 @@ void Input_Manager::Update() {
 		numberOffFetchedKeys = 512;
 	SDL_memcpy(mPreviousState, mCurrentState, 512*sizeof(Uint8));
 	SDL_memcpy(mCurrentState, pCurrentKeyStates, numberOffFetchedKeys * sizeof(Uint8));
+	
 }
 
 bool Input_Manager::isPressed(unsigned int KeyScanCode) {
@@ -63,4 +73,9 @@ bool Input_Manager::isReleased(unsigned int KeyScanCode) {
 		return true;
 
 	return false;
+}
+
+bool Input_Manager::isQuit()
+{
+	return quit;
 }

@@ -24,11 +24,11 @@ public:
 	void FrameStart();
 	void FrameEnd();
 
-	Uint32 GetFrameTime();
+	float GetFrameTime();
 
 private:
 	Uint32 mTickStart;
 	Uint32 mTickEnd;
 	Uint32 mNeededTicksPerFrame;
-	Uint32 mFrameTime;
+	float mFrameTime;
 };
