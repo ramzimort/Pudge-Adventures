@@ -15,8 +15,7 @@ Creation date: 10/18/2018
 - End Header --------------------------------------------------------*/
 
 #include <Windows.h>
-#include "Include/SDL2/SDL.h"
-#include "stdio.h"
+#include <SDL2/SDL.h>
 #include "Component_Managers/Input Manager.h"
 #include "Component_Managers/FrameRateController.h"
 #include "Component_Managers/Resource Manager.h"
@@ -62,14 +61,11 @@ int main(int argc, char* args[])
 
 	// Load Manager Start =================================================================================================================================================================================
 	
-	SDL_Window *pWindow;										// Window object pointer
-	SDL_Surface* pWindowSurface;								// Window surface object
-	SDL_Surface* pImage = NULL;									// Image pointer, loaded from resource manager
-
-	SDL_Rect destinationRectangle;								// Object Rectangle 
-	int posX = 0,
-		posY = 0,
-		moveSpeed = 1;											// Movement/msec
+	
+	
+	
+	
+	//MANIAK
 
 	gpInputManager = new Input_Manager();						// Load Input Manager
 	gpFRC = new FrameRateController(100);						// Load FrameRate Controller
