@@ -40,9 +40,9 @@ Component* GameObject::AddComponent(unsigned int Type) {
 	case BOTAI:
 		pNewComponent = new botAI();
 		break;
-	//case BODY:
-	//	pNewComponent = new Body();
-	//	break;
+	case BODY:
+		pNewComponent = new Body();
+		break;
 	}
 
 	if (pNewComponent != nullptr) {

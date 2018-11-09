@@ -146,6 +146,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Components\AI.cpp" />
+    <ClCompile Include="Components\Body.cpp" />
     <ClCompile Include="Components\Camera.cpp" />
     <ClCompile Include="Components\Component.cpp" />
     <ClCompile Include="Components\Controller.cpp" />
@@ -154,17 +155,20 @@
     <ClCompile Include="Components\Sprite.cpp" />
     <ClCompile Include="Components\TextureObject.cpp" />
     <ClCompile Include="Components\Transform.cpp" />
+    <ClCompile Include="Component_Managers\CollisionManager.cpp" />
     <ClCompile Include="Component_Managers\FrameRateController.cpp" />
     <ClCompile Include="Component_Managers\GameObjectManager.cpp" />
     <ClCompile Include="Component_Managers\GraphicsManager.cpp" />
     <ClCompile Include="Component_Managers\Input Manager.cpp" />
     <ClCompile Include="Component_Managers\ObjectFactory.cpp" />
+    <ClCompile Include="Component_Managers\PhysicsManager.cpp" />
     <ClCompile Include="Component_Managers\Resource Manager.cpp" />
     <ClCompile Include="Include\GLAD\glad.c" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\AI.h" />
+    <ClInclude Include="Components\Body.h" />
     <ClInclude Include="Components\Camera.h" />
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\Controller.h" />
@@ -173,11 +177,13 @@
     <ClInclude Include="Components\Sprite.h" />
     <ClInclude Include="Components\TextureObject.h" />
     <ClInclude Include="Components\Transform.h" />
+    <ClInclude Include="Component_Managers\CollisionManager.h" />
     <ClInclude Include="Component_Managers\FrameRateController.h" />
     <ClInclude Include="Component_Managers\GameObjectManager.h" />
     <ClInclude Include="Component_Managers\GraphicsManager.h" />
     <ClInclude Include="Component_Managers\Input Manager.h" />
     <ClInclude Include="Component_Managers\ObjectFactory.h" />
+    <ClInclude Include="Component_Managers\PhysicsManager.h" />
     <ClInclude Include="Component_Managers\Resource Manager.h" />
     <ClInclude Include="Include\stb_image.h" />
   </ItemGroup>

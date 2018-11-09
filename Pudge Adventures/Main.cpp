@@ -51,8 +51,8 @@ ResourceManager* gpResourceManager;
 GameObjectManager* gpGameObjectManager;
 ObjectFactory* gpObjectFactory;
 GraphicsManager* gpGfxManager;
-//PhysicsManager* gpPhysicsManager;
-//CollisionManager* gpCollisionManager;
+PhysicsManager* gpPhysicsManager;
+CollisionManager* gpCollisionManager;
 
 
 int main(int argc, char* args[])
@@ -66,8 +66,8 @@ int main(int argc, char* args[])
 	gpGameObjectManager = new GameObjectManager();				// Load Game Object Manager
 	gpObjectFactory = new ObjectFactory();						// Load Object Factory
 	gpGfxManager = new GraphicsManager();						// Load Graphics Manager
-	//gpPhysicsManager = new PhysicsManager();
-	//gpCollisionManager = new CollisionManager();
+	gpPhysicsManager = new PhysicsManager();
+	gpCollisionManager = new CollisionManager();
 
 	//// Load Managers End	=================================================================================================================================================================================
 
@@ -89,7 +89,7 @@ int main(int argc, char* args[])
 		gpGfxManager->clearColor();
 
 		
-		//gpPhysicsManager->Update(gpFRC->GetFrameTime());
+		gpPhysicsManager->Update(gpFRC->GetFrameTime());
 
 		// Update all game objects
 		for (auto go : gpGameObjectManager->mGameObjects) {
@@ -111,11 +111,8 @@ int main(int argc, char* args[])
 	delete gpGameObjectManager;				// Clear Game Object Manager
 	delete gpObjectFactory;					// Clear Game Object Factory
 	delete gpGfxManager;					// Clear Graphics Manager
-	//delete gpPhysicsManager;
-	//delete gpCollisionManager;
-
-	//SDL_FreeSurface(pWindowSurface);		// Clear Window Surface
-	//SDL_DestroyWindow(pWindow);				// Close and destroy the window
+	delete gpPhysicsManager;
+	delete gpCollisionManager;
 
 	SDL_Quit();								// Quit SDL subsystems	
 	return 0;

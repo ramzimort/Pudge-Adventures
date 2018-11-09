@@ -44,10 +44,8 @@ void Body::Serialize(std::ifstream & inFile)
 		mpShape = new ShapeAABB();
 		mpShape->mpOwnerBody = this;
 		ShapeAABB* pAABB = static_cast<ShapeAABB*>(mpShape);
-		inFile >> pAABB->mLeft;
-		inFile >> pAABB->mTop;
-		inFile >> pAABB->mRight;
-		inFile >> pAABB->mBottom;
+		inFile >> pAABB->mWidth;
+		inFile >> pAABB->mHeight;
 	}
 }
 

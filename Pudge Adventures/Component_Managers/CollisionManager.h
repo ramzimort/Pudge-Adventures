@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <glm/glm.hpp>
 
 class Body;
 
@@ -15,7 +16,7 @@ public:
 
 	Shape(ShapeType Type);
 	virtual ~Shape() {};
-	virtual bool testPoint(float Pointx, float PointY) = 0;
+	virtual bool testPoint(glm::vec2& Point) = 0;
 
 public:
 	Body* mpOwnerBody;
@@ -28,7 +29,7 @@ public:
 	ShapeCircle();
 	~ShapeCircle();
 
-	bool testPoint(float PointX, float PointY);
+	bool testPoint(glm::vec2& Point);
 
 public:
 	float mRadius;
@@ -40,10 +41,10 @@ public:
 	ShapeAABB();
 	~ShapeAABB();
 
-	bool testPoint(float PointX, float PointY);
+	bool testPoint(glm::vec2& Point);
 
 public:
-	float mTop, mBottom, mRight, mLeft;
+	float mWidth, mHeight;
 };
 
 
@@ -64,13 +65,14 @@ class CollisionManager
 		~CollisionManager();
 
 		void Reset();
-		bool checkCollisionandGenerateContact(	Shape* pShape1, float pos1X, float pos1Y,
-												Shape* pShape2, float pos2X, float pos2Y,
+		bool checkCollisionandGenerateContact(	Shape* pShape1,
+												Shape* pShape2,
 												std::list<Contact*> &Contacts);
 
 	public:
 		std::list<Contact*> mContacts;
-		bool(*CollisionFunctions[2][2])(Shape* pShape1, float pos1X, float pos1Y,
-										Shape* pShape2, float pos2X, float pos2Y,
+
+		bool(*CollisionFunctions[2][2])(Shape* pShape1,
+										Shape* pShape2,
 										std::list<Contact*> &Contacts);
 };

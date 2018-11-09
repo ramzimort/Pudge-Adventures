@@ -84,6 +84,15 @@
     <ClCompile Include="Components\AI.cpp">
       <Filter>Components\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Component_Managers\PhysicsManager.cpp">
+      <Filter>Component Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Body.cpp">
+      <Filter>Components\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Component_Managers\CollisionManager.cpp">
+      <Filter>Component Managers\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\Component.h">
@@ -133,6 +142,15 @@
     </ClInclude>
     <ClInclude Include="Components\AI.h">
       <Filter>Components\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Component_Managers\PhysicsManager.h">
+      <Filter>Component Managers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Body.h">
+      <Filter>Components\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Component_Managers\CollisionManager.h">
+      <Filter>Component Managers\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

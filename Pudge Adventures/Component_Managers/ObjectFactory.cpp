@@ -40,9 +40,9 @@ void ObjectFactory::LoadLevel(std::string& pFileName) {
 			Transform* pTr = static_cast<Transform*> (pGameObject->GetComponent(TRANSFORM));
 			pTr->Serialize(inFile);
 			gpGameObjectManager->mGameObjects.insert(pGameObject);
-			//Body* pBody = static_cast<Body*> (pGameObject->GetComponent(BODY));
-			//if (pBody != nullptr)
-			//	pBody->Initialize();
+			Body* pBody = static_cast<Body*> (pGameObject->GetComponent(BODY));
+			if (pBody != nullptr)
+				pBody->Initialize();
 
 		}
 		inFile.close();
@@ -83,11 +83,11 @@ GameObject* ObjectFactory::LoadObject(std::string& pFileName) {
 				pNewComponent = pNewGameObject->AddComponent(BOTAI);
 				pNewComponent->Serialize(inFile);
 			}
-			//else if ("Body" == compononentName)
-			//{
-			//	pNewComponent = pNewGameObject->AddComponent(BODY);
-			//	pNewComponent->Serialize(inFile);
-			//}
+			else if ("Body" == compononentName)
+			{
+				pNewComponent = pNewGameObject->AddComponent(BODY);
+				pNewComponent->Serialize(inFile);
+			}
 			//gpGameObjectManager->mGameObjects.push_back(pNewGameObject);
 		}
 
