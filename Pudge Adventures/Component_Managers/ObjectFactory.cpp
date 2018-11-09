@@ -39,7 +39,7 @@ void ObjectFactory::LoadLevel(std::string& pFileName) {
 
 			Transform* pTr = static_cast<Transform*> (pGameObject->GetComponent(TRANSFORM));
 			pTr->Serialize(inFile);
-
+			gpGameObjectManager->mGameObjects.insert(pGameObject);
 			//Body* pBody = static_cast<Body*> (pGameObject->GetComponent(BODY));
 			//if (pBody != nullptr)
 			//	pBody->Initialize();
@@ -88,8 +88,9 @@ GameObject* ObjectFactory::LoadObject(std::string& pFileName) {
 			//	pNewComponent = pNewGameObject->AddComponent(BODY);
 			//	pNewComponent->Serialize(inFile);
 			//}
-			gpGameObjectManager->mGameObjects.push_back(pNewGameObject);
+			//gpGameObjectManager->mGameObjects.push_back(pNewGameObject);
 		}
+
 		inFile.close();
 	}
 	else

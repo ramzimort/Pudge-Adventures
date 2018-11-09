@@ -52,7 +52,7 @@ Component* GameObject::AddComponent(unsigned int Type) {
 	return pNewComponent;
 }
 
-Component* GameObject::GetComponent(unsigned int Type) {
+Component* GameObject::GetComponent(unsigned int Type) const{
 	for (auto c : mComponents)
 		if (c->getType() == Type)
 			return c;

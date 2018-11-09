@@ -15,7 +15,7 @@ Creation date: 10/18/2018
 #pragma once
 
 #include <string>
-#include<unordered_map>
+#include <unordered_map>
 #include "..\Components\Shader.h"
 
 struct SDL_Surface;

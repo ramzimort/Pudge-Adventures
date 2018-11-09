@@ -4,5 +4,4 @@ Transform
 256.0 256.0
 Sprite
 hook_hand.png
-AI
-2.0 35.0
+Controller

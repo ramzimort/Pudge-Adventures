@@ -7,7 +7,6 @@
 #include "..\Components\Sprite.h"
 #include "..\Components\Transform.h"
 #include "..\Components\TextureObject.h"
-
 #include <glm/gtc/matrix_transform.hpp>
 
 
@@ -22,8 +21,10 @@ GraphicsManager::GraphicsManager()
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
+	//glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
+	
 
 	apersp_matrix = glGetUniformLocation(programShader->Program, "persp_matrix");
 	aview_matrix = glGetUniformLocation(programShader->Program, "view_matrix");
@@ -48,6 +49,7 @@ GraphicsManager::~GraphicsManager()
 
 void GraphicsManager::Draw(GameObject* go)
 {
+
 
 	programShader->use();
 	glBindVertexArray(VAO);
@@ -82,6 +84,7 @@ void GraphicsManager::Draw(GameObject* go)
 	/* TRANSFORM END */
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
 }
 
 bool GraphicsManager::isError()

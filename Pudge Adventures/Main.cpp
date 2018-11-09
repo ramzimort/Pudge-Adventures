@@ -16,6 +16,7 @@ Creation date: 10/18/2018
 
 #include <Windows.h>
 #include <SDL2/SDL.h>
+
 #include "Component_Managers/Input Manager.h"
 #include "Component_Managers/FrameRateController.h"
 #include "Component_Managers/Resource Manager.h"
@@ -24,16 +25,14 @@ Creation date: 10/18/2018
 #include "Component_Managers/GraphicsManager.h"
 #include "Component_Managers/PhysicsManager.h"
 #include "Component_Managers/CollisionManager.h"
-
 #include "Components/Component.h"
 #include "Components/GameObject.h"
 #include "Components/Sprite.h"
 #include "Components/Transform.h"
 #include "Components/Controller.h"
 #include "Components/Body.h"
-
 #include <iostream>
-#include <stdio.h>
+#include <glm/glm.hpp>
 
 
 
@@ -60,12 +59,6 @@ int main(int argc, char* args[])
 {
 
 	// Load Manager Start =================================================================================================================================================================================
-	
-	
-	
-	
-	
-	//MANIAK
 
 	gpInputManager = new Input_Manager();						// Load Input Manager
 	gpFRC = new FrameRateController(100);						// Load FrameRate Controller
@@ -85,7 +78,6 @@ int main(int argc, char* args[])
 
 	//// Load Objects End =================================================================================================================================================================================
 	
-	
 	while (!gpInputManager->isQuit())									// Game loop
 	{
 
@@ -96,7 +88,7 @@ int main(int argc, char* args[])
 		gpInputManager->Update();
 		gpGfxManager->clearColor();
 
-
+		
 		//gpPhysicsManager->Update(gpFRC->GetFrameTime());
 
 		// Update all game objects

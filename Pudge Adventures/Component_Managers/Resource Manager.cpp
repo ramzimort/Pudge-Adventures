@@ -13,7 +13,6 @@ Creation date: 10/18/2018
 - End Header --------------------------------------------------------*/
 
 #include "Resource Manager.h"
-#include "..\Include\SDL2\SDL_surface.h"
 #include "..\Components\TextureObject.h"
 
 ResourceManager::ResourceManager() {

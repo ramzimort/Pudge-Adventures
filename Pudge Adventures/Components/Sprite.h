@@ -3,8 +3,6 @@
 
 #include"Component.h"
 
-#include "..\Include\SDL2\SDL_surface.h"
-
 
 class Texture;
 
@@ -17,8 +15,6 @@ public:
 	void Update();
 
 	void Serialize(std::ifstream &inFile);
-
-	SDL_Surface* mpSurface;
 	
 	Texture* mpTexture;
 	int uCoord = 0;

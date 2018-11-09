@@ -6,11 +6,11 @@
 extern ResourceManager* gpResourceManager;
 
 Sprite::Sprite() : Component(SPRITE) {
-	mpSurface = NULL;
+	mpTexture = nullptr;
 }
 
-Sprite::~Sprite() {
-
+Sprite::~Sprite() 
+{
 }
 
 void Sprite::Update()

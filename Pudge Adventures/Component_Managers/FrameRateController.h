@@ -14,7 +14,7 @@ Creation date: 10/18/2018
 
 #pragma once
 
-#include "..\Include\SDL2\SDL_stdinc.h"
+#include <SDL2/SDL_stdinc.h>
 
 class FrameRateController {
 public:

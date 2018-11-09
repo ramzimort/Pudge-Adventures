@@ -10,7 +10,7 @@ public:
 
 	void Update();
 	Component* AddComponent(unsigned int Type);
-	Component* GetComponent(unsigned int Type);
+	Component* GetComponent(unsigned int Type) const;
 
 public:
 	std::vector<Component*> mComponents;
