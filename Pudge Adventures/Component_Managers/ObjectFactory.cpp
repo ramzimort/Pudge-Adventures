@@ -5,6 +5,7 @@
 #include "GameObjectManager.h"
 #include <fstream>
 #include <iostream>
+#include "rapidjson/document.h"
 
 
 extern GameObjectManager* gpGameObjectManager;
@@ -88,7 +89,6 @@ GameObject* ObjectFactory::LoadObject(std::string& pFileName) {
 				pNewComponent = pNewGameObject->AddComponent(BODY);
 				pNewComponent->Serialize(inFile);
 			}
-			//gpGameObjectManager->mGameObjects.push_back(pNewGameObject);
 		}
 
 		inFile.close();

@@ -1,6 +1,4 @@
 
-
-
 /* Start Header -------------------------------------------------------
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
@@ -25,6 +23,7 @@ Creation date: 10/18/2018
 #include "Component_Managers/GraphicsManager.h"
 #include "Component_Managers/PhysicsManager.h"
 #include "Component_Managers/CollisionManager.h"
+#include "Component_Managers/EventManager.h"
 #include "Components/Component.h"
 #include "Components/GameObject.h"
 #include "Components/Sprite.h"
@@ -53,67 +52,64 @@ ObjectFactory* gpObjectFactory;
 GraphicsManager* gpGfxManager;
 PhysicsManager* gpPhysicsManager;
 CollisionManager* gpCollisionManager;
+EventManager* gpEventManager;
 
 
 int main(int argc, char* args[])
 {
 
 	// Load Manager Start =================================================================================================================================================================================
+	gpInputManager = new Input_Manager();			// Load Input Manager
+	gpFRC = new FrameRateController(100);			// Load FrameRate Controller
+	gpResourceManager = new ResourceManager();		// Load Resource Manager
+	gpGameObjectManager = new GameObjectManager();	// Load Game Object Manager
+	gpObjectFactory = new ObjectFactory();			// Load Object Factory
+	gpGfxManager = new GraphicsManager();			// Load Graphics Manager
+	gpPhysicsManager = new PhysicsManager();		// Load Physics Manager
+	gpCollisionManager = new CollisionManager();	// Load Collision Manager
+	gpEventManager = new EventManager();			// Load Events Manager
+	// Load Managers End	=================================================================================================================================================================================
 
-	gpInputManager = new Input_Manager();						// Load Input Manager
-	gpFRC = new FrameRateController(100);						// Load FrameRate Controller
-	gpResourceManager = new ResourceManager();					// Load Resource Manager
-	gpGameObjectManager = new GameObjectManager();				// Load Game Object Manager
-	gpObjectFactory = new ObjectFactory();						// Load Object Factory
-	gpGfxManager = new GraphicsManager();						// Load Graphics Manager
-	gpPhysicsManager = new PhysicsManager();
-	gpCollisionManager = new CollisionManager();
-
-	//// Load Managers End	=================================================================================================================================================================================
-
-	//// Load Objects Start =================================================================================================================================================================================
-	//
+	// Load Objects Start =================================================================================================================================================================================
 	std::string lvlPath = "Resources\\Level1.txt";
 	gpObjectFactory->LoadLevel(lvlPath);
+	// Load Objects End =================================================================================================================================================================================
 
-	//// Load Objects End =================================================================================================================================================================================
+	// Init Objects Start =================================================================================================================================================================================
+	for (auto go : gpGameObjectManager->mGameObjects)
+	{
+		go->Init();
+	}
+	// Init Objects End =================================================================================================================================================================================
 	
-	while (!gpInputManager->isQuit())									// Game loop
+	// Game Loop Start =================================================================================================================================================================================
+	while (!gpInputManager->isQuit())									
 	{
 
 		gpFRC->FrameStart();										// Frame Start
-		//std::cout << "Frame Time: " << gpFRC->GetFrameTime() << "ms" << std::endl;
-
-
+		// Manager Update Start =================================================================================================================================================================================
 		gpInputManager->Update();
-		gpGfxManager->clearColor();
-
-		
 		gpPhysicsManager->Update(gpFRC->GetFrameTime());
-
-		// Update all game objects
-		for (auto go : gpGameObjectManager->mGameObjects) {
-			go->Update();
-			if (go->GetComponent(SPRITE) != nullptr && go->GetComponent(TRANSFORM) != nullptr)
-			{
-				gpGfxManager->Draw(go);
-			}
-		}
-		
-		gpGfxManager->refreshWindow();
-		
+		gpEventManager->Update();
+		gpGameObjectManager->Update();
+		gpGfxManager->Update();
+		// Manager Update End =================================================================================================================================================================================
 		gpFRC->FrameEnd();											// Frame End
+		std::cout << "FPS: " << 1.0f/gpFRC->GetFrameTime() << std::endl;
 	}
+	// Game Loop End =================================================================================================================================================================================
 
+	// Clear Manager Start =================================================================================================================================================================================
 	delete gpFRC;							// Clear Frame Rate Controller
 	delete gpInputManager;					// Clear Input Manager
 	delete gpResourceManager;				// Clear Resource Manager
 	delete gpGameObjectManager;				// Clear Game Object Manager
 	delete gpObjectFactory;					// Clear Game Object Factory
 	delete gpGfxManager;					// Clear Graphics Manager
-	delete gpPhysicsManager;
-	delete gpCollisionManager;
-
-	SDL_Quit();								// Quit SDL subsystems	
+	delete gpPhysicsManager;				// Clear Physics Manager
+	delete gpCollisionManager;				// Clear Collision Manager
+	delete gpEventManager;					// Clear Event Manager
+	// Clear Manager End =================================================================================================================================================================================
+	
 	return 0;
 }

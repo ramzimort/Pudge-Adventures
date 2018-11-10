@@ -12,10 +12,12 @@ public:
 	Body();
 	~Body();
 
+	void Init();
 	void Update();
 	void Serialize(std::ifstream& inFile);
 	void Initialize();
 	void Integrate(float Gravity, float dt);
+	void HandleEvent(Event* pEvent);
 
 public:
 	glm::vec2 mPos;

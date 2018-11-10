@@ -156,6 +156,7 @@
     <ClCompile Include="Components\TextureObject.cpp" />
     <ClCompile Include="Components\Transform.cpp" />
     <ClCompile Include="Component_Managers\CollisionManager.cpp" />
+    <ClCompile Include="Component_Managers\EventManager.cpp" />
     <ClCompile Include="Component_Managers\FrameRateController.cpp" />
     <ClCompile Include="Component_Managers\GameObjectManager.cpp" />
     <ClCompile Include="Component_Managers\GraphicsManager.cpp" />
@@ -163,6 +164,10 @@
     <ClCompile Include="Component_Managers\ObjectFactory.cpp" />
     <ClCompile Include="Component_Managers\PhysicsManager.cpp" />
     <ClCompile Include="Component_Managers\Resource Manager.cpp" />
+    <ClCompile Include="Events\Collide.cpp" />
+    <ClCompile Include="Events\Event.cpp" />
+    <ClCompile Include="Events\PlayerHit.cpp" />
+    <ClCompile Include="Events\PlayerInput.cpp" />
     <ClCompile Include="Include\GLAD\glad.c" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
@@ -178,6 +183,7 @@
     <ClInclude Include="Components\TextureObject.h" />
     <ClInclude Include="Components\Transform.h" />
     <ClInclude Include="Component_Managers\CollisionManager.h" />
+    <ClInclude Include="Component_Managers\EventManager.h" />
     <ClInclude Include="Component_Managers\FrameRateController.h" />
     <ClInclude Include="Component_Managers\GameObjectManager.h" />
     <ClInclude Include="Component_Managers\GraphicsManager.h" />
@@ -185,6 +191,10 @@
     <ClInclude Include="Component_Managers\ObjectFactory.h" />
     <ClInclude Include="Component_Managers\PhysicsManager.h" />
     <ClInclude Include="Component_Managers\Resource Manager.h" />
+    <ClInclude Include="Events\Collide.h" />
+    <ClInclude Include="Events\Event.h" />
+    <ClInclude Include="Events\PlayerHit.h" />
+    <ClInclude Include="Events\PlayerInput.h" />
     <ClInclude Include="Include\stb_image.h" />
   </ItemGroup>
   <ItemGroup>

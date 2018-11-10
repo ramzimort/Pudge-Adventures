@@ -4,6 +4,7 @@
 #include <iostream>
 #include "..\Components\Shader.h"
 #include "Resource Manager.h"
+#include "GameObjectManager.h"
 #include "..\Components\Sprite.h"
 #include "..\Components\Transform.h"
 #include "..\Components\TextureObject.h"
@@ -11,17 +12,16 @@
 
 
 extern ResourceManager* gpResourceManager;
+extern GameObjectManager* gpGameObjectManager;
 
 GraphicsManager::GraphicsManager()
 {
 	AllocateConsole();
 	InitSDLWindow();
-	programShader = new Shader("VertShader.txt", "FragShader.txt");
+	programShader = new Shader("TextureShader.vert", "TextureShader.frag");
 	
 
-	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
-	//glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
 	
@@ -45,7 +45,18 @@ GraphicsManager::~GraphicsManager()
 	SDL_Quit();
 }
 
-
+void GraphicsManager::Update()
+{
+	clearColor();
+	// Update all game objects
+	for (auto go : gpGameObjectManager->mGameObjects) {
+		if (go->GetComponent(SPRITE) != nullptr && go->GetComponent(TRANSFORM) != nullptr)
+		{
+			Draw(go);
+		}
+	}
+	refreshWindow();
+}
 
 void GraphicsManager::Draw(GameObject* go)
 {
@@ -70,7 +81,7 @@ void GraphicsManager::Draw(GameObject* go)
 
 	/* TRANSFORM START */
 	Transform* pTr = static_cast<Transform*>(go->GetComponent(TRANSFORM));
-	glm::mat4 Model =	glm::translate(glm::mat4(), pTr->mPosition)*
+	glm::mat4 Model =	glm::translate(glm::mat4(), glm::vec3(pTr->mPosition,0.0f))*
 						glm::rotate(glm::mat4(), glm::radians(pTr->mAngle), glm::vec3(0.0f, 0.0f, 1.0f))*
 						glm::scale(glm::mat4(), pTr->mScale);
 	glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
@@ -168,10 +179,10 @@ void GraphicsManager::CreateQuadBuffer()
 	// set up vertex buffer for quad
 // ------------------------------------------------------------------
 	float vertices[] = {
-		 0.5f,  0.5f, 0.0f,  // top right
-		 0.5f, -0.5f, 0.0f,  // bottom right
-		-0.5f, -0.5f, 0.0f,  // bottom left
-		-0.5f,  0.5f, 0.0f   // top left 
+		 0.5f,  0.5f,  // top right
+		 0.5f, -0.5f,  // bottom right
+		-0.5f, -0.5f,  // bottom left
+		-0.5f,  0.5f,  // top left 
 	};
 	unsigned int indices[] = {  // note that we start from 0!
 		0, 1, 3,  // first Triangle
@@ -192,7 +203,7 @@ void GraphicsManager::CreateQuadBuffer()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, faceBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	
-	glVertexAttribPointer(aPos, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glVertexAttribPointer(aPos, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glEnableVertexAttribArray(aPos);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered vertBuffer as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind

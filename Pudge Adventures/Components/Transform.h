@@ -9,11 +9,13 @@ public:
 	Transform();
 	~Transform();
 
+	void Init();
 	void Update();
 
 	void Serialize(std::ifstream &inFile);
 
-	glm::vec3				mPosition;			// Current position
+	glm::vec2				mPosition;			// Current position
+	float					zValue;					// Object Depth
 	glm::vec3				mScale;				// Current scale
 	float					mAngle;				// Currenting value
 };

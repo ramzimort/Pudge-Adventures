@@ -17,6 +17,8 @@ class GraphicsManager
 public:
 	GraphicsManager();
 	virtual ~GraphicsManager();
+	void Update();
+
 	void clearColor();
 	void refreshWindow();
 	void Draw(GameObject* go);

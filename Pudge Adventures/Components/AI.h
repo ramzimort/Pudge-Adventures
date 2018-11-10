@@ -10,8 +10,10 @@ class botAI : public Component
 		botAI();
 		~botAI();
 
+		void Init();
 		void Update();
 		void Serialize(std::ifstream& inFile);
+		void HandleEvent(Event* pEvent);
 
 	public:
 		float changeDirectionInterval;

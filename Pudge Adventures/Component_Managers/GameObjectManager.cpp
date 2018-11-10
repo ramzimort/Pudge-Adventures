@@ -10,3 +10,10 @@ GameObjectManager::~GameObjectManager(){
 		delete go;
 	mGameObjects.clear();
 }
+
+void GameObjectManager::Update()
+{
+	for (auto go : mGameObjects) {
+		go->Update();
+	}
+}

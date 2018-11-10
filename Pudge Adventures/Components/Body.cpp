@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "..\Component_Managers\CollisionManager.h"
 #include <string>
+#include "..\Events\PlayerInput.h"
 
 Body::Body() : Component(BODY),
 	mPos(0.0f), 
@@ -15,6 +16,10 @@ Body::Body() : Component(BODY),
 { }
 
 Body::~Body()
+{
+}
+
+void Body::Init()
 {
 }
 
@@ -81,6 +86,31 @@ void Body::Integrate(float Gravity, float dt)
 	mForce = { 0.0f,0.0f };
 
 	Transform* pTr = static_cast<Transform*> (mpOwner->GetComponent(TRANSFORM));
-	pTr->mPosition.x = mPos.x;
-	pTr->mPosition.y = mPos.y;
+	pTr->mPosition = mPos;
+}
+
+void Body::HandleEvent(Event * pEvent)
+{
+	if (pEvent->mType == PLAYER_INPUT)
+	{
+		PlayerInputEvent* PIE = static_cast<PlayerInputEvent*>(pEvent);
+		switch (PIE->aType)
+		{
+		case MOVE_LEFT:
+			mForce.x -= 1000.f;
+			break;
+		case MOVE_RIGHT:
+			mForce.x += 1000.0f;
+			break;
+		case JUMP:
+			mForce.y += 10000.0f;
+			break;
+		case HOOK:
+			// Add Hook Code Here
+			break;
+		case CLEAVE:
+			// Add Cleave Code Here
+			break;
+		}
+	}
 }

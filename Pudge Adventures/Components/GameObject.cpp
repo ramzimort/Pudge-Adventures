@@ -18,6 +18,12 @@ GameObject::~GameObject() {
 	mComponents.clear();
 }
 
+void GameObject::Init()
+{
+	for (auto c : mComponents)
+		c->Init();
+}
+
 void GameObject::Update() {
 	for (auto c : mComponents)
 		c->Update();
@@ -58,4 +64,12 @@ Component* GameObject::GetComponent(unsigned int Type) const{
 			return c;
 
 	return nullptr;
+}
+
+void GameObject::HandleEvent(Event * pEvent)
+{
+	for (auto c : mComponents)
+	{
+		c->HandleEvent(pEvent);
+	}
 }

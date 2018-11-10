@@ -4,4 +4,3 @@ Transform
 256.0 256.0
 Sprite
 hook_hand.png
-Body 10.0 Circle 64.0

@@ -13,6 +13,10 @@ Sprite::~Sprite()
 {
 }
 
+void Sprite::Init()
+{
+}
+
 void Sprite::Update()
 {
 }

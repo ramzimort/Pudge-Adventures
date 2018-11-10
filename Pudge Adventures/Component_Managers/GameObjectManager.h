@@ -12,14 +12,15 @@ struct APtrComp
 	{
 		Transform* lpTR = static_cast<Transform*> (lhs->GetComponent(TRANSFORM));
 		Transform* rpTR = static_cast<Transform*> (rhs->GetComponent(TRANSFORM));
-		return (lpTR->mPosition.z < rpTR->mPosition.z);
+		return (lpTR->zValue > rpTR->zValue);
 	}
 };
 
 class GameObjectManager {
-public:
-	GameObjectManager();
-	~GameObjectManager();
-
-	std::set<GameObject*, APtrComp> mGameObjects;
+	public:
+		GameObjectManager();
+		~GameObjectManager();
+		void Update();
+	public:
+		std::set<GameObject*, APtrComp> mGameObjects;
 };

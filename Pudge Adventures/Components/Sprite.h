@@ -12,6 +12,7 @@ public:
 	Sprite();
 	~Sprite();
 
+	void Init();
 	void Update();
 
 	void Serialize(std::ifstream &inFile);

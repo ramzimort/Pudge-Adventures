@@ -3,6 +3,8 @@
 #include "..\Components\GameObject.h"
 #include "..\Components\Body.h"
 #include "GameObjectManager.h"
+#include "..\Events\Collide.h"
+
 
 extern GameObjectManager* gpGameObjectManager;
 extern CollisionManager* gpCollisionManager;
@@ -22,7 +24,7 @@ void PhysicsManager::Update(float FrameTime)
 	{
 		Body* pBody = static_cast<Body*>(go->GetComponent(BODY));
 		if (pBody != nullptr)
-			pBody->Integrate(-0.0f, FrameTime);
+			pBody->Integrate(-1000.0f, FrameTime);
 	}
 
 	// Reset previous contacts
@@ -53,6 +55,8 @@ void PhysicsManager::Update(float FrameTime)
 	// Add own physics functions here
 	for (auto mContact : gpCollisionManager->mContacts)
 	{
-		std::cout << "collision!" << std::endl;
+		CollideEvent ce;
+		mContact->mBodies[0]->mpOwner->HandleEvent(&ce);
+		mContact->mBodies[1]->mpOwner->HandleEvent(&ce);
 	}
 }

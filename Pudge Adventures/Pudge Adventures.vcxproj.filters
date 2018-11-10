@@ -31,6 +31,15 @@
     <Filter Include="Components\Header Files">
       <UniqueIdentifier>{47c1c5fe-0b0c-46ea-b480-cd50da14ec2d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Events">
+      <UniqueIdentifier>{64594ee7-3c47-48b2-9a6e-99c4ca4ebad5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Header Files">
+      <UniqueIdentifier>{18b3b2b4-e30d-41bc-b5c5-385e710f339c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Source Files">
+      <UniqueIdentifier>{dd8aafca-ef32-4e66-8ca0-0d1e6efd0d7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -93,6 +102,21 @@
     <ClCompile Include="Component_Managers\CollisionManager.cpp">
       <Filter>Component Managers\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Component_Managers\EventManager.cpp">
+      <Filter>Component Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\Event.cpp">
+      <Filter>Resource Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\Collide.cpp">
+      <Filter>Resource Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\PlayerHit.cpp">
+      <Filter>Resource Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\PlayerInput.cpp">
+      <Filter>Resource Files\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\Component.h">
@@ -151,6 +175,21 @@
     </ClInclude>
     <ClInclude Include="Component_Managers\CollisionManager.h">
       <Filter>Component Managers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Component_Managers\EventManager.h">
+      <Filter>Component Managers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\Event.h">
+      <Filter>Resource Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\Collide.h">
+      <Filter>Resource Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\PlayerHit.h">
+      <Filter>Resource Files\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\PlayerInput.h">
+      <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
