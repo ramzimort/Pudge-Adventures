@@ -117,7 +117,7 @@ void Body::Integrate(float Gravity, float dt)
 	mPrevPos = mPos;
 
 	// Compute Acceleration
-	mForce.y += Gravity;
+	mForce.y += mMass * Gravity;
 	mAcc.x = mForce.x * mInvMass;
 	mAcc.y = mForce.y * mInvMass;
 	// Intergrate the velocity

@@ -4,50 +4,61 @@
 #include <iostream>
 #include "..\Components\Shader.h"
 #include "Resource Manager.h"
+#include "Input Manager.h"
 #include "GameObjectManager.h"
 #include "..\Components\Sprite.h"
 #include "..\Components\Transform.h"
 #include "..\Components\TextureObject.h"
 #include <glm/gtc/matrix_transform.hpp>
+#include<glm/gtc/constants.hpp>
 
 
 extern ResourceManager* gpResourceManager;
 extern GameObjectManager* gpGameObjectManager;
+extern Input_Manager* gpInputManager;
 
 GraphicsManager::GraphicsManager()
 {
-	AllocateConsole();
-	InitSDLWindow();
-	programShader = new Shader("TextureShader.vert", "TextureShader.frag");
-	
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-
-	
-
-	apersp_matrix = glGetUniformLocation(programShader->Program, "persp_matrix");
-	aview_matrix = glGetUniformLocation(programShader->Program, "view_matrix");
-	amodel_matrix = glGetUniformLocation(programShader->Program, "model_matrix");
-
-	CreateQuadBuffer();
+	Init();
 }
 
 GraphicsManager::~GraphicsManager() 
 {
-	glDeleteBuffers(1, &VAO);
-	glDeleteBuffers(1, &vertBuffer);
-	glDeleteBuffers(1, &faceBuffer);
+	glDeleteBuffers(3, VAO);
+	glDeleteBuffers(3, vertBuffer);
+	glDeleteBuffers(3, faceBuffer);
 	glDeleteBuffers(1, &textureBuffer);
-	delete programShader;
+	delete textureShader;
+	delete polygonShader;
 
 	SDL_GL_DeleteContext(context);
 	SDL_Quit();
 }
 
+void GraphicsManager::Init()
+{
+	AllocateConsole();
+	InitSDLWindow();
+	textureShader = new Shader("TextureShader.vert", "TextureShader.frag");
+	polygonShader = new Shader("TextureShader.vert", "PolygonShader.frag");
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+
+	apersp_matrix = glGetUniformLocation(textureShader->Program, "persp_matrix");
+	aview_matrix = glGetUniformLocation(textureShader->Program, "view_matrix");
+	amodel_matrix = glGetUniformLocation(textureShader->Program, "model_matrix");
+
+	CreateQuadBuffer();
+}
+
 void GraphicsManager::Update()
 {
 	clearColor();
+	if (gpInputManager->isTriggered(SDL_SCANCODE_TAB))
+		debugModeFlag = !debugModeFlag;
+
 	// Update all game objects
 	for (auto go : gpGameObjectManager->mGameObjects) {
 		if (go->GetComponent(SPRITE) != nullptr && go->GetComponent(TRANSFORM) != nullptr)
@@ -60,42 +71,60 @@ void GraphicsManager::Update()
 
 void GraphicsManager::Draw(GameObject* go)
 {
-
-
-	programShader->use();
-	glBindVertexArray(VAO);
-
-	/* TEXTURE START */
-	float textCoords[] = {
-		 1.0f, 1.0f,  // top right
-		 1.0f, 0.0f,  // bottom right
-		 0.0f, 0.0f,  // bottom left
-		 0.0f, 1.0f,  // top left 
-	};
-	glBindTexture(GL_TEXTURE_2D, static_cast<Sprite*>(go->GetComponent(SPRITE))->mpTexture->textureID);
-	glBindBuffer(GL_ARRAY_BUFFER, textureBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(textCoords), textCoords, GL_STATIC_DRAW);
-	glVertexAttribPointer(aTexCoord, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	glEnableVertexAttribArray(aTexCoord);
-	/* TEXTURE END */
-
-	/* TRANSFORM START */
 	Transform* pTr = static_cast<Transform*>(go->GetComponent(TRANSFORM));
-	glm::mat4 Model =	glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x,pTr->mPosition.y,0.0f))*
-						glm::rotate(glm::mat4(), glm::radians(pTr->mAngle), glm::vec3(0.0f, 0.0f, 1.0f))*
-						glm::scale(glm::mat4(), glm::vec3(pTr->mScale.x,pTr->mScale.y,0.0f));
-	glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
+	Sprite* pSpr = static_cast<Sprite*>(go->GetComponent(SPRITE));
+	if (pTr != nullptr && pSpr != nullptr)
+	{
+		textureShader->use();
+		glBindVertexArray(VAO[0]);
 
-	glm::mat4 Persp = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT), 0.1f,100.0f);
-	glUniformMatrix4fv(apersp_matrix, 1, false, (float*)&Persp);
+		/* TEXTURE START */
+		float textCoords[] = {
+			 1.0f, 1.0f,  // top right
+			 1.0f, 0.0f,  // bottom right
+			 0.0f, 0.0f,  // bottom left
+			 0.0f, 1.0f,  // top left 
+		};
+		glBindTexture(GL_TEXTURE_2D, pSpr->mpTexture->textureID);
+		glBindBuffer(GL_ARRAY_BUFFER, textureBuffer);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(textCoords), textCoords, GL_STATIC_DRAW);
+		glVertexAttribPointer(aTexCoord, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+		glEnableVertexAttribArray(aTexCoord);
+		/* TEXTURE END */
 
-	glm::vec3 camPosition = glm::vec3(0.0f, -(float)SCR_HEIGHT/2.0f, 1.0f);
-	glm::mat4 View = glm::lookAt(camPosition, camPosition + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-	glUniformMatrix4fv(aview_matrix, 1, false, (float*)&View);
-	/* TRANSFORM END */
+		/* TRANSFORM START */
+		glm::mat4 Model = glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y, 0.0f))*
+			glm::rotate(glm::mat4(), glm::radians(pTr->mAngle), glm::vec3(0.0f, 0.0f, 1.0f))*
+			glm::scale(glm::mat4(), glm::vec3(pTr->mScale.x, pTr->mScale.y, 0.0f));
 
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glm::mat4 Persp = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT), 0.1f, 100.0f);
 
+		glm::vec3 camPosition = glm::vec3(0.0f, -(float)SCR_HEIGHT / 2.0f, 1.0f);
+		glm::mat4 View = glm::lookAt(camPosition, camPosition + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+		glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
+		glUniformMatrix4fv(apersp_matrix, 1, false, (float*)&Persp);
+		glUniformMatrix4fv(aview_matrix, 1, false, (float*)&View);
+		/* TRANSFORM END */
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+		// Debug Mode:
+		if (debugModeFlag)
+		{
+			//AABB
+			polygonShader->use();
+			glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
+			glUniformMatrix4fv(apersp_matrix, 1, false, (float*)&Persp);
+			glUniformMatrix4fv(aview_matrix, 1, false, (float*)&View);
+			//
+			glBindVertexArray(VAO[1]);
+			glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
+
+			//CIRCLE
+			glBindVertexArray(VAO[2]);
+			glDrawElements(GL_LINES, 40, GL_UNSIGNED_INT, 0);
+		}
+	}	
 }
 
 bool GraphicsManager::isError()
@@ -188,26 +217,61 @@ void GraphicsManager::CreateQuadBuffer()
 		0, 1, 3,  // first Triangle
 		1, 2, 3   // second Triangle
 	};
+	
+	unsigned int quadIndices[] = {  // note that we start from 0!
+	0, 1, 
+	1, 2, 
+	2, 3, 
+	3, 0
+	};
 
+	const int numVertices = 20;
+	float circleVertices[2* numVertices];
+	unsigned int circleIndices[2 * numVertices];
+	float toRad = (float)2*M_PI / numVertices;
+	for (int i = 0; i < numVertices; i++)
+	{
+		circleVertices[2 * i] =		0.5f*cosf(i*toRad);
+		circleVertices[2 * i + 1] =	0.5f*sinf(i*toRad);
+		circleIndices[2 * i] = i;
+		circleIndices[2 * i + 1] = i + 1;
+	}
+	circleIndices[2*numVertices - 1] = 0;
 
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &vertBuffer);
-	glGenBuffers(1, &faceBuffer);
+	glGenVertexArrays(3, VAO);
+	glGenBuffers(3, vertBuffer);
+	glGenBuffers(3, faceBuffer);
 	glGenBuffers(1, &textureBuffer);
 	// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
-	glBindVertexArray(VAO);
+	glBindVertexArray(VAO[0]);
 
-	glBindBuffer(GL_ARRAY_BUFFER, vertBuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, vertBuffer[0]);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, faceBuffer);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, faceBuffer[0]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 	
 	glVertexAttribPointer(aPos, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glEnableVertexAttribArray(aPos);
 
 	// note that this is allowed, the call to glVertexAttribPointer registered vertBuffer as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(VAO[1]);
+	glBindBuffer(GL_ARRAY_BUFFER, vertBuffer[1]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, faceBuffer[1]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(aPos, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glEnableVertexAttribArray(aPos);
+
+	glBindVertexArray(VAO[2]);
+	glBindBuffer(GL_ARRAY_BUFFER, vertBuffer[2]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(circleVertices), circleVertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, faceBuffer[2]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(circleIndices), circleIndices, GL_STATIC_DRAW);
+	glVertexAttribPointer(aPos, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glEnableVertexAttribArray(aPos);
 }
 
 void GraphicsManager::clearColor()

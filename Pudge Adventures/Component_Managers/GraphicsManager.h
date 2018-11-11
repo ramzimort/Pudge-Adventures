@@ -17,6 +17,7 @@ class GraphicsManager
 public:
 	GraphicsManager();
 	virtual ~GraphicsManager();
+	void Init();
 	void Update();
 
 	void clearColor();
@@ -34,7 +35,8 @@ private:
 
 private:
 	SDL_Window* pWindow = nullptr;		// Window object pointer
-	Shader* programShader = nullptr;	// programShader pointer
+	Shader* textureShader = nullptr;	// programShader pointer
+	Shader* polygonShader = nullptr;
 	
 
 	SDL_GLContext context =  0 ;
@@ -42,10 +44,11 @@ private:
 	int SCR_WIDTH =	 800 ;
 	int SCR_HEIGHT =  600 ;
 
-	bool errorFlag = { false };
-	std::string errorString = { "" };
+	bool errorFlag =  false;
+	std::string errorString = "" ;
+	bool debugModeFlag = false;
 	
-	Uint32 vertBuffer, faceBuffer, textureBuffer, VAO;
+	Uint32 vertBuffer[3], faceBuffer[3], textureBuffer, VAO[3];
 	Uint32 apersp_matrix, aview_matrix, amodel_matrix, acolor;
 	
 	int aPos = 0;

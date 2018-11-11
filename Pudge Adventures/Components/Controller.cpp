@@ -42,18 +42,18 @@ void Controller::Update()
 			PIE.aType = MOVE_RIGHT;
 			gpEventManager->BroadcaseEventToSubscribers(&PIE);
 		}
-		if (gpInputManager->isPressed(SDL_SCANCODE_SPACE)) 
+		if (gpInputManager->isTriggered(SDL_SCANCODE_SPACE)) 
 		{		
 			PIE.aType = JUMP;
 			gpEventManager->BroadcaseEventToSubscribers(&PIE);
 		}
-		if (gpInputManager->isPressed(SDL_SCANCODE_Q))
+		if (gpInputManager->isTriggered(SDL_SCANCODE_Q))
 		{
 			PIE.aType = HOOK;
 			PIE.mousePos = gpInputManager->PointerLocation();
 			gpEventManager->BroadcaseEventToSubscribers(&PIE);
 		}
-		if (gpInputManager->isPressed(SDL_SCANCODE_E))
+		if (gpInputManager->isTriggered(SDL_SCANCODE_E))
 		{
 			PIE.aType = CLEAVE;
 			gpEventManager->BroadcaseEventToSubscribers(&PIE);

@@ -24,7 +24,7 @@ void PhysicsManager::Update(float FrameTime)
 	{
 		Body* pBody = static_cast<Body*>(go->GetComponent(BODY));
 		if (pBody != nullptr)
-			pBody->Integrate(-1000.0f, FrameTime);
+			pBody->Integrate(-9.8, FrameTime);
 	}
 
 	// Reset previous contacts

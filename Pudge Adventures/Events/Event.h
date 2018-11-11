@@ -5,7 +5,6 @@ enum EventType
 	COLLIDE,
 	PLAYER_INPUT,
 	PLAYER_HIT,
-
 	NUM
 };
 
