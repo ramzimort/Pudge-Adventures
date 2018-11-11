@@ -7,49 +7,7 @@
 
 
 
-Shape::Shape(ShapeType Type)
-{
-	mType = Type;
-	mpOwnerBody = nullptr;
-}
 
-ShapeCircle::ShapeCircle() : Shape(CIRCLE)
-{
-	mRadius = 0.0f;
-}
-
-ShapeCircle::~ShapeCircle()
-{
-}
-
-bool ShapeCircle::testPoint(glm::vec2& Point)
-{
-	return ((mpOwnerBody->mPos.x-Point.x)*(mpOwnerBody->mPos.x - Point.x) + 
-		(mpOwnerBody->mPos.y - Point.y)*(mpOwnerBody->mPos.y - Point.y) 
-		< mRadius*mRadius);
-}
-
-ShapeAABB::ShapeAABB() : Shape(AABB)
-{
-	mWidth = mHeight = 0.0f;
-}
-
-ShapeAABB::~ShapeAABB()
-{
-}
-
-bool ShapeAABB::testPoint(glm::vec2& Point)
-{
-	if (Point.x < (mpOwnerBody->mPos.x - mWidth / 2))
-		return false;
-	if (Point.x > (mpOwnerBody->mPos.x + mWidth / 2))
-		return false;
-	if (Point.y < (mpOwnerBody->mPos.y - mHeight / 2))
-		return false;
-	if (Point.y > (mpOwnerBody->mPos.y + mHeight / 2))
-		return false;
-	return true;
-}
 
 Contact::Contact()
 {
@@ -62,15 +20,18 @@ Contact::~Contact()
 }
 
 bool CheckCollisionCircleCircle(Shape* pShape1, Shape* pShape2, std::list<Contact*> &Contacts);
+bool CheckCollisionCircleAABB(Shape* pShape1, Shape* pShape2, std::list<Contact*> &Contacts);
+bool CheckCollisionAABBCircle(Shape* pShape1, Shape* pShape2, std::list<Contact*> &Contacts);
+bool CheckCollisionAABBAABB(Shape* pShape1, Shape* pShape2, std::list<Contact*> &Contacts);
 
 CollisionManager::CollisionManager()
 {
-	CollisionFunctions[Shape::CIRCLE][Shape::CIRCLE] = CheckCollisionCircleCircle;
+	CollisionFunctions[CIRCLE][CIRCLE] = CheckCollisionCircleCircle;
 
 	// Do the same for aabb circle, circle aabb, and aabb aabb
-	//CollisionFunctions[Shape::CIRCLE][Shape::CIRCLE] = CheckCollisionCircleCircle;
-	//CollisionFunctions[Shape::CIRCLE][Shape::CIRCLE] = CheckCollisionCircleCircle;
-	//CollisionFunctions[Shape::CIRCLE][Shape::CIRCLE] = CheckCollisionCircleCircle;
+	CollisionFunctions[CIRCLE][AABB] = CheckCollisionCircleAABB;
+	CollisionFunctions[AABB][CIRCLE] = CheckCollisionAABBCircle;
+	CollisionFunctions[AABB][AABB] = CheckCollisionAABBAABB;
 }
 
 CollisionManager::~CollisionManager()
@@ -112,5 +73,26 @@ bool CheckCollisionCircleCircle(Shape* pShape1,
 
 		return true;
 	}
+	return false;
+}
+
+bool CheckCollisionCircleAABB(	Shape* pShape1,
+								Shape* pShape2,
+								std::list<Contact*> &Contacts)
+{
+	return false;
+}
+
+bool CheckCollisionAABBCircle(Shape* pShape1,
+	Shape* pShape2,
+	std::list<Contact*> &Contacts)
+{
+	return false;
+}
+
+bool CheckCollisionAABBAABB(Shape* pShape1,
+	Shape* pShape2,
+	std::list<Contact*> &Contacts)
+{
 	return false;
 }

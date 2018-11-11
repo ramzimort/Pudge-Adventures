@@ -8,6 +8,7 @@
 #include "GameObjectManager.h"
 #include "..\Components\Sprite.h"
 #include "..\Components\Transform.h"
+#include "..\Components\Body.h"
 #include "..\Components\TextureObject.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/constants.hpp>
@@ -111,18 +112,33 @@ void GraphicsManager::Draw(GameObject* go)
 		// Debug Mode:
 		if (debugModeFlag)
 		{
-			//AABB
-			polygonShader->use();
-			glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
-			glUniformMatrix4fv(apersp_matrix, 1, false, (float*)&Persp);
-			glUniformMatrix4fv(aview_matrix, 1, false, (float*)&View);
-			//
-			glBindVertexArray(VAO[1]);
-			glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
-
-			//CIRCLE
-			glBindVertexArray(VAO[2]);
-			glDrawElements(GL_LINES, 40, GL_UNSIGNED_INT, 0);
+			Body* pBody = static_cast<Body*>(go->GetComponent(BODY));
+			if (pBody != nullptr)
+			{
+				polygonShader->use();
+				glUniformMatrix4fv(apersp_matrix, 1, false, (float*)&Persp);
+				glUniformMatrix4fv(aview_matrix, 1, false, (float*)&View);
+				if (pBody->mpShape->mType == AABB)
+				{
+					ShapeAABB* pShape = static_cast<ShapeAABB*>(pBody->mpShape);
+					glm::mat4 Model = glm::translate(glm::mat4(), glm::vec3(pBody->mPos.x, pBody->mPos.y, 0.0f))*
+						glm::rotate(glm::mat4(), glm::radians(pTr->mAngle), glm::vec3(0.0f, 0.0f, 1.0f))*
+						glm::scale(glm::mat4(), glm::vec3(pShape->mWidth, pShape->mHeight, 0.0f));
+					glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
+					glBindVertexArray(VAO[1]);
+					glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
+				}
+				else if (pBody->mpShape->mType == CIRCLE)
+				{
+					ShapeCircle* pShape = static_cast<ShapeCircle*>(pBody->mpShape);
+					glm::mat4 Model = glm::translate(glm::mat4(), glm::vec3(pBody->mPos.x, pBody->mPos.y, 0.0f))*
+						glm::rotate(glm::mat4(), glm::radians(pTr->mAngle), glm::vec3(0.0f, 0.0f, 1.0f))*
+						glm::scale(glm::mat4(), glm::vec3(2*pShape->mRadius, 2*pShape->mRadius, 0.0f));
+					glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
+					glBindVertexArray(VAO[2]);
+					glDrawElements(GL_LINES, 40, GL_UNSIGNED_INT, 0);
+				}				
+			}
 		}
 	}	
 }

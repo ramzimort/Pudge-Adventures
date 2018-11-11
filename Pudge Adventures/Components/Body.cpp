@@ -6,6 +6,51 @@
 #include "..\Events\PlayerInput.h"
 #include <iostream>
 
+Shape::Shape(ShapeType Type)
+{
+	mType = Type;
+	mpOwnerBody = nullptr;
+}
+
+ShapeCircle::ShapeCircle() : Shape(CIRCLE)
+{
+	mRadius = 0.0f;
+}
+
+ShapeCircle::~ShapeCircle()
+{
+}
+
+bool ShapeCircle::testPoint(glm::vec2& Point)
+{
+	return ((mpOwnerBody->mPos.x - Point.x)*(mpOwnerBody->mPos.x - Point.x) +
+		(mpOwnerBody->mPos.y - Point.y)*(mpOwnerBody->mPos.y - Point.y)
+		< mRadius*mRadius);
+}
+
+ShapeAABB::ShapeAABB() : Shape(AABB)
+{
+	mWidth = mHeight = 0.0f;
+}
+
+ShapeAABB::~ShapeAABB()
+{
+}
+
+bool ShapeAABB::testPoint(glm::vec2& Point)
+{
+	if (Point.x < (mpOwnerBody->mPos.x - mWidth / 2))
+		return false;
+	if (Point.x > (mpOwnerBody->mPos.x + mWidth / 2))
+		return false;
+	if (Point.y < (mpOwnerBody->mPos.y - mHeight / 2))
+		return false;
+	if (Point.y > (mpOwnerBody->mPos.y + mHeight / 2))
+		return false;
+	return true;
+}
+
+
 Body::Body() : Component(BODY),
 	mPos(0.0f), 
 	mPrevPos(0.0f),

@@ -4,7 +4,50 @@
 #include <fstream>
 #include <glm/glm.hpp>
 
-class Shape;
+
+class Body;
+enum ShapeType
+{
+	CIRCLE,
+	AABB,
+};
+
+
+class Shape
+{
+public:
+	Shape(ShapeType Type);
+	virtual ~Shape() {};
+	virtual bool testPoint(glm::vec2& Point) = 0;
+
+public:
+	Body* mpOwnerBody;
+	ShapeType mType;
+};
+
+class ShapeCircle : public Shape
+{
+public:
+	ShapeCircle();
+	~ShapeCircle();
+
+	bool testPoint(glm::vec2& Point);
+
+public:
+	float mRadius;
+};
+
+class ShapeAABB : public Shape
+{
+public:
+	ShapeAABB();
+	~ShapeAABB();
+
+	bool testPoint(glm::vec2& Point);
+
+public:
+	float mWidth, mHeight;
+};
 
 class Body : public Component
 {
