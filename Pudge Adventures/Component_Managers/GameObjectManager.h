@@ -12,7 +12,10 @@ struct APtrComp
 	{
 		Transform* lpTR = static_cast<Transform*> (lhs->GetComponent(TRANSFORM));
 		Transform* rpTR = static_cast<Transform*> (rhs->GetComponent(TRANSFORM));
-		return (lpTR->zValue >= rpTR->zValue);
+		if (lpTR->zValue == rpTR->zValue)
+			return lhs < rhs;
+		else
+			return (lpTR->zValue > rpTR->zValue);
 	}
 };
 

@@ -17,4 +17,5 @@ class PlayerInputEvent : public Event
 		~PlayerInputEvent() { }
 	public:
 		actionType aType;
+		int* mousePos;
 };

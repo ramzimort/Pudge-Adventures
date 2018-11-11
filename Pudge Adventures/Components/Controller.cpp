@@ -50,6 +50,7 @@ void Controller::Update()
 		if (gpInputManager->isPressed(SDL_SCANCODE_Q))
 		{
 			PIE.aType = HOOK;
+			PIE.mousePos = gpInputManager->PointerLocation();
 			gpEventManager->BroadcaseEventToSubscribers(&PIE);
 		}
 		if (gpInputManager->isPressed(SDL_SCANCODE_E))

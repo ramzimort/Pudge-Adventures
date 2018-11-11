@@ -27,23 +27,23 @@ Input_Manager::~Input_Manager() {
 
 }
 
-void Input_Manager::Update() {
-	
-	while (SDL_PollEvent(&event)) {
-		if (event.type == SDL_QUIT) {
+void Input_Manager::Update() 
+{
+	while (SDL_PollEvent(&event)) 
+	{
+		if (event.type == SDL_QUIT)
 			quit = true;
-		}
-
 	}
-
 	int numberOffFetchedKeys = 0;
 	const Uint8* pCurrentKeyStates = SDL_GetKeyboardState(&numberOffFetchedKeys);
 	if (numberOffFetchedKeys > 512)
 		numberOffFetchedKeys = 512;
 	SDL_memcpy(mPreviousState, mCurrentState, 512*sizeof(Uint8));
 	SDL_memcpy(mCurrentState, pCurrentKeyStates, numberOffFetchedKeys * sizeof(Uint8));
-	
+	SDL_GetMouseState(mousePosition, mousePosition+1);
 }
+
+
 
 bool Input_Manager::isPressed(unsigned int KeyScanCode) {
 	if (KeyScanCode >= 512)
@@ -73,6 +73,11 @@ bool Input_Manager::isReleased(unsigned int KeyScanCode) {
 		return true;
 
 	return false;
+}
+
+int* Input_Manager::PointerLocation()
+{
+	return mousePosition;
 }
 
 bool Input_Manager::isQuit()

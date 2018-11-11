@@ -4,6 +4,7 @@
 #include "..\Component_Managers\CollisionManager.h"
 #include <string>
 #include "..\Events\PlayerInput.h"
+#include <iostream>
 
 Body::Body() : Component(BODY),
 	mPos(0.0f), 
@@ -151,7 +152,7 @@ void Body::HandleEvent(Event * pEvent)
 			mForce.y += 10000.0f;
 			break;
 		case HOOK:
-			// Add Hook Code Here
+			std::cout << PIE->mousePos[0] << " " << PIE->mousePos[1] << std::endl;
 			break;
 		case CLEAVE:
 			// Add Cleave Code Here
