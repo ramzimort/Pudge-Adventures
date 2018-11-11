@@ -1,6 +1,0 @@
-Transform
-0.0 0.0 0.0 0.0 256.0 256.0
-Sprite
-pudge_body.png
-Controller
-Body 10.0 Circle 64.0

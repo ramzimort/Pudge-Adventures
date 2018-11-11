@@ -21,6 +21,13 @@ Body::~Body()
 
 void Body::Init()
 {
+	Transform* pTr = static_cast<Transform*> (mpOwner->GetComponent(TRANSFORM));
+	if (pTr != nullptr)
+	{
+		mPos.x = pTr->mPosition.x;
+		mPos.y = pTr->mPosition.y;
+		mPrevPos = mPos;
+	}
 }
 
 void Body::Update()
@@ -54,14 +61,52 @@ void Body::Serialize(std::ifstream & inFile)
 	}
 }
 
-void Body::Initialize()
+
+void Body::Serialize(rapidjson::Document& objectFile)
 {
-	Transform* pTr = static_cast<Transform*> (mpOwner->GetComponent(TRANSFORM));
-	if (pTr != nullptr)
+	std::string componentValueName;
+	for (auto& ComponentValues : objectFile["Body"].GetObject())
 	{
-		mPos.x = pTr->mPosition.x;
-		mPos.y = pTr->mPosition.y;
-		mPrevPos = mPos;
+		componentValueName = ComponentValues.name.GetString();
+		if (componentValueName == "Mass") {
+			mMass = ComponentValues.value.GetFloat();
+			if (mMass != 0.0f)
+				mInvMass = 1.0f / mMass;
+			else
+				mInvMass = 0.0f;
+		}
+		else if (componentValueName == "Shape")
+		{
+			std::string shapeType = ComponentValues.value.GetString();
+			if (shapeType == "Circle")
+			{
+				mpShape = new ShapeCircle();
+				mpShape->mpOwnerBody = this;
+			}
+			else if (shapeType == "AABB")
+			{
+				mpShape = new ShapeAABB();
+				mpShape->mpOwnerBody = this;
+			}
+		}
+		else if (componentValueName == "Radius")
+		{
+			ShapeCircle* pCircle = static_cast<ShapeCircle*>(mpShape);
+			if (pCircle != nullptr)
+				pCircle->mRadius = ComponentValues.value.GetFloat();
+		}
+		else if (componentValueName == "Width")
+		{
+			ShapeAABB* pAABB = static_cast<ShapeAABB*>(mpShape);
+			if (pAABB != nullptr)
+				pAABB->mWidth = ComponentValues.value.GetFloat();
+		}
+		else if (componentValueName == "Height")
+		{
+			ShapeAABB* pAABB = static_cast<ShapeAABB*>(mpShape);
+			if (pAABB != nullptr)
+				pAABB->mHeight = ComponentValues.value.GetFloat();
+		}
 	}
 }
 

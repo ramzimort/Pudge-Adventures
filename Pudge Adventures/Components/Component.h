@@ -1,6 +1,7 @@
 #pragma once
 
 #include <fstream>
+#include <rapidjson/document.h>
 
 
 enum COMPONENT_TYPE {
@@ -26,6 +27,7 @@ public:
 	unsigned int getType();
 
 	virtual void Serialize(std::ifstream &inFile) {}
+	virtual void Serialize(rapidjson::Document& objFile) {}
 	virtual void HandleEvent(Event* pEvent) {}
 
 public:

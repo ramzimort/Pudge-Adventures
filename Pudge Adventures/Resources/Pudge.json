@@ -1,0 +1,17 @@
+{
+  "Transform": {
+    "X": 600.0,
+    "Y": 0.0,
+    "Z": 2.0,
+    "Angle": 0.0,
+    "xScale": 200.0,
+    "yScale": 200.0
+  },
+  "Sprite": "pudge_body.png",
+  "Controller": true,
+  "Body": {
+    "Mass": 10.0,
+    "Shape": "Circle",
+    "Radius": 64
+  }
+}

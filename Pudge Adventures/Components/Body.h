@@ -15,7 +15,7 @@ public:
 	void Init();
 	void Update();
 	void Serialize(std::ifstream& inFile);
-	void Initialize();
+	void Serialize(rapidjson::Document& objectFile);
 	void Integrate(float Gravity, float dt);
 	void HandleEvent(Event* pEvent);
 

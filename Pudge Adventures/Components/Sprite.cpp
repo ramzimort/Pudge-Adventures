@@ -27,3 +27,9 @@ void Sprite::Serialize(std::ifstream &inFile)
 	inFile >> imageName;
 	mpTexture = gpResourceManager->LoadTexture(imageName);
 }
+
+void Sprite::Serialize(rapidjson::Document& objectFile)
+{
+	std::string imageName = objectFile["Sprite"].GetString();
+	mpTexture = gpResourceManager->LoadTexture(imageName);
+}

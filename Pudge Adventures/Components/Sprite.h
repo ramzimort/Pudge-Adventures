@@ -16,6 +16,7 @@ public:
 	void Update();
 
 	void Serialize(std::ifstream &inFile);
+	void Serialize(rapidjson::Document& objectFile);
 	
 	Texture* mpTexture;
 	int uCoord = 0;

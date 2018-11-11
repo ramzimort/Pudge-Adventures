@@ -25,3 +25,24 @@ void Transform::Serialize(std::ifstream &inFile)
 	inFile >> mScale.x;
 	inFile >> mScale.y;
 }
+
+void Transform::Serialize(rapidjson::Document& objectFile)
+{
+	std::string componentValueName;
+	for (auto& ComponentValues : objectFile["Transform"].GetObject())
+	{
+		componentValueName = ComponentValues.name.GetString();
+		if (componentValueName == "X")
+			mPosition.x = ComponentValues.value.GetFloat();
+		else if(componentValueName == "Y")
+			mPosition.y = ComponentValues.value.GetFloat();
+		else if (componentValueName == "Z")
+			zValue = ComponentValues.value.GetFloat();
+		else if (componentValueName == "Angle")
+			mAngle = ComponentValues.value.GetFloat();
+		else if (componentValueName == "xScale")
+			mScale.x = ComponentValues.value.GetFloat();
+		else if (componentValueName == "yScale")
+			mScale.y = ComponentValues.value.GetFloat();
+	}
+}

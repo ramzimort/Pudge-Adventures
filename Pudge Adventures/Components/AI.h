@@ -13,6 +13,7 @@ class botAI : public Component
 		void Init();
 		void Update();
 		void Serialize(std::ifstream& inFile);
+		void Serialize(rapidjson::Document& objectFile);
 		void HandleEvent(Event* pEvent);
 
 	public:

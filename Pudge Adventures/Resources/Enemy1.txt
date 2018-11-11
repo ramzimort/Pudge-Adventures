@@ -1,6 +1,0 @@
-Transform
-0.0 0.0 0.0 0.0 256.0 256.0 
-Sprite
-ship.png
-AI
-2.0 400.0

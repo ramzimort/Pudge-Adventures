@@ -81,9 +81,9 @@ void GraphicsManager::Draw(GameObject* go)
 
 	/* TRANSFORM START */
 	Transform* pTr = static_cast<Transform*>(go->GetComponent(TRANSFORM));
-	glm::mat4 Model =	glm::translate(glm::mat4(), glm::vec3(pTr->mPosition,0.0f))*
+	glm::mat4 Model =	glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x,pTr->mPosition.y,0.0f))*
 						glm::rotate(glm::mat4(), glm::radians(pTr->mAngle), glm::vec3(0.0f, 0.0f, 1.0f))*
-						glm::scale(glm::mat4(), pTr->mScale);
+						glm::scale(glm::mat4(), glm::vec3(pTr->mScale.x,pTr->mScale.y,0.0f));
 	glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
 
 	glm::mat4 Persp = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT), 0.1f,100.0f);

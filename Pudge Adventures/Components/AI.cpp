@@ -10,8 +10,8 @@ extern FrameRateController* gpFRC;
 
 botAI::botAI() :	
 	Component(BOTAI),
-	changeDirectionInterval(0),
-	currentTime(0) { }
+	changeDirectionInterval(0.0f),
+	currentTime(0.0f) { }
 
 botAI::~botAI() { }
 
@@ -36,6 +36,19 @@ void botAI::Serialize(std::ifstream & inFile)
 {
 	inFile >> changeDirectionInterval;
 	inFile >> speed;
+}
+
+void botAI::Serialize(rapidjson::Document& objectFile)
+{
+	std::string componentValueName;
+	for (auto& ComponentValues : objectFile["AI"].GetObject())
+	{
+		componentValueName = ComponentValues.name.GetString();
+		if (componentValueName == "MoveInterval")
+			changeDirectionInterval = ComponentValues.value.GetFloat();
+		else if (componentValueName == "Speed")
+			speed = ComponentValues.value.GetFloat();
+	}
 }
 
 void botAI::HandleEvent(Event * pEvent)

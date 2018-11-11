@@ -30,5 +30,5 @@ private:
 	Uint32 mTickStart;
 	Uint32 mTickEnd;
 	Uint32 mNeededTicksPerFrame;
-	float mFrameTime;
+	Uint32 mFrameTime;
 };
