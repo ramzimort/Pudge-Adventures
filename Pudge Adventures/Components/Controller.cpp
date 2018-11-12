@@ -9,7 +9,7 @@
 #include "..\Events\Collide.h"
 #include "..\Events\PlayerHit.h"
 #include "..\Events\PlayerMove.h"
-#include "..\Events\RotateArm.h"
+#include "..\Events\InvokeHook.h"
 
 extern Input_Manager* gpInputManager;
 extern FrameRateController* gpFRC;
@@ -26,34 +26,35 @@ Controller::~Controller()
 void Controller::Init()
 {
 	gpEventManager->Subscribe(PLAYER_MOVE, this->mpOwner);
+	gpEventManager->Subscribe(INVOKE_HOOK, this->mpOwner);
 }
 
 void Controller::Update()
 {
 	if (mpOwner != nullptr  && gpInputManager != nullptr) 
 	{
-		PlayerMoveEvent PME;
+		PlayerMoveEvent PlayerMove;
 		if (gpInputManager->isPressed(SDL_SCANCODE_A)) 
 		{
-			PME.aType = MOVE_LEFT;
-			gpEventManager->BroadcaseEventToSubscribers(&PME);
+			PlayerMove.aType = MOVE_LEFT;
+			gpEventManager->BroadcaseEventToSubscribers(&PlayerMove);
 		}
 		if (gpInputManager->isPressed(SDL_SCANCODE_D))
 		{
-			PME.aType = MOVE_RIGHT;
-			gpEventManager->BroadcaseEventToSubscribers(&PME);
+			PlayerMove.aType = MOVE_RIGHT;
+			gpEventManager->BroadcaseEventToSubscribers(&PlayerMove);
 		}
 		if (gpInputManager->isTriggered(SDL_SCANCODE_SPACE)) 
 		{		
-			PME.aType = JUMP;
-			gpEventManager->BroadcaseEventToSubscribers(&PME);
+			PlayerMove.aType = JUMP;
+			gpEventManager->BroadcaseEventToSubscribers(&PlayerMove);
 		}
 		if (gpInputManager->isTriggered(SDL_SCANCODE_Q))
 		{
-			RotateArmEvent RAE;
-			RAE.pointerPos.x = (float)gpInputManager->PointerLocation()[0];
-			RAE.pointerPos.y = (float)gpInputManager->PointerLocation()[1];
-			gpEventManager->BroadcaseEventToSubscribers(&RAE);
+			InvokeHookEvent InvokeHook;
+			InvokeHook.pointerPos.x = (float)gpInputManager->PointerLocation()[0];
+			InvokeHook.pointerPos.y = (float)gpInputManager->PointerLocation()[1];
+			gpEventManager->BroadcaseEventToSubscribers(&InvokeHook);
 		}
 		if (gpInputManager->isTriggered(SDL_SCANCODE_E))
 		{

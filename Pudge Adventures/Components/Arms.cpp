@@ -25,8 +25,8 @@ void Arms::Serialize(rapidjson::Document& objectFile)
 
 void Arms::Init()
 { 
-	gpEventManager->Subscribe(ROTATE_ARM, mpArms[0]);
-	gpEventManager->Subscribe(ROTATE_ARM, mpArms[1]);
+	gpEventManager->Subscribe(ROTATE_ARM_TOWARD_POINTER, mpArms[0]);
+	gpEventManager->Subscribe(ROTATE_ARM_TOWARD_POINTER, mpArms[1]);
 }
 
 void Arms::Update()

@@ -1,7 +1,6 @@
 
 #include"Transform.h"
-#include "..\Events\RotateArm.h"
-#include <iostream>
+#include "..\Events\RotateArmTowardPointer.h"
 
 Transform::Transform() :	
 	Component(TRANSFORM), 
@@ -21,13 +20,15 @@ void Transform::Update() { }
 
 void Transform::HandleEvent(Event* pEvent)
 {
-	if (pEvent->mType == ROTATE_ARM)
+	if (pEvent->mType == ROTATE_ARM_TOWARD_POINTER)
 	{
-		mpOwner;
-		RotateArmEvent* RAE = static_cast<RotateArmEvent*>(pEvent);
-		glm::vec2 PudgeCentertoMousePointer = RAE->pointerPos - mPosition;
-		std::cout << PudgeCentertoMousePointer.x << ' ' << PudgeCentertoMousePointer.y << std::endl;
-		mAngle = glm::degrees(atan2(PudgeCentertoMousePointer.y, PudgeCentertoMousePointer.x));
+		RotateArmTowardPointerEvent* RATPe = static_cast<RotateArmTowardPointerEvent*>(pEvent);
+		
+		glm::vec2 relativeArmPos = mPosition - RATPe->cameraCenter + glm::vec2((float)RATPe->SCR_WIDTH/2.f,(float)RATPe->SCR_HEIGHT/2.f);
+		glm::vec2 PudgeCentertoMousePointer = RATPe->pointerPos
+			- relativeArmPos
+			- glm::vec2(mRotationCenter.x*mScale.x, mRotationCenter.y*mScale.y); //Remove rotation center offset
+		mAngle = 90.0f + glm::degrees(atan2(PudgeCentertoMousePointer.y, PudgeCentertoMousePointer.x));
 	}
 }
 

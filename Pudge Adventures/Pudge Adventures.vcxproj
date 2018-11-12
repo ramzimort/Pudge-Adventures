@@ -168,9 +168,10 @@
     <ClCompile Include="Events\CameraMove.cpp" />
     <ClCompile Include="Events\Collide.cpp" />
     <ClCompile Include="Events\Event.cpp" />
+    <ClCompile Include="Events\InvokeHook.cpp" />
     <ClCompile Include="Events\PlayerHit.cpp" />
     <ClCompile Include="Events\PlayerMove.cpp" />
-    <ClCompile Include="Events\RotateArm.cpp" />
+    <ClCompile Include="Events\RotateArmTowardPointer.cpp" />
     <ClCompile Include="Include\GLAD\glad.c" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
@@ -198,9 +199,10 @@
     <ClInclude Include="Events\CameraMove.h" />
     <ClInclude Include="Events\Collide.h" />
     <ClInclude Include="Events\Event.h" />
+    <ClInclude Include="Events\InvokeHook.h" />
     <ClInclude Include="Events\PlayerHit.h" />
     <ClInclude Include="Events\PlayerMove.h" />
-    <ClInclude Include="Events\RotateArm.h" />
+    <ClInclude Include="Events\RotateArmTowardPointer.h" />
     <ClInclude Include="Include\stb_image.h" />
   </ItemGroup>
   <ItemGroup>

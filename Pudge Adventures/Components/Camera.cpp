@@ -1,8 +1,12 @@
 #include "Camera.h"
 #include "Body.h"
 #include "..\Component_Managers\GraphicsManager.h"
+#include "..\Component_Managers\EventManager.h"
+#include "..\Events\InvokeHook.h"
+#include "..\Events\RotateArmTowardPointer.h"
 
 extern GraphicsManager* gpGfxManager;
+extern EventManager* gpEventManager;
 
 Camera::Camera():	Component(CAMERA),
 					mCameraCenter(0.0f),
@@ -33,7 +37,17 @@ void Camera::Update()
 
 void Camera::HandleEvent(Event* pEvent)
 {
-
+	if (pEvent->mType == INVOKE_HOOK)
+	{
+		InvokeHookEvent* invokeHook = static_cast<InvokeHookEvent*>(pEvent);
+		
+		RotateArmTowardPointerEvent RATPe;
+		RATPe.pointerPos = invokeHook->pointerPos;
+		RATPe.cameraCenter = mCameraCenter;
+		RATPe.SCR_WIDTH = gpGfxManager->getWindowWidth();
+		RATPe.SCR_HEIGHT = gpGfxManager->getWindowHeight();
+		gpEventManager->BroadcaseEventToSubscribers(&RATPe);
+	}
 }
 
 void Camera::Serialize(rapidjson::Document& objectFile)
