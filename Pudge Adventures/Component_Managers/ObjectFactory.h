@@ -11,5 +11,4 @@ class ObjectFactory {
 
 		void LoadLevel(std::string& pFileName);
 		GameObject* LoadObject(std::string& pFileName);
-		
 };

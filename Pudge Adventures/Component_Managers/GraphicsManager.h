@@ -26,6 +26,9 @@ public:
 	bool isError();
 	std::string getError();
 
+	int getWindowWidth() { return SCR_WIDTH; }
+	int getWindowHeight() { return SCR_HEIGHT; }
+
 private:
 	void AllocateConsole();
 	void InitSDLWindow();
@@ -43,6 +46,8 @@ private:
 	
 	int SCR_WIDTH =	 800 ;
 	int SCR_HEIGHT =  600 ;
+
+	glm::vec3 camPosition = { 0.0f , -(float)SCR_HEIGHT / 2.0f, 1.0f };
 
 	bool errorFlag =  false;
 	std::string errorString = "" ;

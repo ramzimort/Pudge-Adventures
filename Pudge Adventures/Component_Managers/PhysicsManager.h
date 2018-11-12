@@ -9,5 +9,6 @@ class PhysicsManager
 		PhysicsManager();
 		~PhysicsManager();
 
+		void Init();
 		void Update(float FrameTime);
 };

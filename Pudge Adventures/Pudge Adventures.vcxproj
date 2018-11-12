@@ -151,6 +151,7 @@
     <ClCompile Include="Components\Component.cpp" />
     <ClCompile Include="Components\Controller.cpp" />
     <ClCompile Include="Components\GameObject.cpp" />
+    <ClCompile Include="Components\Arms.cpp" />
     <ClCompile Include="Components\Shader.cpp" />
     <ClCompile Include="Components\Sprite.cpp" />
     <ClCompile Include="Components\TextureObject.cpp" />
@@ -164,10 +165,12 @@
     <ClCompile Include="Component_Managers\ObjectFactory.cpp" />
     <ClCompile Include="Component_Managers\PhysicsManager.cpp" />
     <ClCompile Include="Component_Managers\Resource Manager.cpp" />
+    <ClCompile Include="Events\CameraMove.cpp" />
     <ClCompile Include="Events\Collide.cpp" />
     <ClCompile Include="Events\Event.cpp" />
     <ClCompile Include="Events\PlayerHit.cpp" />
-    <ClCompile Include="Events\PlayerInput.cpp" />
+    <ClCompile Include="Events\PlayerMove.cpp" />
+    <ClCompile Include="Events\RotateArm.cpp" />
     <ClCompile Include="Include\GLAD\glad.c" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
@@ -178,6 +181,7 @@
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\Controller.h" />
     <ClInclude Include="Components\GameObject.h" />
+    <ClInclude Include="Components\Arms.h" />
     <ClInclude Include="Components\Shader.h" />
     <ClInclude Include="Components\Sprite.h" />
     <ClInclude Include="Components\TextureObject.h" />
@@ -191,10 +195,12 @@
     <ClInclude Include="Component_Managers\ObjectFactory.h" />
     <ClInclude Include="Component_Managers\PhysicsManager.h" />
     <ClInclude Include="Component_Managers\Resource Manager.h" />
+    <ClInclude Include="Events\CameraMove.h" />
     <ClInclude Include="Events\Collide.h" />
     <ClInclude Include="Events\Event.h" />
     <ClInclude Include="Events\PlayerHit.h" />
-    <ClInclude Include="Events\PlayerInput.h" />
+    <ClInclude Include="Events\PlayerMove.h" />
+    <ClInclude Include="Events\RotateArm.h" />
     <ClInclude Include="Include\stb_image.h" />
   </ItemGroup>
   <ItemGroup>

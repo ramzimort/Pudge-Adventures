@@ -3,8 +3,7 @@
 #include "GameObject.h"
 #include "..\Component_Managers\CollisionManager.h"
 #include <string>
-#include "..\Events\PlayerInput.h"
-#include <iostream>
+#include "..\Events\PlayerMove.h"
 
 Shape::Shape(ShapeType Type)
 {
@@ -67,13 +66,7 @@ Body::~Body()
 
 void Body::Init()
 {
-	Transform* pTr = static_cast<Transform*> (mpOwner->GetComponent(TRANSFORM));
-	if (pTr != nullptr)
-	{
-		mPos.x = pTr->mPosition.x;
-		mPos.y = pTr->mPosition.y;
-		mPrevPos = mPos;
-	}
+
 }
 
 void Body::Update()
@@ -158,23 +151,26 @@ void Body::Serialize(rapidjson::Document& objectFile)
 
 void Body::Integrate(float Gravity, float dt)
 {
-	// Save current position
-	mPrevPos = mPos;
+	if (mMass != 0.0f)
+	{
+		// Save current position
+		mPrevPos = mPos;
 
-	// Compute Acceleration
-	mForce.y += mMass * Gravity;
-	mAcc.x = mForce.x * mInvMass;
-	mAcc.y = mForce.y * mInvMass;
-	// Intergrate the velocity
-	mVel.x += mAcc.x * dt;
-	mVel.y += mAcc.y * dt;
+		// Compute Acceleration
+		mForce.y += mMass * Gravity;
+		mAcc.x = mForce.x * mInvMass;
+		mAcc.y = mForce.y * mInvMass;
+		// Intergrate the velocity
+		mVel.x += mAcc.x * dt;
+		mVel.y += mAcc.y * dt;
 
-	// Integrate the position
-	mPos.x += mVel.x * dt;
-	mPos.y += mVel.y * dt;
+		// Integrate the position
+		mPos.x += mVel.x * dt;
+		mPos.y += mVel.y * dt;
 
-	// Zero all applied forces
-	mForce = { 0.0f,0.0f };
+		// Zero all applied forces
+		mForce = { 0.0f,0.0f };
+	}
 
 	Transform* pTr = static_cast<Transform*> (mpOwner->GetComponent(TRANSFORM));
 	pTr->mPosition = mPos;
@@ -182,10 +178,10 @@ void Body::Integrate(float Gravity, float dt)
 
 void Body::HandleEvent(Event * pEvent)
 {
-	if (pEvent->mType == PLAYER_INPUT)
+	if (pEvent->mType == PLAYER_MOVE)
 	{
-		PlayerInputEvent* PIE = static_cast<PlayerInputEvent*>(pEvent);
-		switch (PIE->aType)
+		PlayerMoveEvent* PME = static_cast<PlayerMoveEvent*>(pEvent);
+		switch (PME->aType)
 		{
 		case MOVE_LEFT:
 			mForce.x -= 1000.f;
@@ -195,12 +191,6 @@ void Body::HandleEvent(Event * pEvent)
 			break;
 		case JUMP:
 			mForce.y += 10000.0f;
-			break;
-		case HOOK:
-			std::cout << PIE->mousePos[0] << " " << PIE->mousePos[1] << std::endl;
-			break;
-		case CLEAVE:
-			// Add Cleave Code Here
 			break;
 		}
 	}

@@ -9,6 +9,7 @@
 #include "..\Components\Sprite.h"
 #include "..\Components\Transform.h"
 #include "..\Components\Body.h"
+#include "..\Components\Camera.h"
 #include "..\Components\TextureObject.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/constants.hpp>
@@ -61,12 +62,9 @@ void GraphicsManager::Update()
 		debugModeFlag = !debugModeFlag;
 
 	// Update all game objects
-	for (auto go : gpGameObjectManager->mGameObjects) {
-		if (go->GetComponent(SPRITE) != nullptr && go->GetComponent(TRANSFORM) != nullptr)
-		{
-			Draw(go);
-		}
-	}
+	for (auto go : gpGameObjectManager->mGameObjects)
+		Draw(go);
+	
 	refreshWindow();
 }
 
@@ -95,12 +93,16 @@ void GraphicsManager::Draw(GameObject* go)
 
 		/* TRANSFORM START */
 		glm::mat4 Model = glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y, 0.0f))*
+			glm::scale(glm::mat4(), glm::vec3(pTr->mScale.x, pTr->mScale.y, 0.0f))*
+			glm::translate(glm::mat4(), glm::vec3(pTr->mRotationCenter.x, pTr->mRotationCenter.y, 0.0f))*
 			glm::rotate(glm::mat4(), glm::radians(pTr->mAngle), glm::vec3(0.0f, 0.0f, 1.0f))*
-			glm::scale(glm::mat4(), glm::vec3(pTr->mScale.x, pTr->mScale.y, 0.0f));
+			glm::translate(glm::mat4(), glm::vec3(-1.f*pTr->mRotationCenter.x, -1.f*pTr->mRotationCenter.y, 0.0f));
 
 		glm::mat4 Persp = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT), 0.1f, 100.0f);
 
-		glm::vec3 camPosition = glm::vec3(0.0f, -(float)SCR_HEIGHT / 2.0f, 1.0f);
+		Camera* pCamera = static_cast<Camera*>(go->GetComponent(CAMERA));
+		if (pCamera != nullptr)
+			camPosition = glm::vec3(pCamera->mCameraCenter.x - SCR_WIDTH / 2.0f, pCamera->mCameraCenter.y - SCR_HEIGHT / 2.0f, 1.0f);
 		glm::mat4 View = glm::lookAt(camPosition, camPosition + glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
 		glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
@@ -121,9 +123,7 @@ void GraphicsManager::Draw(GameObject* go)
 				if (pBody->mpShape->mType == AABB)
 				{
 					ShapeAABB* pShape = static_cast<ShapeAABB*>(pBody->mpShape);
-					glm::mat4 Model = glm::translate(glm::mat4(), glm::vec3(pBody->mPos.x, pBody->mPos.y, 0.0f))*
-						glm::rotate(glm::mat4(), glm::radians(pTr->mAngle), glm::vec3(0.0f, 0.0f, 1.0f))*
-						glm::scale(glm::mat4(), glm::vec3(pShape->mWidth, pShape->mHeight, 0.0f));
+					Model = Model*glm::scale(glm::mat4(), glm::vec3(pShape->mWidth, pShape->mHeight, 0.0f));
 					glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
 					glBindVertexArray(VAO[1]);
 					glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
@@ -131,9 +131,7 @@ void GraphicsManager::Draw(GameObject* go)
 				else if (pBody->mpShape->mType == CIRCLE)
 				{
 					ShapeCircle* pShape = static_cast<ShapeCircle*>(pBody->mpShape);
-					glm::mat4 Model = glm::translate(glm::mat4(), glm::vec3(pBody->mPos.x, pBody->mPos.y, 0.0f))*
-						glm::rotate(glm::mat4(), glm::radians(pTr->mAngle), glm::vec3(0.0f, 0.0f, 1.0f))*
-						glm::scale(glm::mat4(), glm::vec3(2*pShape->mRadius, 2*pShape->mRadius, 0.0f));
+					Model = Model * glm::scale(glm::mat4(), glm::vec3(2 * pShape->mRadius, 2 * pShape->mRadius, 0.0f));
 					glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
 					glBindVertexArray(VAO[2]);
 					glDrawElements(GL_LINES, 40, GL_UNSIGNED_INT, 0);
@@ -188,7 +186,7 @@ void GraphicsManager::InitSDLWindow()
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
-	pWindow = SDL_CreateWindow("SDL2 window",					// window title
+	pWindow = SDL_CreateWindow("Pudge Adventures",					// window title
 		SDL_WINDOWPOS_UNDEFINED,								// initial x position
 		SDL_WINDOWPOS_UNDEFINED,								// initial y position
 		SCR_WIDTH,													// width, in pixels
@@ -244,7 +242,7 @@ void GraphicsManager::CreateQuadBuffer()
 	const int numVertices = 20;
 	float circleVertices[2* numVertices];
 	unsigned int circleIndices[2 * numVertices];
-	float toRad = (float)2*M_PI / numVertices;
+	float toRad = (float) glm::radians(2.0 / numVertices);
 	for (int i = 0; i < numVertices; i++)
 	{
 		circleVertices[2 * i] =		0.5f*cosf(i*toRad);

@@ -4,8 +4,8 @@
 #include "Controller.h"
 #include "Body.h"
 #include "AI.h"
-
-
+#include "Arms.h"
+#include "Camera.h"
 
 GameObject::GameObject()
 {
@@ -30,7 +30,7 @@ void GameObject::Update() {
 }
 
 Component* GameObject::AddComponent(unsigned int Type) {
-	Component* pNewComponent;
+	Component* pNewComponent = nullptr;
 	switch (Type) {
 	case TRANSFORM:
 		pNewComponent = new Transform();
@@ -48,6 +48,12 @@ Component* GameObject::AddComponent(unsigned int Type) {
 		break;
 	case BODY:
 		pNewComponent = new Body();
+		break;
+	case ARMS:
+		pNewComponent = new Arms();
+		break;
+	case CAMERA:
+		pNewComponent = new Camera();
 		break;
 	}
 

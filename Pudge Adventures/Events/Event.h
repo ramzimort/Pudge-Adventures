@@ -3,7 +3,9 @@
 enum EventType
 {
 	COLLIDE,
-	PLAYER_INPUT,
+	CAMERA_MOVE,
+	PLAYER_MOVE,
+	ROTATE_ARM,
 	PLAYER_HIT,
 	NUM
 };

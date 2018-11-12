@@ -12,7 +12,7 @@ public:
 	// the program ID
 	int Program;
 	// constructor reads and builds the shader
-	Shader(const char* vertexPath, const char* fragmentPath);
+	Shader(const char* vertexShaderName, const char* fragmentShaderName);
 	~Shader();
 	// use/activate the shader
 	void use();
@@ -21,5 +21,5 @@ public:
 	void setInt(const std::string &name, int value) const;
 	void setFloat(const std::string &name, float value) const;
 private:
-	std::string loadFile(const char *fname);
+	std::string loadFile(std::string& fileName);
 };

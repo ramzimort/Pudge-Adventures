@@ -17,6 +17,20 @@ PhysicsManager::~PhysicsManager()
 {
 }
 
+void PhysicsManager::Init()
+{
+	for (auto go : gpGameObjectManager->mGameObjects)
+	{
+		Transform* pTr = static_cast<Transform*> (go->GetComponent(TRANSFORM));
+		Body* pBody = static_cast<Body*>(go->GetComponent(BODY));
+		if (pBody != nullptr && pTr != nullptr)
+			pBody->mPos.x = pTr->mPosition.x;
+			pBody->mPos.y = pTr->mPosition.y;
+			pBody->mPrevPos = pBody->mPos;
+	}
+
+}
+
 void PhysicsManager::Update(float FrameTime)
 {
 	// Integrate all body components
@@ -24,7 +38,7 @@ void PhysicsManager::Update(float FrameTime)
 	{
 		Body* pBody = static_cast<Body*>(go->GetComponent(BODY));
 		if (pBody != nullptr)
-			pBody->Integrate(-9.8, FrameTime);
+			pBody->Integrate(0.0f, FrameTime);
 	}
 
 	// Reset previous contacts

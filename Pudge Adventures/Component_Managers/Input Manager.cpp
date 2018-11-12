@@ -15,6 +15,9 @@ Creation date: 10/18/2018
 #include "Input Manager.h"
 #include <SDL2\SDL_keyboard.h>
 #include <iostream>
+#include "GraphicsManager.h"
+
+extern GraphicsManager* gpGfxManager;
 
 
 Input_Manager::Input_Manager() {
@@ -41,6 +44,7 @@ void Input_Manager::Update()
 	SDL_memcpy(mPreviousState, mCurrentState, 512*sizeof(Uint8));
 	SDL_memcpy(mCurrentState, pCurrentKeyStates, numberOffFetchedKeys * sizeof(Uint8));
 	SDL_GetMouseState(mousePosition, mousePosition+1);
+	mousePosition[1] = -1 * mousePosition[1] + gpGfxManager->getWindowHeight();
 }
 
 

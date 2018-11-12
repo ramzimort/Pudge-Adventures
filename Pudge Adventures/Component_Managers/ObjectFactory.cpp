@@ -22,10 +22,11 @@ ObjectFactory::~ObjectFactory()
 void ObjectFactory::LoadLevel(std::string& pFileName) {
 
 	std::ifstream inFile;
-	inFile.open(pFileName);
+	std::string pFilePath = "Resources\\" + pFileName + ".json";
+	inFile.open(pFilePath);
 	if (!inFile.is_open())
 	{
-		std::cout << "Could not open file" << pFileName << std::endl;
+		std::cout << "Could not open file" << pFilePath << std::endl;
 		return;
 	}
 	rapidjson::IStreamWrapper isw{ inFile };
@@ -36,26 +37,27 @@ void ObjectFactory::LoadLevel(std::string& pFileName) {
 	for (auto& ObjectName : levelFile.GetObject())
 	{
 		objectFileName = ObjectName.name.GetString();
-		objectFileName = "Resources\\" + objectFileName + ".json";
+
 		GameObject* pGameObject = LoadObject(objectFileName);
 		// Add code for modifying instance positions
 
-
+		////////////////////////////////////////
 		if (pGameObject == nullptr)
 		{
 			std::cout << "Could not load object: " << objectFileName << std::endl;
 			continue;
 		}
-		gpGameObjectManager->mGameObjects.insert(pGameObject);
+		
 	}
 }
 
 GameObject* ObjectFactory::LoadObject(std::string& pFileName) {
 	std::ifstream inFile;
-	inFile.open(pFileName);
+	std::string pFilePath = "Resources\\" + pFileName + ".json";
+	inFile.open(pFilePath);
 	GameObject* pNewGameObject = nullptr;
 	if (!inFile.is_open()) {
-		std::cout << "Could not open file" << pFileName << std::endl;
+		std::cout << "Could not open file" << pFilePath << std::endl;
 		return pNewGameObject;
 	}
 
@@ -96,7 +98,18 @@ GameObject* ObjectFactory::LoadObject(std::string& pFileName) {
 			pNewComponent = pNewGameObject->AddComponent(BODY);
 			pNewComponent->Serialize(objectFile);
 		}
+		else if ("Arms" == componentName)
+		{
+			pNewComponent = pNewGameObject->AddComponent(ARMS);
+			pNewComponent->Serialize(objectFile);
+		}
+		else if ("Camera" == componentName)
+		{
+			pNewComponent = pNewGameObject->AddComponent(CAMERA);
+			pNewComponent->Serialize(objectFile);
+		}
 	}
+	gpGameObjectManager->mGameObjects.insert(pNewGameObject);
 	inFile.close();
 	return pNewGameObject;
 

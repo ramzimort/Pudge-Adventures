@@ -1,21 +1,19 @@
 #pragma once
 
 #include "Event.h"
+#include <glm/glm.hpp>
 
 enum actionType {
 	MOVE_LEFT,
 	MOVE_RIGHT,
 	JUMP,
-	HOOK,
-	CLEAVE
 };
 
-class PlayerInputEvent : public Event 
+class PlayerMoveEvent : public Event 
 {
 	public:
-		PlayerInputEvent();
-		~PlayerInputEvent() { }
+		PlayerMoveEvent();
+		~PlayerMoveEvent() { }
 	public:
 		actionType aType;
-		int* mousePos;
 };

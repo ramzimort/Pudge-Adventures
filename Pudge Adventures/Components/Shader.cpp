@@ -1,11 +1,15 @@
 #include "Shader.h"
 
 
-Shader::Shader(const char* vertexPath, const char* fragmentPath)
+Shader::Shader(const char* vertexShaderName, const char* fragmentShaderName)
 {
 	// 1. retrieve the vertex/fragment source code from filePath
-	std::string vertexCode = loadFile(vertexPath);
-	std::string fragmentCode = loadFile(fragmentPath);
+	std::string vertShaderPath = vertexShaderName; vertShaderPath = "Shaders\\" + vertShaderPath;
+	std::string fragShaderPath = fragmentShaderName; fragShaderPath = "Shaders\\" + fragShaderPath;
+	
+	std::string vertexCode = loadFile(vertShaderPath);
+	std::string fragmentCode = loadFile(fragShaderPath);
+	
 	const char* vShaderCode = vertexCode.c_str();
 	const char* fShaderCode = fragmentCode.c_str();
 
@@ -71,10 +75,10 @@ void Shader::setFloat(const std::string &name, float value) const
 	glUniform1f(glGetUniformLocation(Program, name.c_str()), value);
 }
 
-std::string Shader::loadFile(const char* fname) {
+std::string Shader::loadFile(std::string& filePath) {
 	std::string out;
 	std::string	line;
-	std::ifstream in(fname);
+	std::ifstream in(filePath.c_str());
 	getline(in, line);
 	while (in) {
 		out += line + "\n";

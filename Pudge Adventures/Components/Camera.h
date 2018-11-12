@@ -10,7 +10,14 @@ class Camera : public Component
 		Camera();
 		~Camera();
 
+		void Init();
+		void Update();
+		void HandleEvent(Event* pEvent);
+		void Serialize(rapidjson::Document& objectFile);
 
 	public:
-		glm::vec2 mPos;
+		glm::vec2 mCameraCenter;
+		float rightBound;
+		float upperBound;
+
 };
