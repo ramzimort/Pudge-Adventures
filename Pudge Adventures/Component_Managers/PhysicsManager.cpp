@@ -59,7 +59,9 @@ void PhysicsManager::Update(float FrameTime)
 	// Add own physics functions here
 	for (auto mContact : gpCollisionManager->mContacts)
 	{
-		CollideEvent ce;
+		//std::cout << "Collision!" << std::endl;
+		//if(mContact->mBodies[0]->mpOwner->HasComponent(OBSTACLE) && mContact->mBodies[1]->mpOwner->HasComponent(INTERACTIVE))
+		//CollideEvent ce;
 		//mContact->mBodies[0]->mpOwner->HandleEvent(&ce);
 		//mContact->mBodies[1]->mpOwner->HandleEvent(&ce);
 	}

@@ -3,13 +3,15 @@
     "Z": 0.9,
     "xRotationCenter": 0.077,
     "yRotationCenter": 0.27,
-    "Angle": 40.0,
+    "Angle": 0.0,
     "xScale": 200.0,
     "yScale": 200.0
   },
   "Sprite": "hook_hand.png",
   "Body": {
-    "Shape": "AABB"
+    "Shape": "AABB",
+    "Height": 0.3,
+    "Width": 0.6
   }
 }
 

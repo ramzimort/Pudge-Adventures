@@ -4,38 +4,35 @@
 #include "..\Events\PlayerMove.h"
 #include "..\Events\UpdatePosition.h"
 #include "..\Events\InitializeBody.h"
+#include "..\Events\UpdateBody.h"
+#include "..\Events\ScaleBody.h"
 #include <string>
+#include <iostream>
 
 Shape::Shape(ShapeType Type)
 {
 	mType = Type;
 	mpOwnerBody = nullptr;
 }
-
 ShapeCircle::ShapeCircle() : Shape(CIRCLE)
 {
 	mRadius = 0.0f;
 }
-
 ShapeCircle::~ShapeCircle()
 { }
-
 bool ShapeCircle::testPoint(glm::vec2& Point)
 {
 	return ((mpOwnerBody->mPos.x - Point.x)*(mpOwnerBody->mPos.x - Point.x) +
 		(mpOwnerBody->mPos.y - Point.y)*(mpOwnerBody->mPos.y - Point.y)
 		< mRadius*mRadius);
 }
-
 ShapeAABB::ShapeAABB() : Shape(AABB)
 {
 	mWidth = mHeight = 0.0f;
 }
-
 ShapeAABB::~ShapeAABB()
 {
 }
-
 bool ShapeAABB::testPoint(glm::vec2& Point)
 {
 	if (Point.x < (mpOwnerBody->mPos.x - mWidth / 2))
@@ -62,6 +59,8 @@ Body::Body() : Component(BODY),
 
 Body::~Body()
 {
+	if (mpShape != nullptr)
+		delete mpShape;
 }
 
 void Body::Init()
@@ -171,6 +170,9 @@ void Body::Integrate(float Gravity, float dt)
 		// Zero all applied forces
 		mForce = { 0.0f,0.0f };
 	}
+	UpdateBodyEvent UpdateBodyPosition;
+	UpdateBodyPosition.newPosition = mPos;
+	mpOwner->HandleEvent(&UpdateBodyPosition);
 
 	UpdatePositionEvent UpdatePosition;
 	UpdatePosition.newPosition = mPos;
@@ -199,6 +201,23 @@ void Body::HandleEvent(Event * pEvent)
 		case INITIALIZE_BODY:
 			mPos = static_cast<InitializeBodyEvent*>(pEvent)->InitialPosition;
 			break;
+		case UPDATE_BODY:
+			mPos = static_cast<UpdateBodyEvent*>(pEvent)->newPosition;
+			break;
+		case SCALE_BODY:
+			switch (mpShape->mType)
+			{
+			case CIRCLE:
+				static_cast<ShapeCircle*>(mpShape)->mRadius *= static_cast<ScaleBodyEvent*>(pEvent)->mScale.x;
+				break;
+			case AABB:
+				static_cast<ShapeAABB*>(mpShape)->mWidth *= static_cast<ScaleBodyEvent*>(pEvent)->mScale.x;
+				static_cast<ShapeAABB*>(mpShape)->mHeight *= static_cast<ScaleBodyEvent*>(pEvent)->mScale.y;
+				break;
+			}
+			break;
+		
+
 	}
 
 }

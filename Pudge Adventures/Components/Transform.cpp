@@ -4,6 +4,7 @@
 #include "..\Events\InitializeBody.h"
 #include "..\Events\RotateArmTowardPointer.h"
 #include "..\Events\UpdatePosition.h"
+#include "..\Events\ScaleBody.h"
 
 Transform::Transform() :	
 	Component(TRANSFORM), 
@@ -20,6 +21,10 @@ void Transform::Init()
 	InitializeBodyEvent InitializeBody;
 	InitializeBody.InitialPosition = mPosition;
 	mpOwner->HandleEvent(&InitializeBody);
+
+	ScaleBodyEvent ScaleBody;
+	ScaleBody.mScale = mScale;
+	mpOwner->HandleEvent(&ScaleBody);
 }
 
 void Transform::Update() { }
@@ -28,10 +33,10 @@ void Transform::HandleEvent(Event* pEvent)
 {
 	switch(pEvent->mType)
 	{
-	case(UPDATE_POSITION):
+	case UPDATE_POSITION:
 		mPosition = static_cast<UpdatePositionEvent*>(pEvent)->newPosition;
 		break;
-	case(ROTATE_ARM_TOWARD_POINTER):
+	case ROTATE_ARM_TOWARD_POINTER:
 		RotateArmTowardPointerEvent* RATPe = static_cast<RotateArmTowardPointerEvent*>(pEvent);
 		glm::vec2 relativeArmPos = 
 			mPosition 

@@ -4,6 +4,7 @@
 #include "..\Component_Managers\EventManager.h"
 #include "GameObject.h"
 #include "..\Events\Event.h"
+#include "..\Events\UpdatePosition.h"
 #include <iostream>
 
 extern ObjectFactory* gpObjectFactory;
@@ -17,10 +18,10 @@ Arms::~Arms()
 
 void Arms::Serialize(rapidjson::Document& objectFile)
 {
-	std::string leftLimbFile = objectFile["Arms"]["LeftArm"].GetString();
-	mpArms[0] = gpObjectFactory->LoadObject(leftLimbFile);
-	std::string rightLimbFile = objectFile["Arms"]["RightArm"].GetString();
-	mpArms[1] = gpObjectFactory->LoadObject(rightLimbFile);
+	std::string leftArmFile = objectFile["Arms"]["LeftArm"].GetString();
+	mpArms[0] = gpObjectFactory->LoadObject(leftArmFile);
+	std::string rightArmFile = objectFile["Arms"]["RightArm"].GetString();
+	mpArms[1] = gpObjectFactory->LoadObject(rightArmFile);
 }
 
 void Arms::Init()
@@ -31,15 +32,16 @@ void Arms::Init()
 
 void Arms::Update()
 {
-	Body* pMainBodyTr = static_cast<Body*>(mpOwner->GetComponent(BODY));
-	Body* pLeftArmTr = static_cast<Body*>(mpArms[0]->GetComponent(BODY));
-	Body* pRightArmTr = static_cast<Body*>(mpArms[1]->GetComponent(BODY));
-	
-	pRightArmTr->mPos = pMainBodyTr->mPos;
-	pLeftArmTr->mPos = pMainBodyTr->mPos;
+
 }
 
 void Arms::HandleEvent(Event* pEvent)
 {
-
+	switch (pEvent->mType)
+	{
+	case UPDATE_BODY:
+		mpArms[0]->HandleEvent(pEvent);
+		mpArms[1]->HandleEvent(pEvent);
+		break;
+	}
 }

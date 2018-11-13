@@ -168,7 +168,8 @@ void GraphicsManager::Draw(GameObject* go)
 		/* TEXTURE END */
 
 		/* TRANSFORM START */
-		glm::mat4 Model = glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y, 0.0f))*
+		glm::mat4 Model = 
+			glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y, 0.0f))*
 			glm::scale(glm::mat4(), glm::vec3(pTr->mScale.x, pTr->mScale.y, 0.0f))*
 			glm::translate(glm::mat4(), glm::vec3(pTr->mRotationCenter.x, pTr->mRotationCenter.y, 0.0f))*
 			glm::rotate(glm::mat4(), glm::radians(pTr->mAngle), glm::vec3(0.0f, 0.0f, 1.0f))*
@@ -200,7 +201,12 @@ void GraphicsManager::Draw(GameObject* go)
 				if (pBody->mpShape->mType == AABB)
 				{
 					ShapeAABB* pShape = static_cast<ShapeAABB*>(pBody->mpShape);
-					Model = Model*glm::scale(glm::mat4(), glm::vec3(pShape->mWidth, pShape->mHeight, 0.0f));
+					Model = 
+						glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y, 0.0f))*
+						glm::scale(glm::mat4(), glm::vec3(pShape->mWidth, pShape->mHeight, 0.0f))*
+						glm::translate(glm::mat4(), glm::vec3(pTr->mRotationCenter.x, pTr->mRotationCenter.y, 0.0f))*
+						glm::rotate(glm::mat4(), glm::radians(pTr->mAngle), glm::vec3(0.0f, 0.0f, 1.0f))*
+						glm::translate(glm::mat4(), glm::vec3(-1.f*pTr->mRotationCenter.x, -1.f*pTr->mRotationCenter.y, 0.0f));
 					glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
 					glBindVertexArray(VAO[1]);
 					glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);
@@ -208,7 +214,9 @@ void GraphicsManager::Draw(GameObject* go)
 				else if (pBody->mpShape->mType == CIRCLE)
 				{
 					ShapeCircle* pShape = static_cast<ShapeCircle*>(pBody->mpShape);
-					Model = Model * glm::scale(glm::mat4(), glm::vec3(2 * pShape->mRadius, 2 * pShape->mRadius, 0.0f));
+					Model =
+						glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y, 0.0f))*
+						glm::scale(glm::mat4(), glm::vec3(2 * pShape->mRadius, 2 * pShape->mRadius, 0.0f));
 					glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
 					glBindVertexArray(VAO[2]);
 					glDrawElements(GL_LINES, 40, GL_UNSIGNED_INT, 0);

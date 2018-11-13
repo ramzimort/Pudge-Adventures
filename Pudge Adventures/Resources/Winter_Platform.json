@@ -7,7 +7,7 @@
     "xScale": 100.0,
     "yScale": 100.0
   },
-  "Sprite": "Dark_Cloud.png",
+  "Sprite": "Ground.png",
   "Body": {
     "Mass": 0.0,
     "Shape": "AABB",

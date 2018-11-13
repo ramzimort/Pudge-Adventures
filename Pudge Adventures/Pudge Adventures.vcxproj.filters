@@ -131,6 +131,12 @@
     <ClCompile Include="Events\InitializeBody.cpp">
       <Filter>Events\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Events\UpdateBody.cpp">
+      <Filter>Events\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\ScaleBody.cpp">
+      <Filter>Events\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\Component.h">
@@ -215,6 +221,12 @@
       <Filter>Events\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Events\InitializeBody.h">
+      <Filter>Events\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\ScaleBody.h">
+      <Filter>Events\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\UpdateBody.h">
       <Filter>Events\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

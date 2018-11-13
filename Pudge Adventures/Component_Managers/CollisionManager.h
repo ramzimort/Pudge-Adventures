@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+
 #include <glm/glm.hpp>
 
 class Body;
@@ -28,12 +29,12 @@ class CollisionManager
 		void Reset();
 		bool checkCollisionandGenerateContact(	Shape* pShape1,
 												Shape* pShape2,
-												std::list<Contact*> &Contacts);
+			std::list<std::pair<Contact*, glm::vec2>> &Contacts);
 
 	public:
-		std::list<Contact*> mContacts;
+		std::list<std::pair<Contact*, glm::vec2>> mContacts;
 
 		bool(*CollisionFunctions[2][2])(Shape* pShape1,
 										Shape* pShape2,
-										std::list<Contact*> &Contacts);
+			std::list<std::pair<Contact*, glm::vec2>> &Contacts);
 };
