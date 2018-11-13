@@ -1,10 +1,10 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "Sprite.h"
+#include "..\Component_Managers\Resource Manager.h"
 #include <GLAD/glad.h>
 #include <iostream>
 #include <stb_image.h>
-#include "..\Component_Managers\Resource Manager.h"
 
 extern ResourceManager* gpResourceManager;
 

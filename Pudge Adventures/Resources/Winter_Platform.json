@@ -1,17 +1,17 @@
 {
   "Transform": {
     "X": 200.0,
-    "Y": 0.0,
+    "Y": -200.0,
     "Z": 2.0,
     "Angle": 0.0,
-    "xScale": 200.0,
-    "yScale": 200.0
+    "xScale": 100.0,
+    "yScale": 100.0
   },
-  "Sprite": "Ground.png",
+  "Sprite": "Dark_Cloud.png",
   "Body": {
     "Mass": 0.0,
     "Shape": "AABB",
-    "Width": 0.5,
-    "Height": 0.5
+    "Width": 1,
+    "Height": 1
   }
 }

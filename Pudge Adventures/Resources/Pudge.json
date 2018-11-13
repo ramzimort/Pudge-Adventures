@@ -13,12 +13,13 @@
   "Controller": true,
   "Body": {
     "Mass": 10.0,
-    "Shape": "Circle",
-    "Radius": 0.5
+    "Shape": "AABB",
+    "Width": 0.6,
+    "Height": 1.0
   },
   "Arms": {
     "LeftArm": "Left_Hand",
-    "RightArm": "Left_Hand"
+    "RightArm": "Right_Hand"
   },
   "Camera": {
 

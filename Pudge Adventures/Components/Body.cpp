@@ -1,9 +1,10 @@
 #include "Body.h"
-#include "Transform.h"
 #include "GameObject.h"
 #include "..\Component_Managers\CollisionManager.h"
-#include <string>
 #include "..\Events\PlayerMove.h"
+#include "..\Events\UpdatePosition.h"
+#include "..\Events\InitializeBody.h"
+#include <string>
 
 Shape::Shape(ShapeType Type)
 {
@@ -17,8 +18,7 @@ ShapeCircle::ShapeCircle() : Shape(CIRCLE)
 }
 
 ShapeCircle::~ShapeCircle()
-{
-}
+{ }
 
 bool ShapeCircle::testPoint(glm::vec2& Point)
 {
@@ -172,26 +172,33 @@ void Body::Integrate(float Gravity, float dt)
 		mForce = { 0.0f,0.0f };
 	}
 
-	Transform* pTr = static_cast<Transform*> (mpOwner->GetComponent(TRANSFORM));
-	pTr->mPosition = mPos;
+	UpdatePositionEvent UpdatePosition;
+	UpdatePosition.newPosition = mPos;
+	mpOwner->HandleEvent(&UpdatePosition);
+
 }
 
 void Body::HandleEvent(Event * pEvent)
 {
-	if (pEvent->mType == PLAYER_MOVE)
+	switch (pEvent->mType)
 	{
-		PlayerMoveEvent* PME = static_cast<PlayerMoveEvent*>(pEvent);
-		switch (PME->aType)
-		{
-		case MOVE_LEFT:
-			mForce.x -= 1000.f;
+		case PLAYER_MOVE:
+			switch (static_cast<PlayerMoveEvent*>(pEvent)->aType)
+			{
+			case MOVE_LEFT:
+				mForce.x -= 5000.f;
+				break;
+			case MOVE_RIGHT:
+				mForce.x += 5000.0f;
+				break;
+			case JUMP:
+				mForce.y += 100000.0f;
+				break;
+			}
 			break;
-		case MOVE_RIGHT:
-			mForce.x += 1000.0f;
+		case INITIALIZE_BODY:
+			mPos = static_cast<InitializeBodyEvent*>(pEvent)->InitialPosition;
 			break;
-		case JUMP:
-			mForce.y += 10000.0f;
-			break;
-		}
 	}
+
 }

@@ -361,7 +361,7 @@ void GraphicsManager::CreateQuadBuffer()
 }
 void GraphicsManager::clearColor()
 {
-	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	glClearColor(0.53f, 0.807f, 0.9215f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glClearDepth(1);
 	glClear(GL_DEPTH_BUFFER_BIT);

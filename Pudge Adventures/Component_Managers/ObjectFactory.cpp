@@ -108,6 +108,11 @@ GameObject* ObjectFactory::LoadObject(std::string& pFileName) {
 			pNewComponent = pNewGameObject->AddComponent(CAMERA);
 			pNewComponent->Serialize(objectFile);
 		}
+		else if ("Obstacle" == componentName)
+		{
+			pNewComponent = pNewGameObject->AddComponent(OBSTACLE);
+			pNewComponent->Serialize(objectFile);
+		}
 	}
 	gpGameObjectManager->mGameObjects.insert(pNewGameObject);
 	inFile.close();

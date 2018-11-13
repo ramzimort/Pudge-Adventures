@@ -19,15 +19,6 @@ PhysicsManager::~PhysicsManager()
 
 void PhysicsManager::Init()
 {
-	for (auto go : gpGameObjectManager->mGameObjects)
-	{
-		Transform* pTr = static_cast<Transform*> (go->GetComponent(TRANSFORM));
-		Body* pBody = static_cast<Body*>(go->GetComponent(BODY));
-		if (pBody != nullptr && pTr != nullptr)
-			pBody->mPos.x = pTr->mPosition.x;
-			pBody->mPos.y = pTr->mPosition.y;
-			pBody->mPrevPos = pBody->mPos;
-	}
 }
 
 void PhysicsManager::Update(float FrameTime)
@@ -37,7 +28,7 @@ void PhysicsManager::Update(float FrameTime)
 	{
 		Body* pBody = static_cast<Body*>(go->GetComponent(BODY));
 		if (pBody != nullptr)
-			pBody->Integrate(0.0f, FrameTime);
+			pBody->Integrate(-100.f, FrameTime);
 	}
 
 	// Reset previous contacts
@@ -68,7 +59,7 @@ void PhysicsManager::Update(float FrameTime)
 	// Add own physics functions here
 	for (auto mContact : gpCollisionManager->mContacts)
 	{
-		//CollideEvent ce;
+		CollideEvent ce;
 		//mContact->mBodies[0]->mpOwner->HandleEvent(&ce);
 		//mContact->mBodies[1]->mpOwner->HandleEvent(&ce);
 	}

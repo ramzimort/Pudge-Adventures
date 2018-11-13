@@ -12,6 +12,7 @@ class Arms : public Component
 
 		void Init();
 		void Update();
+		void HandleEvent(Event* pEvent);
 
 		void Serialize(rapidjson::Document& objectFile);
 

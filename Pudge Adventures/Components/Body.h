@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Component.h"
-#include <fstream>
 #include <glm/glm.hpp>
 
 

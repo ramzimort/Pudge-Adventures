@@ -5,10 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
@@ -39,6 +35,12 @@
     </Filter>
     <Filter Include="Resource Files\Source Files">
       <UniqueIdentifier>{dd8aafca-ef32-4e66-8ca0-0d1e6efd0d7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Events\Source Files">
+      <UniqueIdentifier>{f39d2e7f-eaff-4861-8665-00e45549d35e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Events\Header Files">
+      <UniqueIdentifier>{06df59d9-ffc3-45fb-8ba6-5eda683d0d3e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -78,9 +80,6 @@
     <ClCompile Include="Component_Managers\Resource Manager.cpp">
       <Filter>Component Managers\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Include\GLAD\glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Components\Camera.cpp">
       <Filter>Components\Source Files</Filter>
     </ClCompile>
@@ -99,29 +98,38 @@
     <ClCompile Include="Component_Managers\EventManager.cpp">
       <Filter>Component Managers\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Events\Event.cpp">
-      <Filter>Resource Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Events\Collide.cpp">
-      <Filter>Resource Files\Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Events\PlayerHit.cpp">
-      <Filter>Resource Files\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Components\Arms.cpp">
       <Filter>Components\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Events\PlayerMove.cpp">
-      <Filter>Resource Files\Source Files</Filter>
+    <ClCompile Include="Events\RotateArmTowardPointer.cpp">
+      <Filter>Events\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Events\CameraMove.cpp">
-      <Filter>Resource Files\Source Files</Filter>
+    <ClCompile Include="Events\Collide.cpp">
+      <Filter>Events\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\Event.cpp">
+      <Filter>Events\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Events\InvokeHook.cpp">
+      <Filter>Events\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\PlayerHit.cpp">
+      <Filter>Events\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\PlayerMove.cpp">
+      <Filter>Events\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\GLAD\glad.c">
       <Filter>Resource Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Events\RotateArmTowardPointer.cpp">
-      <Filter>Resource Files\Source Files</Filter>
+    <ClCompile Include="Components\Obstacle.cpp">
+      <Filter>Components\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\UpdatePosition.cpp">
+      <Filter>Events\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\InitializeBody.cpp">
+      <Filter>Events\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -158,9 +166,6 @@
     <ClInclude Include="Component_Managers\FrameRateController.h">
       <Filter>Component Managers\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\stb_image.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Components\Camera.h">
       <Filter>Components\Header Files</Filter>
     </ClInclude>
@@ -179,29 +184,38 @@
     <ClInclude Include="Component_Managers\EventManager.h">
       <Filter>Component Managers\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Events\Event.h">
-      <Filter>Resource Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Events\Collide.h">
-      <Filter>Resource Files\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Events\PlayerHit.h">
-      <Filter>Resource Files\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Components\Arms.h">
       <Filter>Components\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Events\PlayerMove.h">
-      <Filter>Resource Files\Header Files</Filter>
+    <ClInclude Include="Events\RotateArmTowardPointer.h">
+      <Filter>Events\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Events\CameraMove.h">
-      <Filter>Resource Files\Header Files</Filter>
+    <ClInclude Include="Events\Collide.h">
+      <Filter>Events\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\Event.h">
+      <Filter>Events\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Events\InvokeHook.h">
+      <Filter>Events\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\PlayerHit.h">
+      <Filter>Events\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\PlayerMove.h">
+      <Filter>Events\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\stb_image.h">
       <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Events\RotateArmTowardPointer.h">
-      <Filter>Resource Files\Header Files</Filter>
+    <ClInclude Include="Components\Obstacle.h">
+      <Filter>Components\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\UpdatePosition.h">
+      <Filter>Events\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\InitializeBody.h">
+      <Filter>Events\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -13,6 +13,7 @@ public:
 	void Update();
 	Component* AddComponent(unsigned int Type);
 	Component* GetComponent(unsigned int Type) const;
+	bool HasComponent(unsigned int Type) const;
 	void HandleEvent(Event* pEvent);
 
 public:

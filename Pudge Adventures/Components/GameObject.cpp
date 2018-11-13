@@ -6,6 +6,7 @@
 #include "AI.h"
 #include "Arms.h"
 #include "Camera.h"
+#include "Obstacle.h"
 
 GameObject::GameObject()
 {
@@ -55,6 +56,9 @@ Component* GameObject::AddComponent(unsigned int Type) {
 	case CAMERA:
 		pNewComponent = new Camera();
 		break;
+	case OBSTACLE:
+		pNewComponent = new Obstacle();
+		break;
 	}
 
 	if (pNewComponent != nullptr) {
@@ -70,6 +74,13 @@ Component* GameObject::GetComponent(unsigned int Type) const{
 			return c;
 
 	return nullptr;
+}
+
+bool GameObject::HasComponent(unsigned int Type) const {
+	for (auto c : mComponents)
+		if (c->getType() == Type)
+			return true;
+	return false;
 }
 
 void GameObject::HandleEvent(Event * pEvent)
