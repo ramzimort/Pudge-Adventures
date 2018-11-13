@@ -27,8 +27,6 @@ bool CheckCollisionAABBAABB(Shape* pShape1, Shape* pShape2, std::list<Contact*> 
 CollisionManager::CollisionManager()
 {
 	CollisionFunctions[CIRCLE][CIRCLE] = CheckCollisionCircleCircle;
-
-	// Do the same for aabb circle, circle aabb, and aabb aabb
 	CollisionFunctions[CIRCLE][AABB] = CheckCollisionCircleAABB;
 	CollisionFunctions[AABB][CIRCLE] = CheckCollisionAABBCircle;
 	CollisionFunctions[AABB][AABB] = CheckCollisionAABBAABB;
@@ -80,19 +78,40 @@ bool CheckCollisionCircleAABB(	Shape* pShape1,
 								Shape* pShape2,
 								std::list<Contact*> &Contacts)
 {
-	return false;
+	ShapeCircle* C1 = static_cast<ShapeCircle*>(pShape1);
+	ShapeAABB* C2 = static_cast<ShapeAABB*>(pShape2);
+
+	if (C1->mpOwnerBody->mPos.x + C1->mRadius < C2->mpOwnerBody->mPos.x - C2->mWidth / 2.f)
+		return false;
+	if (C1->mpOwnerBody->mPos.x - C1->mRadius > C2->mpOwnerBody->mPos.x + C2->mWidth / 2.f)
+		return false;
+	if (C1->mpOwnerBody->mPos.y + C1->mRadius < C2->mpOwnerBody->mPos.y - C2->mHeight / 2.f)
+		return false;
+	if (C1->mpOwnerBody->mPos.y - C1->mRadius > C2->mpOwnerBody->mPos.y + C2->mHeight / 2.f)
+		return false;
+	return true;
 }
 
-bool CheckCollisionAABBCircle(Shape* pShape1,
-	Shape* pShape2,
-	std::list<Contact*> &Contacts)
+bool CheckCollisionAABBCircle(	Shape* pShape1,
+								Shape* pShape2,
+								std::list<Contact*> &Contacts)
 {
-	return false;
+	return CheckCollisionCircleAABB(pShape2, pShape1, Contacts);
 }
 
 bool CheckCollisionAABBAABB(Shape* pShape1,
-	Shape* pShape2,
-	std::list<Contact*> &Contacts)
+							Shape* pShape2,
+							std::list<Contact*> &Contacts)
 {
-	return false;
+	ShapeAABB* S1 = static_cast<ShapeAABB*>(pShape1);
+	ShapeAABB* S2 = static_cast<ShapeAABB*>(pShape2);
+	if ((S1->mpOwnerBody->mPos.x - S1->mWidth / 2) > ((S2->mpOwnerBody->mPos.x + S2->mWidth / 2)))
+		return false;
+	if ((S1->mpOwnerBody->mPos.x + S1->mWidth / 2) < ((S2->mpOwnerBody->mPos.x - S2->mWidth / 2)))
+		return false;
+	if ((S1->mpOwnerBody->mPos.y - S1->mHeight / 2) > ((S2->mpOwnerBody->mPos.y + S2->mHeight / 2)))
+		return false;
+	if ((S1->mpOwnerBody->mPos.y + S1->mHeight / 2) < ((S2->mpOwnerBody->mPos.y - S2->mHeight / 2)))
+		return false;
+	return true;
 }

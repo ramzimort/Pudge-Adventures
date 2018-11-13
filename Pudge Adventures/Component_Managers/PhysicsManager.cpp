@@ -28,7 +28,6 @@ void PhysicsManager::Init()
 			pBody->mPos.y = pTr->mPosition.y;
 			pBody->mPrevPos = pBody->mPos;
 	}
-
 }
 
 void PhysicsManager::Update(float FrameTime)
@@ -69,8 +68,8 @@ void PhysicsManager::Update(float FrameTime)
 	// Add own physics functions here
 	for (auto mContact : gpCollisionManager->mContacts)
 	{
-		CollideEvent ce;
-		mContact->mBodies[0]->mpOwner->HandleEvent(&ce);
-		mContact->mBodies[1]->mpOwner->HandleEvent(&ce);
+		//CollideEvent ce;
+		//mContact->mBodies[0]->mpOwner->HandleEvent(&ce);
+		//mContact->mBodies[1]->mpOwner->HandleEvent(&ce);
 	}
 }

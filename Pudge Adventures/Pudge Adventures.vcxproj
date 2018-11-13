@@ -152,9 +152,7 @@
     <ClCompile Include="Components\Controller.cpp" />
     <ClCompile Include="Components\GameObject.cpp" />
     <ClCompile Include="Components\Arms.cpp" />
-    <ClCompile Include="Components\Shader.cpp" />
     <ClCompile Include="Components\Sprite.cpp" />
-    <ClCompile Include="Components\TextureObject.cpp" />
     <ClCompile Include="Components\Transform.cpp" />
     <ClCompile Include="Component_Managers\CollisionManager.cpp" />
     <ClCompile Include="Component_Managers\EventManager.cpp" />
@@ -183,9 +181,7 @@
     <ClInclude Include="Components\Controller.h" />
     <ClInclude Include="Components\GameObject.h" />
     <ClInclude Include="Components\Arms.h" />
-    <ClInclude Include="Components\Shader.h" />
     <ClInclude Include="Components\Sprite.h" />
-    <ClInclude Include="Components\TextureObject.h" />
     <ClInclude Include="Components\Transform.h" />
     <ClInclude Include="Component_Managers\CollisionManager.h" />
     <ClInclude Include="Component_Managers\EventManager.h" />

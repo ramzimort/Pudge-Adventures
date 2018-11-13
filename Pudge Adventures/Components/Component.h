@@ -12,7 +12,6 @@ enum COMPONENT_TYPE {
 	BODY,
 	ARMS,
 	BOTAI
-
 };
 
 class GameObject;

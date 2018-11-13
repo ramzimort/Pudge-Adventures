@@ -13,7 +13,7 @@ Creation date: 10/18/2018
 - End Header --------------------------------------------------------*/
 
 #include "Resource Manager.h"
-#include "..\Components\TextureObject.h"
+#include "..\Components\Sprite.h"
 
 ResourceManager::ResourceManager() {
 	

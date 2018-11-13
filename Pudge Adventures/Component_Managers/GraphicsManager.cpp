@@ -1,8 +1,6 @@
 #include "GraphicsManager.h"
 #include <Windows.h>
 #include <SDL2\SDL.h>
-#include <iostream>
-#include "..\Components\Shader.h"
 #include "Resource Manager.h"
 #include "Input Manager.h"
 #include "GameObjectManager.h"
@@ -10,7 +8,6 @@
 #include "..\Components\Transform.h"
 #include "..\Components\Body.h"
 #include "..\Components\Camera.h"
-#include "..\Components\TextureObject.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/constants.hpp>
 
@@ -19,11 +16,93 @@ extern ResourceManager* gpResourceManager;
 extern GameObjectManager* gpGameObjectManager;
 extern Input_Manager* gpInputManager;
 
+
+Shader::Shader(const char* vertexShaderName, const char* fragmentShaderName)
+{
+	// 1. retrieve the vertex/fragment source code from filePath
+	std::string vertShaderPath = vertexShaderName; vertShaderPath = "Shaders\\" + vertShaderPath;
+	std::string fragShaderPath = fragmentShaderName; fragShaderPath = "Shaders\\" + fragShaderPath;
+
+	std::string vertexCode = loadFile(vertShaderPath);
+	std::string fragmentCode = loadFile(fragShaderPath);
+
+	const char* vShaderCode = vertexCode.c_str();
+	const char* fShaderCode = fragmentCode.c_str();
+
+	int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	glShaderSource(vertexShader, 1, &vShaderCode, NULL);
+	glCompileShader(vertexShader);
+	// check for shader compile errors
+	int success;
+	char infoLog[512];
+	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
+	if (!success)
+	{
+		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+	}
+	// fragment shader
+	int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	glShaderSource(fragmentShader, 1, &fShaderCode, NULL);
+	glCompileShader(fragmentShader);
+	// check for shader compile errors
+	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+	if (!success)
+	{
+		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+	}
+	// link shaders
+	Program = glCreateProgram();
+	glAttachShader(Program, vertexShader);
+	glAttachShader(Program, fragmentShader);
+	glLinkProgram(Program);
+	// check for linking errors
+	glGetProgramiv(Program, GL_LINK_STATUS, &success);
+	if (!success) {
+		glGetProgramInfoLog(Program, 512, NULL, infoLog);
+		std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+	}
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
+}
+Shader::~Shader()
+{
+	glUseProgram(0);
+	glDeleteProgram(Program);
+}
+void Shader::use()
+{
+	glUseProgram(Program);
+}
+void Shader::setBool(const std::string &name, bool value) const
+{
+	glUniform1i(glGetUniformLocation(Program, name.c_str()), (int)value);
+}
+void Shader::setInt(const std::string &name, int value) const
+{
+	glUniform1i(glGetUniformLocation(Program, name.c_str()), value);
+}
+void Shader::setFloat(const std::string &name, float value) const
+{
+	glUniform1f(glGetUniformLocation(Program, name.c_str()), value);
+}
+std::string Shader::loadFile(std::string& filePath) {
+	std::string out;
+	std::string	line;
+	std::ifstream in(filePath.c_str());
+	getline(in, line);
+	while (in) {
+		out += line + "\n";
+		getline(in, line);
+	}
+	return out;
+}
+
 GraphicsManager::GraphicsManager()
 {
 	Init();
 }
-
 GraphicsManager::~GraphicsManager() 
 {
 	glDeleteBuffers(3, VAO);
@@ -36,7 +115,6 @@ GraphicsManager::~GraphicsManager()
 	SDL_GL_DeleteContext(context);
 	SDL_Quit();
 }
-
 void GraphicsManager::Init()
 {
 	AllocateConsole();
@@ -54,7 +132,6 @@ void GraphicsManager::Init()
 
 	CreateQuadBuffer();
 }
-
 void GraphicsManager::Update()
 {
 	clearColor();
@@ -67,7 +144,6 @@ void GraphicsManager::Update()
 	
 	refreshWindow();
 }
-
 void GraphicsManager::Draw(GameObject* go)
 {
 	Transform* pTr = static_cast<Transform*>(go->GetComponent(TRANSFORM));
@@ -120,6 +196,7 @@ void GraphicsManager::Draw(GameObject* go)
 				polygonShader->use();
 				glUniformMatrix4fv(apersp_matrix, 1, false, (float*)&Persp);
 				glUniformMatrix4fv(aview_matrix, 1, false, (float*)&View);
+				
 				if (pBody->mpShape->mType == AABB)
 				{
 					ShapeAABB* pShape = static_cast<ShapeAABB*>(pBody->mpShape);
@@ -140,17 +217,14 @@ void GraphicsManager::Draw(GameObject* go)
 		}
 	}	
 }
-
 bool GraphicsManager::isError()
 {
 	return errorFlag;
 }
-
 std::string GraphicsManager::getError()
 {
 	return errorString;
 }
-
 void GraphicsManager::AllocateConsole()
 {
 	if (AllocConsole())
@@ -163,7 +237,6 @@ void GraphicsManager::AllocateConsole()
 		SetConsoleTitle(L"SDL 2.0 Test");
 	}
 }
-
 void GraphicsManager::InitSDLWindow()
 {
 	int error = 0;
@@ -216,7 +289,6 @@ void GraphicsManager::InitSDLWindow()
 	printf("Version:  %s\n", glGetString(GL_VERSION));
 	SDL_GL_SetSwapInterval(1);
 }
-
 void GraphicsManager::CreateQuadBuffer()
 {
 	// set up vertex buffer for quad
@@ -242,7 +314,7 @@ void GraphicsManager::CreateQuadBuffer()
 	const int numVertices = 20;
 	float circleVertices[2* numVertices];
 	unsigned int circleIndices[2 * numVertices];
-	float toRad = (float) glm::radians(2.0 / numVertices);
+	float toRad = (float) glm::radians(360.f / numVertices);
 	for (int i = 0; i < numVertices; i++)
 	{
 		circleVertices[2 * i] =		0.5f*cosf(i*toRad);
@@ -287,7 +359,6 @@ void GraphicsManager::CreateQuadBuffer()
 	glVertexAttribPointer(aPos, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glEnableVertexAttribArray(aPos);
 }
-
 void GraphicsManager::clearColor()
 {
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -295,7 +366,6 @@ void GraphicsManager::clearColor()
 	glClearDepth(1);
 	glClear(GL_DEPTH_BUFFER_BIT);
 }
-
 void GraphicsManager::refreshWindow()
 {
 	SDL_GL_SwapWindow(pWindow);

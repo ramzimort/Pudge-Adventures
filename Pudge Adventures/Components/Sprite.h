@@ -4,7 +4,14 @@
 #include"Component.h"
 
 
-class Texture;
+class Texture {
+public:
+	Texture(std::string& pFilePath);
+	~Texture();
+
+public:
+	unsigned int textureID;
+};
 
 class Sprite : public Component {
 
