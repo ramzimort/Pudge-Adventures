@@ -36,18 +36,20 @@ void PhysicsManager::Update(float FrameTime)
 
 	// Check for intersections
 	auto pObj1 = gpGameObjectManager->mGameObjects.begin();
-	auto pObj2 = gpGameObjectManager->mGameObjects.begin();
 	auto pObjLast = gpGameObjectManager->mGameObjects.end();
-	while (pObj1 != pObjLast)
+	for (auto pObj1 = gpGameObjectManager->mGameObjects.begin(); pObj1 != pObjLast; ++pObj1)
 	{
 		Body* pBody1 = static_cast<Body*>((*pObj1)->GetComponent(BODY));
-		++pObj1;
 		if (pBody1 == nullptr)
 			continue;
-		for (pObj2 = pObj1; pObj2 != pObjLast; ++pObj2)
+		if (pBody1->mType != INTERACTIVE)
+			continue;
+		for (auto pObj2 = gpGameObjectManager->mGameObjects.begin(); pObj2 != pObjLast; ++pObj2)
 		{
 			Body* pBody2 = static_cast<Body*>((*pObj2)->GetComponent(BODY));
 			if (pBody2 == nullptr)
+				continue;
+			if (pBody2->mType != RIGID)
 				continue;
 			gpCollisionManager->checkCollisionandGenerateContact(
 				pBody1->mpShape,
@@ -59,6 +61,18 @@ void PhysicsManager::Update(float FrameTime)
 	// Add own physics functions here
 	for (auto mContact : gpCollisionManager->mContacts)
 	{
+		if (mContact.first->mBodies[1]->mType == RIGID)
+		{           
+
+			glm::vec2 offset = mContact.second;
+			if (offset.y != 0.0f)
+				mContact.first->mBodies[0]->mVel.y = 0.f;
+			if (offset.x != 0.0f)
+				mContact.first->mBodies[0]->mVel.x = 0.f;
+			
+			mContact.first->mBodies[0]->mPos += offset;
+
+		}
 		//std::cout << "Collision!" << std::endl;
 		//if(mContact->mBodies[0]->mpOwner->HasComponent(OBSTACLE) && mContact->mBodies[1]->mpOwner->HasComponent(INTERACTIVE))
 		//CollideEvent ce;

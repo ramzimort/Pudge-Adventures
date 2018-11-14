@@ -4,7 +4,7 @@
 #include "..\Components\Transform.h"
 #include <glm/gtx/norm.hpp>
 #include <algorithm>
-
+#include <iostream>	
 
 
 
@@ -86,21 +86,21 @@ bool CheckCollisionCircleAABB(	Shape* pShape1,
 	ShapeAABB* S2 = static_cast<ShapeAABB*>(pShape2);
 
 	float 
-		C1_L = C1->mpOwnerBody->mPos.x - C1->mRadius,
-		C1_R = C1->mpOwnerBody->mPos.x + C1->mRadius,
-		C1_U = C1->mpOwnerBody->mPos.y + C1->mRadius,
-		C1_B = C1->mpOwnerBody->mPos.y - C1->mRadius,
-		S2_L = S2->mpOwnerBody->mPos.x - S2->mWidth / 2.f,
-		S2_R = S2->mpOwnerBody->mPos.x + S2->mWidth / 2.f,
-		S2_U = S2->mpOwnerBody->mPos.y + S2->mHeight / 2.f,
-		S2_B = S2->mpOwnerBody->mPos.y - S2->mHeight / 2.f;
-	if (S2_L > C1_R)
+		L1 = C1->mpOwnerBody->mPos.x - C1->mRadius,
+		R1 = C1->mpOwnerBody->mPos.x + C1->mRadius,
+		U1 = C1->mpOwnerBody->mPos.y + C1->mRadius,
+		B1 = C1->mpOwnerBody->mPos.y - C1->mRadius,
+		L2 = S2->mpOwnerBody->mPos.x - S2->mWidth / 2.f,
+		R2 = S2->mpOwnerBody->mPos.x + S2->mWidth / 2.f,
+		U2 = S2->mpOwnerBody->mPos.y + S2->mHeight / 2.f,
+		B2 = S2->mpOwnerBody->mPos.y - S2->mHeight / 2.f;
+	if (L2 > R1)
 		return false;
-	if (C1_L > S2_R)
+	if (L1 > R2)
 		return false;
-	if (C1_B > S2_U)
+	if (B1 > U2)
 		return false;
-	if (S2_B > C1_U)
+	if (B2 > U1)
 		return false;
 
 	glm::vec2 C2C1 = C1->mpOwnerBody->mPos - S2->mpOwnerBody->mPos;
@@ -133,34 +133,60 @@ bool CheckCollisionAABBAABB(
 	ShapeAABB* S1 = static_cast<ShapeAABB*>(pShape1);
 	ShapeAABB* S2 = static_cast<ShapeAABB*>(pShape2);
 
-	float	S1_L = S1->mpOwnerBody->mPos.x - S1->mWidth / 2.f,
-			S1_R = S1->mpOwnerBody->mPos.x + S1->mWidth / 2.f,
-			S1_U = S1->mpOwnerBody->mPos.y + S1->mHeight / 2.f,
-			S1_B = S1->mpOwnerBody->mPos.y - S1->mHeight / 2.f,
-			S2_L = S2->mpOwnerBody->mPos.x - S2->mWidth / 2.f,
-			S2_R = S2->mpOwnerBody->mPos.x + S2->mWidth / 2.f,
-			S2_U = S2->mpOwnerBody->mPos.y + S2->mHeight / 2.f,
-			S2_B = S2->mpOwnerBody->mPos.y - S2->mHeight / 2.f;
+	float	L1 = S1->mpOwnerBody->mPos.x - S1->mWidth / 2.f,
+			R1 = S1->mpOwnerBody->mPos.x + S1->mWidth / 2.f,
+			U1 = S1->mpOwnerBody->mPos.y + S1->mHeight / 2.f,
+			B1 = S1->mpOwnerBody->mPos.y - S1->mHeight / 2.f,
+			L2 = S2->mpOwnerBody->mPos.x - S2->mWidth / 2.f,
+			R2 = S2->mpOwnerBody->mPos.x + S2->mWidth / 2.f,
+			U2 = S2->mpOwnerBody->mPos.y + S2->mHeight / 2.f,
+			B2 = S2->mpOwnerBody->mPos.y - S2->mHeight / 2.f;
 
-	if (S1_L > S2_R)
+	if (L1 > R2)
 		return false;
-	if (S2_L > S1_R)
+	if (L2 > R1)
 		return false;
-	if (S1_B > S2_U)
+	if (B1 > U2)
 		return false;
-	if (S2_B > S1_U)
+	if (B2 > U1)
 		return false;
 
 	glm::vec2 deltaPos(0.0f);
-	//Check which collision
-	if (S1_L < S2_R)
-		deltaPos.x = S2_R - S1_L;
-	if (S2_L < S1_R)
-		deltaPos.x = S2_L - S1_R;
-	if (S1_B < S2_U)
-		deltaPos.x = S2_U - S1_B;
-	if (S2_B < S1_U)
-		deltaPos.x = S2_B - S1_U;
+	bool	North	= false, 
+			East	= false,
+			West	= false,
+			South	= false;
+	//Check Collision Directions:
+	if (B1 <= U2 && B2 <= U1 && B1 >= B2 && U1 >= U2)
+ 		North = true;
+	else if (B2 <= U1 && B1 <= U2 && B2 >= B1 && U2 >= U1)
+		South = true;
+	if (R1 >= L2 && R1 <= R2 && L1 <= L2 && L1 <= R2)
+		West = true;
+	else if (R2 >= L1 && R2 <= R1 && L2 <= L1 && L2 <= R1)
+		East = true;
+
+	// Modify offsets
+	if (North)
+		deltaPos.y += U2 - B1;
+	else if (South)
+		deltaPos.y -= U1 - B2;
+	if (West)
+		deltaPos.x -= R1 - L2;
+	else if (East)
+		deltaPos.x += R2 - L1;
+
+	if (North && West || North && East || South && West || South && East)
+	{
+		if (glm::abs(deltaPos.x) > glm::abs(deltaPos.y))
+			deltaPos.x = 0.f;
+		else
+			deltaPos.y = 0.f;
+	}
+
+	//std::cout << deltaPos.x << " " << deltaPos.y << std::endl;
+
+
 
 	//Check y collision?
 	//Create a new contact and add itd

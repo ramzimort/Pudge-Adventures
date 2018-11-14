@@ -11,6 +11,7 @@
   "Body": {
     "Mass": 0.0,
     "Shape": "AABB",
+    "Type": "Rigid",
     "Width": 1,
     "Height": 1
   }

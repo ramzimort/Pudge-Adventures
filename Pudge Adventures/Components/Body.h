@@ -10,7 +10,12 @@ enum ShapeType
 	CIRCLE,
 	AABB,
 };
-
+enum BodyType {
+	NONE,
+	RIGID,
+	INTERACTIVE,
+	HOOK
+};
 
 class Shape
 {
@@ -70,4 +75,5 @@ public:
 	float mMass, mInvMass;
 
 	Shape* mpShape;
+	BodyType mType;
 };

@@ -54,7 +54,8 @@ Body::Body() : Component(BODY),
 	mAcc(0.0f),
 	mForce(0.0f),
 	mMass(0.0f), mInvMass(0.0f),
-	mpShape(nullptr)
+	mpShape(nullptr),
+	mType(NONE)
 { }
 
 Body::~Body()
@@ -145,6 +146,18 @@ void Body::Serialize(rapidjson::Document& objectFile)
 			if (pAABB != nullptr)
 				pAABB->mHeight = ComponentValues.value.GetFloat();
 		}
+		else if (componentValueName == "Type")
+		{
+			std::string objectType = ComponentValues.value.GetString();
+			if (objectType == "Rigid")
+				mType = RIGID;
+			else if (objectType == "Interactive")
+				mType = INTERACTIVE;
+			else if (objectType == "Hook")
+				mType = HOOK;
+			else
+				mType = NONE;
+		}
 	}
 }
 
@@ -174,9 +187,7 @@ void Body::Integrate(float Gravity, float dt)
 	UpdateBodyPosition.newPosition = mPos;
 	mpOwner->HandleEvent(&UpdateBodyPosition);
 
-	UpdatePositionEvent UpdatePosition;
-	UpdatePosition.newPosition = mPos;
-	mpOwner->HandleEvent(&UpdatePosition);
+	
 
 }
 
@@ -202,7 +213,12 @@ void Body::HandleEvent(Event * pEvent)
 			mPos = static_cast<InitializeBodyEvent*>(pEvent)->InitialPosition;
 			break;
 		case UPDATE_BODY:
+			{
 			mPos = static_cast<UpdateBodyEvent*>(pEvent)->newPosition;
+			UpdatePositionEvent UpdatePosition;
+			UpdatePosition.newPosition = mPos;
+			mpOwner->HandleEvent(&UpdatePosition);
+			}
 			break;
 		case SCALE_BODY:
 			switch (mpShape->mType)
@@ -216,8 +232,6 @@ void Body::HandleEvent(Event * pEvent)
 				break;
 			}
 			break;
-		
-
 	}
 
 }

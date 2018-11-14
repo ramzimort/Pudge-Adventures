@@ -9,9 +9,7 @@
   },
   "Sprite": "hook_hand.png",
   "Body": {
-    "Shape": "AABB",
-    "Height": 0.3,
-    "Width": 0.6
+    "Shape": "AABB"
   }
 }
 
