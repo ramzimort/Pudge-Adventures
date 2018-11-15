@@ -1,9 +1,14 @@
 {
   "Pudge": {
-    "X": 600.0,
-    "Y": 0.0
+    "Pudge0": {
+    }
   },
   "Winter_Platform": {
-
+    "Platform0": {
+      "X": 600
+    },
+    "Platform1": {
+      "X": 300
+    }
   }
 }

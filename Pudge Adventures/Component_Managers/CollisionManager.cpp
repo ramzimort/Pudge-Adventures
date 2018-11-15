@@ -59,9 +59,6 @@ bool CheckCollisionCircleCircle(
 	ShapeCircle* C1 = static_cast<ShapeCircle*>(pShape1);
 	ShapeCircle* C2 = static_cast<ShapeCircle*>(pShape2);
 	//Intersection!
-
-	
-
 	if ((C1->mRadius + C2->mRadius)*(C1->mRadius + C2->mRadius) >= glm::distance2(C1->mpOwnerBody->mPos, C2->mpOwnerBody->mPos)) {
 		glm::vec2 C2C1 = C1->mpOwnerBody->mPos - C2->mpOwnerBody->mPos;
 		float centerDistance = glm::length(C2C1);
