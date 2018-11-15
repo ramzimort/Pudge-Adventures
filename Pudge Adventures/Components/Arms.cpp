@@ -1,14 +1,18 @@
 #include "Arms.h"
 #include "Body.h"
+#include "Transform.h"
 #include "..\Component_Managers\ObjectFactory.h"
 #include "..\Component_Managers\EventManager.h"
 #include "GameObject.h"
 #include "..\Events\Event.h"
 #include "..\Events\UpdatePosition.h"
+#include "..\Events\MirrorObject.h"
+#include "..\Component_Managers\GameObjectManager.h"
 #include <iostream>
 
 extern ObjectFactory* gpObjectFactory;
 extern EventManager* gpEventManager;
+extern GameObjectManager* gpGameObjectManager;
 
 Arms::Arms() : Component(ARMS)
 { }
@@ -42,6 +46,16 @@ void Arms::HandleEvent(Event* pEvent)
 	case UPDATE_BODY:
 		mpArms[0]->HandleEvent(pEvent);
 		mpArms[1]->HandleEvent(pEvent);
+		break;
+	case MIRROR_OBJECT:
+		mpArms[0]->HandleEvent(pEvent);
+		mpArms[1]->HandleEvent(pEvent);
+		gpGameObjectManager->mGameObjects.erase(mpArms[0]);
+		gpGameObjectManager->mGameObjects.erase(mpArms[1]);
+		std::swap(static_cast<Transform*>(mpArms[0]->GetComponent(TRANSFORM))->zValue,
+			(static_cast<Transform*>(mpArms[1]->GetComponent(TRANSFORM))->zValue));
+		gpGameObjectManager->mGameObjects.insert(mpArms[0]);
+		gpGameObjectManager->mGameObjects.insert(mpArms[1]);
 		break;
 	}
 }

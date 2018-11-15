@@ -5,6 +5,7 @@
 #include "..\Events\InvokeHook.h"
 #include "..\Events\RotateArmTowardPointer.h"
 #include "..\Events\UpdatePosition.h"
+#include "..\Events\CameraMove.h"
 
 extern GraphicsManager* gpGfxManager;
 extern EventManager* gpEventManager;
@@ -42,9 +43,12 @@ void Camera::HandleEvent(Event* pEvent)
 		glm::vec2 bodyCurrentPos = static_cast<UpdatePositionEvent*>(pEvent)->newPosition;
 		glm::vec2 deltaCameraPos = bodyCurrentPos - (mCameraCenter + glm::vec2(rightBound, upperBound));
 		if (bodyCurrentPos.x > mCameraCenter.x + rightBound)
+		{
 			mCameraCenter.x += deltaCameraPos.x;
-		//if (bodyCurrentPos.y > mCameraCenter.y + upperBound)
-		//	mCameraCenter.y += deltaCameraPos.y;
+			CameraMoveEvent CameraMove;
+			CameraMove.deltaX = deltaCameraPos.x;
+			gpEventManager->BroadcaseEventToSubscribers(&CameraMove);
+		}
 		mCameraCenter.y = bodyCurrentPos.y;
 		if (mCameraCenter.y < 0.f)
 			mCameraCenter.y = 0.f;

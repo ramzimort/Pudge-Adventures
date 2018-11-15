@@ -6,6 +6,7 @@
 #include "..\Events\InitializeBody.h"
 #include "..\Events\UpdateBody.h"
 #include "..\Events\ScaleBody.h"
+#include "..\Events\MirrorObject.h"
 #include <string>
 #include <iostream>
 
@@ -51,6 +52,7 @@ Body::Body() : Component(BODY),
 	mPos(0.0f), 
 	mPrevPos(0.0f),
 	mVel(0.0f),
+	mPrevVel(0.0f),
 	mAcc(0.0f),
 	mForce(0.0f),
 	mMass(0.0f), mInvMass(0.0f),
@@ -71,6 +73,17 @@ void Body::Init()
 
 void Body::Update()
 {
+	UpdatePositionEvent UpdatePosition;
+	UpdatePosition.newPosition = mPos;
+	mpOwner->HandleEvent(&UpdatePosition);
+	if(mpOwner->HasComponent(CONTROLLER))
+	std::cout << "Prev: " << (float)mPrevVel.x << ", Current: " << (float)mVel.x << std::endl;
+	if (mPrevVel.x > 0.f && mVel.x <= 0.f || mPrevVel.x < 0.f && mVel.x >= 0.f)
+	{
+		MirrorObjectEvent MirrorObject;
+		mpOwner->HandleEvent(&MirrorObject);
+	}
+
 }
 
 void Body::Serialize(std::ifstream & inFile)
@@ -167,7 +180,7 @@ void Body::Integrate(float Gravity, float dt)
 	{
 		// Save current position
 		mPrevPos = mPos;
-
+		mPrevVel = mVel;
 		// Compute Acceleration
 		mForce.y += mMass * Gravity;
 		mAcc.x = mForce.x * mInvMass;
@@ -186,8 +199,6 @@ void Body::Integrate(float Gravity, float dt)
 	UpdateBodyEvent UpdateBodyPosition;
 	UpdateBodyPosition.newPosition = mPos;
 	mpOwner->HandleEvent(&UpdateBodyPosition);
-
-	
 
 }
 
@@ -213,12 +224,7 @@ void Body::HandleEvent(Event * pEvent)
 			mPos = static_cast<InitializeBodyEvent*>(pEvent)->InitialPosition;
 			break;
 		case UPDATE_BODY:
-			{
 			mPos = static_cast<UpdateBodyEvent*>(pEvent)->newPosition;
-			UpdatePositionEvent UpdatePosition;
-			UpdatePosition.newPosition = mPos;
-			mpOwner->HandleEvent(&UpdatePosition);
-			}
 			break;
 		case SCALE_BODY:
 			switch (mpShape->mType)

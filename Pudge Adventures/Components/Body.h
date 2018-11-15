@@ -70,6 +70,7 @@ public:
 	glm::vec2 mPos;
 	glm::vec2 mPrevPos;
 	glm::vec2 mVel;
+	glm::vec2 mPrevVel;
 	glm::vec2 mAcc;
 	glm::vec2 mForce;
 	float mMass, mInvMass;

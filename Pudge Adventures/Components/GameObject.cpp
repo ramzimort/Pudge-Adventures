@@ -6,7 +6,7 @@
 #include "AI.h"
 #include "Arms.h"
 #include "Camera.h"
-#include "Obstacle.h"
+#include "Background.h"
 
 GameObject::GameObject()
 {
@@ -56,8 +56,8 @@ Component* GameObject::AddComponent(unsigned int Type) {
 	case CAMERA:
 		pNewComponent = new Camera();
 		break;
-	case OBSTACLE:
-		pNewComponent = new Obstacle();
+	case BACKGROUND:
+		pNewComponent = new Background();
 		break;
 	}
 

@@ -8,7 +8,6 @@
 #include <rapidjson/istreamwrapper.h>
 #include <glm/glm.hpp>
 
-
 extern GameObjectManager* gpGameObjectManager;
 
 ObjectFactory::ObjectFactory()
@@ -134,9 +133,9 @@ Component * ObjectFactory::LoadComponent(std::string& componentName, GameObject*
 		pNewComponent = pNewGameObject->AddComponent(CAMERA);
 		pNewComponent->Serialize(objectFile);
 	}
-	else if ("Obstacle" == componentName)
+	else if ("Background" == componentName)
 	{
-		pNewComponent = pNewGameObject->AddComponent(OBSTACLE);
+		pNewComponent = pNewGameObject->AddComponent(BACKGROUND);
 		pNewComponent->Serialize(objectFile);
 	}
 	return pNewComponent;

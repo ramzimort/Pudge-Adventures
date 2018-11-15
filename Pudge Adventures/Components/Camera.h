@@ -19,5 +19,4 @@ class Camera : public Component
 		glm::vec2 mCameraCenter;
 		float rightBound;
 		float upperBound;
-
 };

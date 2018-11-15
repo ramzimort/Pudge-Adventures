@@ -5,6 +5,7 @@
 #include "..\Events\RotateArmTowardPointer.h"
 #include "..\Events\UpdatePosition.h"
 #include "..\Events\ScaleBody.h"
+#include "..\Events\MirrorObject.h"
 
 Transform::Transform() :	
 	Component(TRANSFORM), 
@@ -36,17 +37,22 @@ void Transform::HandleEvent(Event* pEvent)
 	case UPDATE_POSITION:
 		mPosition = static_cast<UpdatePositionEvent*>(pEvent)->newPosition;
 		break;
+	case MIRROR_OBJECT:
+		mScale.x *= -1.f;
+		break;
 	case ROTATE_ARM_TOWARD_POINTER:
 		RotateArmTowardPointerEvent* RATPe = static_cast<RotateArmTowardPointerEvent*>(pEvent);
 		glm::vec2 relativeArmPos = 
 			mPosition 
 			- RATPe->cameraCenter 
 			+ glm::vec2((float)RATPe->SCR_WIDTH / 2.f, (float)RATPe->SCR_HEIGHT / 2.f);
-		glm::vec2 PudgeCentertoMousePointer = 
+		glm::vec2 ArmPivottoMousePointer = 
 			RATPe->pointerPos
 			- relativeArmPos
 			- glm::vec2(mRotationCenter.x*mScale.x, mRotationCenter.y*mScale.y); //Remove rotation center offset
-		mAngle = 90.0f + glm::degrees(atan2(PudgeCentertoMousePointer.y, PudgeCentertoMousePointer.x));
+		mAngle = 90.0f + glm::degrees(atan2(ArmPivottoMousePointer.y, ArmPivottoMousePointer.x));
+		if (mScale.x < 0.f)
+			mAngle *= -1;
 		break;
 	}
 }

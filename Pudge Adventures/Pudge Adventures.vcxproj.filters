@@ -122,9 +122,6 @@
     <ClCompile Include="Include\GLAD\glad.c">
       <Filter>Resource Files\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Components\Obstacle.cpp">
-      <Filter>Components\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Events\UpdatePosition.cpp">
       <Filter>Events\Source Files</Filter>
     </ClCompile>
@@ -135,6 +132,15 @@
       <Filter>Events\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Events\ScaleBody.cpp">
+      <Filter>Events\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Background.cpp">
+      <Filter>Components\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\CameraMove.cpp">
+      <Filter>Events\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\MirrorObject.cpp">
       <Filter>Events\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -214,9 +220,6 @@
     <ClInclude Include="Include\stb_image.h">
       <Filter>Resource Files\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Components\Obstacle.h">
-      <Filter>Components\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Events\UpdatePosition.h">
       <Filter>Events\Header Files</Filter>
     </ClInclude>
@@ -227,6 +230,15 @@
       <Filter>Events\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Events\UpdateBody.h">
+      <Filter>Events\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Background.h">
+      <Filter>Components\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\CameraMove.h">
+      <Filter>Events\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\MirrorObject.h">
       <Filter>Events\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
