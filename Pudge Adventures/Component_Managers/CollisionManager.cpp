@@ -130,14 +130,14 @@ bool CheckCollisionAABBAABB(
 	ShapeAABB* S1 = static_cast<ShapeAABB*>(pShape1);
 	ShapeAABB* S2 = static_cast<ShapeAABB*>(pShape2);
 
-	float	L1 = S1->mpOwnerBody->mPos.x - S1->mWidth / 2.f,
-			R1 = S1->mpOwnerBody->mPos.x + S1->mWidth / 2.f,
-			U1 = S1->mpOwnerBody->mPos.y + S1->mHeight / 2.f,
-			B1 = S1->mpOwnerBody->mPos.y - S1->mHeight / 2.f,
-			L2 = S2->mpOwnerBody->mPos.x - S2->mWidth / 2.f,
-			R2 = S2->mpOwnerBody->mPos.x + S2->mWidth / 2.f,
-			U2 = S2->mpOwnerBody->mPos.y + S2->mHeight / 2.f,
-			B2 = S2->mpOwnerBody->mPos.y - S2->mHeight / 2.f;
+	float	L1 = S1->mpOwnerBody->mColliderCenter.x - S1->mWidth / 2.f,
+			R1 = S1->mpOwnerBody->mColliderCenter.x + S1->mWidth / 2.f,
+			U1 = S1->mpOwnerBody->mColliderCenter.y + S1->mHeight / 2.f,
+			B1 = S1->mpOwnerBody->mColliderCenter.y - S1->mHeight / 2.f,
+			L2 = S2->mpOwnerBody->mColliderCenter.x - S2->mWidth / 2.f,
+			R2 = S2->mpOwnerBody->mColliderCenter.x + S2->mWidth / 2.f,
+			U2 = S2->mpOwnerBody->mColliderCenter.y + S2->mHeight / 2.f,
+			B2 = S2->mpOwnerBody->mColliderCenter.y - S2->mHeight / 2.f;
 
 	if (L1 > R2)
 		return false;
