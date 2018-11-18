@@ -3,7 +3,7 @@
 #include "..\Component_Managers\EventManager.h"
 #include "..\Events\InitializeBody.h"
 #include "..\Events\InvokeHook.h"
-#include "..\Events\RotateArmTowardPointer.h"
+#include "..\Events\RotateTowardPointer.h"
 #include "..\Events\UpdatePosition.h"
 #include "..\Events\CameraMove.h"
 
@@ -56,12 +56,12 @@ void Camera::HandleEvent(Event* pEvent)
 	}
 	case INVOKE_HOOK:
 		InvokeHookEvent* invokeHook = static_cast<InvokeHookEvent*>(pEvent);
-		RotateArmTowardPointerEvent RATPe;
-		RATPe.pointerPos = invokeHook->pointerPos;
-		RATPe.cameraCenter = mCameraCenter;
-		RATPe.SCR_WIDTH = gpGfxManager->getWindowWidth();
-		RATPe.SCR_HEIGHT = gpGfxManager->getWindowHeight();
-		gpEventManager->BroadcaseEventToSubscribers(&RATPe);
+		RotateTowardPointerEvent RTPe;
+		glm::vec2 cameraPosWorldSpace = invokeHook->pointerPos + mCameraCenter;
+		cameraPosWorldSpace.x -= (float)gpGfxManager->getWindowWidth() / 2.f;
+		cameraPosWorldSpace.y -= (float)gpGfxManager->getWindowHeight() / 2.f;
+		RTPe.PointerPositonWorldSpace = cameraPosWorldSpace;
+		gpEventManager->BroadcaseEventToSubscribers(&RTPe);
 		break;
 	}
 }

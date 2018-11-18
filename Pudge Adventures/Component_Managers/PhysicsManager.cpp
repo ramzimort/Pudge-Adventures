@@ -3,11 +3,13 @@
 #include "..\Components\GameObject.h"
 #include "..\Components\Body.h"
 #include "GameObjectManager.h"
+#include "FrameRateController.h"
 #include "..\Events\Collide.h"
 
 
 extern GameObjectManager* gpGameObjectManager;
 extern CollisionManager* gpCollisionManager;
+extern FrameRateController* gpFRC;
 
 PhysicsManager::PhysicsManager()
 {
@@ -28,7 +30,7 @@ void PhysicsManager::Update(float FrameTime)
 	{
 		Body* pBody = static_cast<Body*>(go->GetComponent(BODY));
 		if (pBody != nullptr)
-			pBody->Integrate(-100.f, FrameTime);
+			pBody->Integrate(-1000.f, FrameTime);
 	}
 
 	// Reset previous contacts
@@ -61,12 +63,16 @@ void PhysicsManager::Update(float FrameTime)
 	// Add own physics functions here
 	for (auto mContact : gpCollisionManager->mContacts)
 	{
-		if (mContact.first->mBodies[1]->mType == RIGID)
+		if (mContact.first->mBodies[1]->mType == RIGID)		// All collisions with RIGID bodies
 		{           
-
+			Body* pInteractiveBody = mContact.first->mBodies[0];
 			glm::vec2 offset = mContact.second;
-			if (offset.y != 0.0f)
-				mContact.first->mBodies[0]->mVel.y = 0.f;
+			if (offset.y != 0.0f)							// Vertical Collision!
+			{
+				pInteractiveBody->mVel.y = 0.f;	// Set vertical speed to 0
+				if (offset.y > 0)							// Apply Friction
+					pInteractiveBody->mForce += -0.01*pInteractiveBody->mVel.x*pInteractiveBody->mMass/gpFRC->GetFrameTime();
+			}
 			if (offset.x != 0.0f)
 				mContact.first->mBodies[0]->mVel.x = 0.f;
 			

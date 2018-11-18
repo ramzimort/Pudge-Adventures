@@ -101,9 +101,6 @@
     <ClCompile Include="Components\Arms.cpp">
       <Filter>Components\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Events\RotateArmTowardPointer.cpp">
-      <Filter>Events\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Events\Collide.cpp">
       <Filter>Events\Source Files</Filter>
     </ClCompile>
@@ -141,6 +138,12 @@
       <Filter>Events\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Events\MirrorObject.cpp">
+      <Filter>Events\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\MirrorArms.cpp">
+      <Filter>Events\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Events\RotateTowardPointer.cpp">
       <Filter>Events\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -199,9 +202,6 @@
     <ClInclude Include="Components\Arms.h">
       <Filter>Components\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Events\RotateArmTowardPointer.h">
-      <Filter>Events\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Events\Collide.h">
       <Filter>Events\Header Files</Filter>
     </ClInclude>
@@ -239,6 +239,15 @@
       <Filter>Events\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Events\MirrorObject.h">
+      <Filter>Events\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\MIrrorArms.h">
+      <Filter>Events\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\RotateTowardPointer.h">
+      <Filter>Events\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\RotateBody.h">
       <Filter>Events\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

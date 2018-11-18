@@ -9,6 +9,6 @@
   },
   "Sprite": "Light_Tree.png",
   "Background": {
-    "Scroll_Speed": 0.2
+    "Scroll_Speed": 0.0
   }
 }

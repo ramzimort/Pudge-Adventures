@@ -12,17 +12,11 @@
 extern Input_Manager* gpInputManager;
 
 Controller::Controller() : Component(CONTROLLER) 
-{	
-}
-
+{ }
 Controller::~Controller() 
-{
-}
-
+{ }
 void Controller::Init()
-{
-}
-
+{ }
 void Controller::Update()
 {
 	if (mpOwner != nullptr  && gpInputManager != nullptr) 
@@ -58,7 +52,6 @@ void Controller::Update()
 	}
 
 }
-
 void Controller::HandleEvent(Event * pEvent)
 {
 

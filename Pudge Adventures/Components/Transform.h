@@ -8,12 +8,9 @@ class Transform : public Component{
 	public:
 		Transform();
 		~Transform();
-
 		void Init();
 		void Update();
 		void HandleEvent(Event* pEvent);
-
-		void Serialize(std::ifstream &inFile);
 		void Serialize(rapidjson::Document& objectFile);
 	
 	public:

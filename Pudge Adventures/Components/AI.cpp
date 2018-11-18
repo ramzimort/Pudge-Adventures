@@ -32,12 +32,6 @@ void botAI::Update()
 	pTr->mPosition.x += speed * gpFRC->GetFrameTime();
 }
 
-void botAI::Serialize(std::ifstream & inFile)
-{
-	inFile >> changeDirectionInterval;
-	inFile >> speed;
-}
-
 void botAI::Serialize(rapidjson::Document& objectFile)
 {
 	std::string componentValueName;

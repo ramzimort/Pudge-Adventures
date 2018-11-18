@@ -11,4 +11,5 @@ public:
 
 public:
 	glm::vec2 newPosition;
+	float newAngle;
 };

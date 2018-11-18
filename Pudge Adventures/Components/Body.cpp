@@ -5,20 +5,21 @@
 #include "..\Events\UpdatePosition.h"
 #include "..\Events\InitializeBody.h"
 #include "..\Events\UpdateBody.h"
-#include "..\Events\ScaleBody.h"
 #include "..\Events\MirrorObject.h"
+#include "..\Events\RotateBody.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <string>
 #include <iostream>
 
-Shape::Shape(ShapeType Type)
-{
-	mType = Type;
-	mpOwnerBody = nullptr;
-}
-ShapeCircle::ShapeCircle() : Shape(CIRCLE)
-{
-	mRadius = 0.0f;
-}
+Shape::Shape(ShapeType Type) : 
+	mType(Type),
+	mpOwnerBody(nullptr)
+{ }
+ShapeCircle::ShapeCircle() : 
+	Shape(CIRCLE), 
+	mRadius(0.f)
+{ }
 ShapeCircle::~ShapeCircle()
 { }
 bool ShapeCircle::testPoint(glm::vec2& Point)
@@ -27,13 +28,13 @@ bool ShapeCircle::testPoint(glm::vec2& Point)
 		(mpOwnerBody->mPos.y - Point.y)*(mpOwnerBody->mPos.y - Point.y)
 		< mRadius*mRadius);
 }
-ShapeAABB::ShapeAABB() : Shape(AABB)
-{
-	mWidth = mHeight = 0.0f;
-}
+ShapeAABB::ShapeAABB() : 
+	Shape(AABB),
+	mWidth(0.f),
+	mHeight(0.f)
+{ }
 ShapeAABB::~ShapeAABB()
-{
-}
+{ }
 bool ShapeAABB::testPoint(glm::vec2& Point)
 {
 	if (Point.x < (mpOwnerBody->mPos.x - mWidth / 2))
@@ -52,68 +53,35 @@ Body::Body() : Component(BODY),
 	mPos(0.0f), 
 	mPrevPos(0.0f),
 	mVel(0.0f),
-	mPrevVel(0.0f),
 	mAcc(0.0f),
 	mForce(0.0f),
 	mMass(0.0f), mInvMass(0.0f),
+	mColliderCenter(0.f),
+	mPos_mPivot(0.f),
+	mPivot_mColliderCenter(0.f),
 	mpShape(nullptr),
 	mType(NONE)
 { }
-
 Body::~Body()
 {
 	if (mpShape != nullptr)
 		delete mpShape;
 }
-
 void Body::Init()
-{
-
+{ 
+	
 }
-
 void Body::Update()
 {
 	UpdatePositionEvent UpdatePosition;
 	UpdatePosition.newPosition = mPos;
 	mpOwner->HandleEvent(&UpdatePosition);
-	if(mpOwner->HasComponent(CONTROLLER))
-	std::cout << "Prev: " << (float)mPrevVel.x << ", Current: " << (float)mVel.x << std::endl;
-	if (mPrevVel.x > 0.f && mVel.x <= 0.f || mPrevVel.x < 0.f && mVel.x >= 0.f)
-	{
-		MirrorObjectEvent MirrorObject;
-		mpOwner->HandleEvent(&MirrorObject);
-	}
+
+	//mColliderOffset = mPos - mPrevPos + mPivot;
+	
+
 
 }
-
-void Body::Serialize(std::ifstream & inFile)
-{
-	inFile >> mMass;
-	if (mMass != 0.0f)
-		mInvMass = 1.0f / mMass;
-	else
-		mInvMass = 0.0f;
-
-	std::string shapeStype;
-	inFile >> shapeStype;
-	if (shapeStype == "Circle")
-	{
-		mpShape = new ShapeCircle();
-		mpShape->mpOwnerBody = this;
-		ShapeCircle* pCircle = static_cast<ShapeCircle*>(mpShape);
-		inFile >> pCircle->mRadius;
-	}
-	else if (shapeStype == "AABB")
-	{
-		mpShape = new ShapeAABB();
-		mpShape->mpOwnerBody = this;
-		ShapeAABB* pAABB = static_cast<ShapeAABB*>(mpShape);
-		inFile >> pAABB->mWidth;
-		inFile >> pAABB->mHeight;
-	}
-}
-
-
 void Body::Serialize(rapidjson::Document& objectFile)
 {
 	std::string componentValueName;
@@ -171,16 +139,18 @@ void Body::Serialize(rapidjson::Document& objectFile)
 			else
 				mType = NONE;
 		}
+		else if (componentValueName == "xColliderCenter")
+			mColliderCenter.x = ComponentValues.value.GetFloat();
+		else if (componentValueName == "yColliderCenter")
+			mColliderCenter.y = ComponentValues.value.GetFloat();
 	}
 }
-
 void Body::Integrate(float Gravity, float dt)
 {
 	if (mMass != 0.0f)
 	{
 		// Save current position
-		mPrevPos = mPos;
-		mPrevVel = mVel;
+		mPrevPos = mPos; 
 		// Compute Acceleration
 		mForce.y += mMass * Gravity;
 		mAcc.x = mForce.x * mInvMass;
@@ -195,11 +165,11 @@ void Body::Integrate(float Gravity, float dt)
 
 		// Zero all applied forces
 		mForce = { 0.0f,0.0f };
-	}
-	UpdateBodyEvent UpdateBodyPosition;
-	UpdateBodyPosition.newPosition = mPos;
-	mpOwner->HandleEvent(&UpdateBodyPosition);
 
+		UpdateBodyEvent UpdateBodyPosition;
+		UpdateBodyPosition.newPosition = mPos;
+		mpOwner->HandleEvent(&UpdateBodyPosition);
+	}
 }
 
 void Body::HandleEvent(Event * pEvent)
@@ -216,28 +186,36 @@ void Body::HandleEvent(Event * pEvent)
 				mForce.x += 5000.0f;
 				break;
 			case JUMP:
-				mForce.y += 100000.0f;
+				mForce.y += 400000.0f;
 				break;
 			}
 			break;
 		case INITIALIZE_BODY:
 			mPos = static_cast<InitializeBodyEvent*>(pEvent)->InitialPosition;
+			mPos_mPivot = static_cast<InitializeBodyEvent*>(pEvent)->mPivot;
+			mColliderCenter.x *= static_cast<InitializeBodyEvent*>(pEvent)->mScale.x;
+			mColliderCenter.y *= static_cast<InitializeBodyEvent*>(pEvent)->mScale.y;
+			mColliderCenter += mPos;
+			mPivot_mColliderCenter = mColliderCenter - (mPos + mPos_mPivot);
+
 			break;
 		case UPDATE_BODY:
 			mPos = static_cast<UpdateBodyEvent*>(pEvent)->newPosition;
+			mColliderCenter = mPos + mPos_mPivot + mPivot_mColliderCenter;
 			break;
-		case SCALE_BODY:
-			switch (mpShape->mType)
-			{
-			case CIRCLE:
-				static_cast<ShapeCircle*>(mpShape)->mRadius *= static_cast<ScaleBodyEvent*>(pEvent)->mScale.x;
-				break;
-			case AABB:
-				static_cast<ShapeAABB*>(mpShape)->mWidth *= static_cast<ScaleBodyEvent*>(pEvent)->mScale.x;
-				static_cast<ShapeAABB*>(mpShape)->mHeight *= static_cast<ScaleBodyEvent*>(pEvent)->mScale.y;
-				break;
-			}
-			break;
+		case ROTATE_BODY:
+		{
+			RotateBodyEvent* pRotateBody = static_cast<RotateBodyEvent*>(pEvent);
+			float deltaAngle = pRotateBody->deltaAngle;
+			std::cout << "DeltaAngle: " << deltaAngle << std::endl;
+			mPivot_mColliderCenter =
+				static_cast<glm::vec2>(glm::rotate(glm::mat4(), deltaAngle, glm::vec3(0, 0, 1))*
+				glm::vec4(mPivot_mColliderCenter,0.f,0.f));
+		}
+		break;
+		case MIRROR_OBJECT:
+			mPos_mPivot.x = -mPos_mPivot.x;
+			mPivot_mColliderCenter.x = -mPivot_mColliderCenter.x;
+			mColliderCenter = mPos + mPos_mPivot + mPivot_mColliderCenter;
 	}
-
 }

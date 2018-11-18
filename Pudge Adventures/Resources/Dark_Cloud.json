@@ -9,6 +9,6 @@
   },
   "Sprite": "Dark_Cloud.png",
   "Background": {
-    "Scroll_Speed": 0.0
+    "Scroll_Speed": -1.0
   }
 }

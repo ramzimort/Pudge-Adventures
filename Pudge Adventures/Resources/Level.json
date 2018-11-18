@@ -4,27 +4,12 @@
     }
   },
   "Winter_Platform": {
-    "Platform0": {
+    "Winter_Platform0": {
+      "X": 300
+    },
+    "Winter_Platform1": {
       "X": 600
-    },
-    "Platform1": {
-      "X": 300
     }
-  },
-  "Dark_Cloud": {
-    "Cloud0": {
-      "X": 500
-    },
-    "Cloud1": {
-      "X": 1000
-    }
-  },
-  "Light_Tree": {
-    "Tree0": {
-      "X": 800
-    },
-    "Tree1": {
-      "X": 300
-    }
+
   }
 }

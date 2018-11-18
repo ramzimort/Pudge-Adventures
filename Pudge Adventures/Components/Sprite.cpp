@@ -33,36 +33,20 @@ Texture::Texture(std::string& pFileName)
 	}
 	stbi_image_free(data);
 }
-
 Texture::~Texture()
 {
 	glDeleteTextures(1, &textureID);
 }
-
-
-Sprite::Sprite() : Component(SPRITE) {
-	mpTexture = nullptr;
-}
-
+Sprite::Sprite() : 
+	Component(SPRITE),
+	mpTexture(nullptr)
+{ }
 Sprite::~Sprite() 
-{
-}
-
+{ }
 void Sprite::Init()
-{
-}
-
+{ }
 void Sprite::Update()
-{
-}
-
-void Sprite::Serialize(std::ifstream &inFile)
-{
-	std::string imageName = "";
-	inFile >> imageName;
-	mpTexture = gpResourceManager->LoadTexture(imageName);
-}
-
+{ }
 void Sprite::Serialize(rapidjson::Document& objectFile)
 {
 	std::string imageName = objectFile["Sprite"].GetString();

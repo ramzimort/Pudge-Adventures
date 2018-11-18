@@ -22,7 +22,6 @@ public:
 	void Init();
 	void Update();
 
-	void Serialize(std::ifstream &inFile);
 	void Serialize(rapidjson::Document& objectFile);
 	
 	Texture* mpTexture;

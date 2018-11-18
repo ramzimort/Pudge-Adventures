@@ -15,8 +15,8 @@
     "Mass": 10.0,
     "Shape": "AABB",
     "Type": "Interactive",
-    "Width": 0.6,
-    "Height": 1.0
+    "Width": 200,
+    "Height": 200
   },
   "Arms": {
     "LeftArm": "Left_Hand",

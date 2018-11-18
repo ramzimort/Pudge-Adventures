@@ -2,10 +2,15 @@
 #include "Transform.h"
 #include "GameObject.h"
 #include "..\Events\InitializeBody.h"
-#include "..\Events\RotateArmTowardPointer.h"
+#include "..\Events\RotateTowardPointer.h"
 #include "..\Events\UpdatePosition.h"
-#include "..\Events\ScaleBody.h"
+#include "..\Events\RotateBody.h"
 #include "..\Events\MirrorObject.h"
+#include "..\Events\MIrrorArms.h"
+#include "..\Events\PlayerMove.h"
+#include <iostream>
+
+constexpr auto PI = 3.14159265358979323846f;
 
 Transform::Transform() :	
 	Component(TRANSFORM), 
@@ -21,50 +26,57 @@ void Transform::Init()
 {
 	InitializeBodyEvent InitializeBody;
 	InitializeBody.InitialPosition = mPosition;
+	InitializeBody.mScale = mScale;
+	InitializeBody.InitialAngle = mAngle;
+	InitializeBody.mPivot = mRotationCenter * mScale;
 	mpOwner->HandleEvent(&InitializeBody);
-
-	ScaleBodyEvent ScaleBody;
-	ScaleBody.mScale = mScale;
-	mpOwner->HandleEvent(&ScaleBody);
 }
 
 void Transform::Update() { }
 
 void Transform::HandleEvent(Event* pEvent)
 {
-	switch(pEvent->mType)
+	switch (pEvent->mType)
 	{
+	case PLAYER_MOVE:
+		if (static_cast<PlayerMoveEvent*>(pEvent)->aType == MOVE_LEFT && mScale.x < 0.f ||
+			static_cast<PlayerMoveEvent*>(pEvent)->aType == MOVE_RIGHT && mScale.x > 0.f)
+		{
+			MirrorObjectEvent MirrorObject;
+			mpOwner->HandleEvent(&MirrorObject);
+		}
+		break;
 	case UPDATE_POSITION:
-		mPosition = static_cast<UpdatePositionEvent*>(pEvent)->newPosition;
+		mPosition = static_cast<UpdatePositionEvent*>(pEvent)->newPosition; 
 		break;
 	case MIRROR_OBJECT:
 		mScale.x *= -1.f;
 		break;
-	case ROTATE_ARM_TOWARD_POINTER:
-		RotateArmTowardPointerEvent* RATPe = static_cast<RotateArmTowardPointerEvent*>(pEvent);
-		glm::vec2 relativeArmPos = 
-			mPosition 
-			- RATPe->cameraCenter 
-			+ glm::vec2((float)RATPe->SCR_WIDTH / 2.f, (float)RATPe->SCR_HEIGHT / 2.f);
-		glm::vec2 ArmPivottoMousePointer = 
-			RATPe->pointerPos
-			- relativeArmPos
-			- glm::vec2(mRotationCenter.x*mScale.x, mRotationCenter.y*mScale.y); //Remove rotation center offset
-		mAngle = 90.0f + glm::degrees(atan2(ArmPivottoMousePointer.y, ArmPivottoMousePointer.x));
+	case ROTATE_TOWARD_POINTER:
+	{
+		float angle0 = mAngle;
+		RotateTowardPointerEvent* RTPe = static_cast<RotateTowardPointerEvent*>(pEvent);
+		glm::vec2 pivotToPointer =
+			RTPe->PointerPositonWorldSpace -
+			(mPosition +
+			glm::vec2(mRotationCenter.x*mScale.x, mRotationCenter.y*mScale.y));;
+		mAngle = PI/2 + atan2f(pivotToPointer.y, pivotToPointer.x);
+		
 		if (mScale.x < 0.f)
-			mAngle *= -1;
+			mAngle *= -1.f;
+
+		float deltaAngle = mAngle - angle0;
+		if (mScale.x < 0.f)
+			deltaAngle *= -1.f;
+
+		std::cout << "Angle: " << mAngle*180.f/3.1415f << std::endl; 
+		RotateBodyEvent RotateBody;
+		RotateBody.deltaAngle = deltaAngle;
+		RotateBody.mPivot = glm::vec2(mRotationCenter.x*mScale.x, mRotationCenter.y*mScale.y);
+		mpOwner->HandleEvent(&RotateBody);
+	}
 		break;
 	}
-}
-
-void Transform::Serialize(std::ifstream &inFile)
-{
-	inFile >> mPosition.x;
-	inFile >> mPosition.y;
-	inFile >> zValue;
-	inFile >> mAngle;
-	inFile >> mScale.x;
-	inFile >> mScale.y;
 }
 
 void Transform::Serialize(rapidjson::Document& objectFile)

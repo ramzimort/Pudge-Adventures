@@ -40,7 +40,6 @@ public:
 public:
 	float mRadius;
 };
-
 class ShapeAABB : public Shape
 {
 public:
@@ -61,7 +60,6 @@ public:
 
 	void Init();
 	void Update();
-	void Serialize(std::ifstream& inFile);
 	void Serialize(rapidjson::Document& objectFile);
 	void Integrate(float Gravity, float dt);
 	void HandleEvent(Event* pEvent);
@@ -70,11 +68,16 @@ public:
 	glm::vec2 mPos;
 	glm::vec2 mPrevPos;
 	glm::vec2 mVel;
-	glm::vec2 mPrevVel;
 	glm::vec2 mAcc;
 	glm::vec2 mForce;
 	float mMass, mInvMass;
 
 	Shape* mpShape;
 	BodyType mType;
+	glm::vec2				mColliderCenter;	// Center of Collider
+
+private:
+	glm::vec2				mPos_mPivot;
+	glm::vec2				mPivot_mColliderCenter;
+	float					isMirrored;
 };

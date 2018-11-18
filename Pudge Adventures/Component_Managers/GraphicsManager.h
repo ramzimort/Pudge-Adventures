@@ -59,8 +59,8 @@ private:
 
 	SDL_GLContext context =  0 ;
 	
-	int SCR_WIDTH =	 1600 ;
-	int SCR_HEIGHT =  900 ;
+	int SCR_WIDTH =	 1280 ;
+	int SCR_HEIGHT =  720 ;
 
 	glm::vec3 camPosition = { 0.0f , -(float)SCR_HEIGHT / 2.0f, 1.0f };
 

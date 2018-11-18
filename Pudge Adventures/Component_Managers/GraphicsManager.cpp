@@ -172,7 +172,7 @@ void GraphicsManager::Draw(GameObject* go)
 			glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y, 0.0f))*
 			glm::scale(glm::mat4(), glm::vec3(pTr->mScale.x, pTr->mScale.y, 0.0f))*
 			glm::translate(glm::mat4(), glm::vec3(pTr->mRotationCenter.x, pTr->mRotationCenter.y, 0.0f))*
-			glm::rotate(glm::mat4(), glm::radians(pTr->mAngle), glm::vec3(0.0f, 0.0f, 1.0f))*
+			glm::rotate(glm::mat4(), pTr->mAngle, glm::vec3(0.0f, 0.0f, 1.0f))*
 			glm::translate(glm::mat4(), glm::vec3(-1.f*pTr->mRotationCenter.x, -1.f*pTr->mRotationCenter.y, 0.0f));
 
 		glm::mat4 Persp = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT), 0.1f, 100.0f);
@@ -199,14 +199,22 @@ void GraphicsManager::Draw(GameObject* go)
 				glUniformMatrix4fv(aview_matrix, 1, false, (float*)&View);
 				
 				if (pBody->mpShape->mType == AABB)
-				{
-					ShapeAABB* pShape = static_cast<ShapeAABB*>(pBody->mpShape);
+				{					
+					ShapeAABB* pShape = static_cast<ShapeAABB*>(pBody->mpShape);/*
+					std::cout << pBody->mColliderCenter.x << " " << pBody->mColliderCenter.y << std::endl;
+					std::cout << pBody->mAngle << " " << pTr->mAngle << std::endl << std::endl;*/
+
+					//glm::vec4 colliderCenter(pBody->mColliderCenter.x, pBody->mColliderCenter.y, 0.f, 0.f);
+					//if(pTr->mScale.x < 0.f)
+					//	colliderCenter = glm::rotate(glm::mat4(), glm::radians(-1.f*pBody->mAngle), glm::vec3(0, 0, 1))*colliderCenter;
+					//else
+					//	colliderCenter = glm::rotate(glm::mat4(), glm::radians(1.f*pBody->mAngle), glm::vec3(0, 0, 1))*colliderCenter;
+
+					
 					Model = 
-						glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y, 0.0f))*
-						glm::scale(glm::mat4(), glm::vec3(pShape->mWidth, pShape->mHeight, 0.0f))*
-						glm::translate(glm::mat4(), glm::vec3(pTr->mRotationCenter.x, pTr->mRotationCenter.y, 0.0f))*
-						glm::rotate(glm::mat4(), glm::radians(pTr->mAngle), glm::vec3(0.0f, 0.0f, 1.0f))*
-						glm::translate(glm::mat4(), glm::vec3(-1.f*pTr->mRotationCenter.x, -1.f*pTr->mRotationCenter.y, 0.0f));
+						glm::translate(glm::mat4(), glm::vec3(pBody->mColliderCenter.x, pBody->mColliderCenter.y,  0.f))*
+						glm::scale(glm::mat4(), glm::vec3(pShape->mWidth, pShape->mHeight, 0.0f));
+						
 					glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
 					glBindVertexArray(VAO[1]);
 					glDrawElements(GL_LINES, 8, GL_UNSIGNED_INT, 0);

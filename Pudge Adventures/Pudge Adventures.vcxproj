@@ -169,10 +169,11 @@
     <ClCompile Include="Events\Event.cpp" />
     <ClCompile Include="Events\InitializeBody.cpp" />
     <ClCompile Include="Events\InvokeHook.cpp" />
+    <ClCompile Include="Events\MirrorArms.cpp" />
     <ClCompile Include="Events\MirrorObject.cpp" />
     <ClCompile Include="Events\PlayerHit.cpp" />
     <ClCompile Include="Events\PlayerMove.cpp" />
-    <ClCompile Include="Events\RotateArmTowardPointer.cpp" />
+    <ClCompile Include="Events\RotateTowardPointer.cpp" />
     <ClCompile Include="Events\ScaleBody.cpp" />
     <ClCompile Include="Events\UpdateBody.cpp" />
     <ClCompile Include="Events\UpdatePosition.cpp" />
@@ -204,10 +205,12 @@
     <ClInclude Include="Events\Event.h" />
     <ClInclude Include="Events\InitializeBody.h" />
     <ClInclude Include="Events\InvokeHook.h" />
+    <ClInclude Include="Events\MIrrorArms.h" />
     <ClInclude Include="Events\MirrorObject.h" />
     <ClInclude Include="Events\PlayerHit.h" />
     <ClInclude Include="Events\PlayerMove.h" />
-    <ClInclude Include="Events\RotateArmTowardPointer.h" />
+    <ClInclude Include="Events\RotateBody.h" />
+    <ClInclude Include="Events\RotateTowardPointer.h" />
     <ClInclude Include="Events\ScaleBody.h" />
     <ClInclude Include="Events\UpdateBody.h" />
     <ClInclude Include="Events\UpdatePosition.h" />

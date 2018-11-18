@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "..\Events\Event.h"
 #include "..\Events\UpdatePosition.h"
+#include "..\Events\MIrrorArms.h"
 #include "..\Events\MirrorObject.h"
 #include "..\Component_Managers\GameObjectManager.h"
 #include <iostream>
@@ -30,8 +31,8 @@ void Arms::Serialize(rapidjson::Document& objectFile)
 
 void Arms::Init()
 { 
-	gpEventManager->Subscribe(ROTATE_ARM_TOWARD_POINTER, mpArms[0]);
-	//gpEventManager->Subscribe(ROTATE_ARM_TOWARD_POINTER, mpArms[1]);
+	gpEventManager->Subscribe(ROTATE_TOWARD_POINTER, mpArms[0]);
+//	gpEventManager->Subscribe(ROTATE_ARM_TOWARD_POINTER, mpArms[1]);
 }
 
 void Arms::Update()
@@ -43,6 +44,7 @@ void Arms::HandleEvent(Event* pEvent)
 {
 	switch (pEvent->mType)
 	{
+	//case INITIALIZE_BODY:
 	case UPDATE_BODY:
 		mpArms[0]->HandleEvent(pEvent);
 		mpArms[1]->HandleEvent(pEvent);

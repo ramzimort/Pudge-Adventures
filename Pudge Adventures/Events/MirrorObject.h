@@ -7,4 +7,6 @@ public:
 	MirrorObjectEvent();
 	~MirrorObjectEvent();
 
+public:
+	bool isMirror;
 };
