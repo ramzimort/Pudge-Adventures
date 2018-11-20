@@ -11,17 +11,13 @@
 extern GameObjectManager* gpGameObjectManager;
 
 ObjectFactory::ObjectFactory()
-{
-}
-
+{ }
 ObjectFactory::~ObjectFactory()
-{
-}
-
+{ }
 void ObjectFactory::LoadLevel(std::string& pFileName) {
 
 	std::ifstream inFile;
-	std::string pFilePath = "Resources\\" + pFileName + ".json";
+	std::string pFilePath = "Resources\\Levels\\" + pFileName + ".json";
 	inFile.open(pFilePath);
 	if (!inFile.is_open())
 	{
@@ -32,45 +28,55 @@ void ObjectFactory::LoadLevel(std::string& pFileName) {
 	rapidjson::Document levelFile { };
 	levelFile.ParseStream(isw);
 	assert(levelFile.IsObject());
-	std::string objectFileName;
-	for (auto& ObjectName : levelFile.GetObject())
+	for (auto& Data : levelFile.GetObject())
 	{
-		for (auto& InstanceName : ObjectName.value.GetObject())
+		std::string DataName = Data.name.GetString();
+		// Add code for other level related information (SCR_SIZE, MUSIC, Color)
+
+
+		////////////////////////////////////////////////////////////////////////
+		
+		if (DataName == "Objects" && Data.value.IsArray())
 		{
-			objectFileName = ObjectName.name.GetString();
-			GameObject* pGameObject = LoadObject(objectFileName);
-			////////////////////////////////////////
-			if (pGameObject == nullptr)
+
+			auto listOfObjects = Data.value.GetArray();
+			for (int i = 0; i < listOfObjects.Size(); i++)
 			{
-				std::cout << "Could not load object: " << objectFileName << std::endl;
-				continue;
-			}
-			/* Add code for modifying instance positions*/
-			Transform* pTr = static_cast<Transform*>(pGameObject->GetComponent(TRANSFORM));
-			if (pTr != nullptr)
-			{
-				for (auto& Archetype : InstanceName.value.GetObject())
+				auto ObjectInstance = listOfObjects[i].GetObject();
+				std::string PrefabName = ObjectInstance["Name"].GetString();
+				GameObject* pGameObject = LoadObject(PrefabName);
+				////////////////////////////////////////
+				if (pGameObject == nullptr)
 				{
-					std::string ArchetypeName = Archetype.name.GetString();
-					if (ArchetypeName == "X")
-						pTr->mPosition.x = Archetype.value.GetFloat();
-					else if (ArchetypeName == "Y")
-						pTr->mPosition.y = Archetype.value.GetFloat();
-					else if (ArchetypeName == "Z")
-						pTr->zValue = Archetype.value.GetFloat();
-					else if (ArchetypeName == "xScale")
-						pTr->mScale.x = Archetype.value.GetFloat();
-					else if (ArchetypeName == "yScale")
-						pTr->mScale.y = Archetype.value.GetFloat();
+					std::cout << "Could not load object: " << PrefabName << std::endl;
+					continue;
+				}
+				/* Add code for modifying instance positions*/
+				Transform* pTr = static_cast<Transform*>(pGameObject->GetComponent(TRANSFORM));
+				if (pTr != nullptr)
+				{
+					for (auto& Override : ObjectInstance)
+					{
+						std::string ArchetypeName = Override.name.GetString();
+						if (ArchetypeName == "PosX")
+							pTr->mPosition.x = Override.value.GetFloat();
+						else if (ArchetypeName == "PosY")
+							pTr->mPosition.y = Override.value.GetFloat();
+						else if (ArchetypeName == "Z")
+							pTr->zValue = Override.value.GetFloat();
+						else if (ArchetypeName == "xScale")
+							pTr->mScale.x = Override.value.GetFloat();
+						else if (ArchetypeName == "yScale")
+							pTr->mScale.y = Override.value.GetFloat();
+					}
 				}
 			}
 		}
 	}
 }
-
 GameObject* ObjectFactory::LoadObject(std::string& pFileName) {
 	std::ifstream inFile;
-	std::string pFilePath = "Resources\\" + pFileName + ".json";
+	std::string pFilePath = "Resources\\Prefabs\\" + pFileName + ".json";
 	inFile.open(pFilePath);
 	GameObject* pNewGameObject = nullptr;
 	if (!inFile.is_open()) {
@@ -95,7 +101,6 @@ GameObject* ObjectFactory::LoadObject(std::string& pFileName) {
 	return pNewGameObject;
 
 }
-
 Component * ObjectFactory::LoadComponent(std::string& componentName, GameObject* pNewGameObject, rapidjson::Document& objectFile)
 {
 	Component* pNewComponent = nullptr;

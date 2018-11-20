@@ -1,0 +1,14 @@
+{
+  "Transform": {
+    "X": 300.0,
+    "Y": 300.0,
+    "Z": 11.0,
+    "Angle": 0.0,
+    "xScale": 64.0,
+    "yScale": 64.0
+  },
+  "Sprite": "DD_Rune.png",
+  "Background": {
+    "Scroll_Speed": -0.2
+  }
+}

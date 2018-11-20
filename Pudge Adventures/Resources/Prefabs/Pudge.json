@@ -1,7 +1,7 @@
 {
   "Transform": {
     "X": 200.0,
-    "Y": 0.0,
+    "Y": 400.0,
     "Z": 1.0,
     "xRotationCenter": 0.0,
     "yRotationCenter": 0.0,
@@ -19,8 +19,10 @@
     "Height": 200
   },
   "Arms": {
-    "LeftArm": "Left_Hand",
-    "RightArm": "Right_Hand"
+    "LeftArm": "Left_Arm",
+    "RightArm": "Right_Arm",
+    "LeftArmWeapon": "Hook",
+    "RightArmWeapon": "Cleaver"
   },
   "Camera": {
 

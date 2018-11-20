@@ -168,6 +168,7 @@
     <ClCompile Include="Events\Collide.cpp" />
     <ClCompile Include="Events\Event.cpp" />
     <ClCompile Include="Events\InitializeBody.cpp" />
+    <ClCompile Include="Events\InvokeCleave.cpp" />
     <ClCompile Include="Events\InvokeHook.cpp" />
     <ClCompile Include="Events\MirrorArms.cpp" />
     <ClCompile Include="Events\MirrorObject.cpp" />
@@ -204,6 +205,7 @@
     <ClInclude Include="Events\Collide.h" />
     <ClInclude Include="Events\Event.h" />
     <ClInclude Include="Events\InitializeBody.h" />
+    <ClInclude Include="Events\InvokeCleave.h" />
     <ClInclude Include="Events\InvokeHook.h" />
     <ClInclude Include="Events\MIrrorArms.h" />
     <ClInclude Include="Events\MirrorObject.h" />
@@ -212,6 +214,7 @@
     <ClInclude Include="Events\RotateBody.h" />
     <ClInclude Include="Events\RotateTowardPointer.h" />
     <ClInclude Include="Events\ScaleBody.h" />
+    <ClInclude Include="Events\SetAngle.h" />
     <ClInclude Include="Events\UpdateBody.h" />
     <ClInclude Include="Events\UpdatePosition.h" />
     <ClInclude Include="Include\stb_image.h" />

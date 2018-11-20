@@ -76,11 +76,7 @@ void Body::Update()
 	UpdatePositionEvent UpdatePosition;
 	UpdatePosition.newPosition = mPos;
 	mpOwner->HandleEvent(&UpdatePosition);
-
-	//mColliderOffset = mPos - mPrevPos + mPivot;
 	
-
-
 }
 void Body::Serialize(rapidjson::Document& objectFile)
 {
@@ -147,29 +143,25 @@ void Body::Serialize(rapidjson::Document& objectFile)
 }
 void Body::Integrate(float Gravity, float dt)
 {
-	if (mMass != 0.0f)
-	{
-		// Save current position
-		mPrevPos = mPos; 
-		// Compute Acceleration
-		mForce.y += mMass * Gravity;
-		mAcc.x = mForce.x * mInvMass;
-		mAcc.y = mForce.y * mInvMass;
-		// Intergrate the velocity
-		mVel.x += mAcc.x * dt;
-		mVel.y += mAcc.y * dt;
+	// Save current position
+	mPrevPos = mPos; 
+	// Compute Acceleration
+	mForce.y += mMass * Gravity;
+	mAcc.x = mForce.x * mInvMass;
+	mAcc.y = mForce.y * mInvMass;
+	// Intergrate the velocity
+	mVel.x += mAcc.x * dt;
+	mVel.y += mAcc.y * dt;
 
-		// Integrate the position
-		mPos.x += mVel.x * dt;
-		mPos.y += mVel.y * dt;
+	// Integrate the position
+	mPos.x += mVel.x * dt;
+	mPos.y += mVel.y * dt;
 
-		// Zero all applied forces
-		mForce = { 0.0f,0.0f };
-
-		UpdateBodyEvent UpdateBodyPosition;
-		UpdateBodyPosition.newPosition = mPos;
-		mpOwner->HandleEvent(&UpdateBodyPosition);
-	}
+	// Zero all applied forces
+	mForce = { 0.0f,0.0f };
+	UpdateBodyEvent UpdateBodyPosition;
+	UpdateBodyPosition.newPosition = mPos;
+	mpOwner->HandleEvent(&UpdateBodyPosition);
 }
 
 void Body::HandleEvent(Event * pEvent)
@@ -200,19 +192,20 @@ void Body::HandleEvent(Event * pEvent)
 
 			break;
 		case UPDATE_BODY:
+		{
 			mPos = static_cast<UpdateBodyEvent*>(pEvent)->newPosition;
 			mColliderCenter = mPos + mPos_mPivot + mPivot_mColliderCenter;
+			UpdatePositionEvent UpdatePosition;
+			UpdatePosition.newPosition = mPos;
+			mpOwner->HandleEvent(&UpdatePosition);
 			break;
-		case ROTATE_BODY:
-		{
-			RotateBodyEvent* pRotateBody = static_cast<RotateBodyEvent*>(pEvent);
-			float deltaAngle = pRotateBody->deltaAngle;
-			std::cout << "DeltaAngle: " << deltaAngle << std::endl;
-			mPivot_mColliderCenter =
-				static_cast<glm::vec2>(glm::rotate(glm::mat4(), deltaAngle, glm::vec3(0, 0, 1))*
-				glm::vec4(mPivot_mColliderCenter,0.f,0.f));
+
 		}
-		break;
+		case ROTATE_BODY:
+			mPivot_mColliderCenter =
+				static_cast<glm::vec2>(glm::rotate(glm::mat4(), static_cast<RotateBodyEvent*>(pEvent)->deltaAngle, glm::vec3(0, 0, 1))*
+				glm::vec4(mPivot_mColliderCenter,0.f,0.f));
+			break;
 		case MIRROR_OBJECT:
 			mPos_mPivot.x = -mPos_mPivot.x;
 			mPivot_mColliderCenter.x = -mPivot_mColliderCenter.x;

@@ -1,0 +1,19 @@
+{
+  "Transform": {
+    "Z": 1.1,
+    "xRotationCenter": 0.08,
+    "yRotationCenter": 0.31,
+    "Angle": 0.0,
+    "xScale": 200.0,
+    "yScale": 200.0
+  },
+  "Sprite": "Cleaver.png",
+  "Body": {
+    "Shape": "AABB",
+    "xColliderCenter": -0.35,
+    "yColliderCenter": -0.1,
+    "Width": 30,
+    "Height": 30
+  }
+}
+

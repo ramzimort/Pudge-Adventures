@@ -1,0 +1,15 @@
+{
+  "Objects": [
+    {
+      "Prefab": "Pudge"
+    },
+    {
+      "Prefab": "Winter_Platform",
+      "X": 300
+    },
+    {
+      "Prefab": "Winter_Platform",
+      "X": 600
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "Objects": [
+    {
+      "Name": "Pudge"
+    },
+    {
+      "Name": "Field"
+    },
+    {
+      "Name": "Platform4",
+      "PosX": 842,
+      "PosY": -150
+    },
+    {
+      "Name": "Platform_Cliff",
+      "xScale": -128,
+      "PosX": 655,
+      "PosY": -150
+    },
+    {
+      "Name": "Platform_Cliff",
+      "PosX": 1029,
+      "PosY": -150
+    },
+    {
+      "Name": "Platform_Cliff",
+      "xScale": -128,
+      "PosX": 120,
+      "PosY": -200
+    },
+    {
+      "Name": "Platform4",
+      "PosX": 307,
+      "PosY": -200
+    },
+    {
+      "Name": "Platform_Cliff",
+      "PosX": 494,
+      "PosY": -200
+    },
+    {
+      "Name": "Dark_Cloud",
+      "PosX": 210,
+      "PosY": 250
+    },
+    {
+      "Name": "Dark_Cloud",
+      "PosX": 872,
+      "PosY": 250
+    },
+    {
+      "Name": "Dark_Cloud",
+      "PosX": 585,
+      "PosY": 250
+    },
+    {
+      "Name": "Light_Tree",
+      "PosX": 159,
+      "PosY": 0
+    },
+    {
+      "Name": "Light_Tower",
+      "PosX": 507,
+      "PosY": 0
+    },
+    {
+      "Name": "Light_Tree",
+      "PosX": 914,
+      "PosY": 0
+    }
+
+  ]
+}

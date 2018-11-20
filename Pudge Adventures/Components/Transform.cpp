@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "..\Events\InitializeBody.h"
 #include "..\Events\RotateTowardPointer.h"
+#include "..\Events\SetAngle.h"
 #include "..\Events\UpdatePosition.h"
 #include "..\Events\RotateBody.h"
 #include "..\Events\MirrorObject.h"
@@ -52,6 +53,10 @@ void Transform::HandleEvent(Event* pEvent)
 	case MIRROR_OBJECT:
 		mScale.x *= -1.f;
 		break;
+	case SET_ANGLE:
+		RotateBody(mAngle - static_cast<SetAngleEvent*>(pEvent)->mAngle);
+		mAngle = static_cast<SetAngleEvent*>(pEvent)->mAngle;
+		break;
 	case ROTATE_TOWARD_POINTER:
 	{
 		float angle0 = mAngle;
@@ -66,14 +71,7 @@ void Transform::HandleEvent(Event* pEvent)
 			mAngle *= -1.f;
 
 		float deltaAngle = mAngle - angle0;
-		if (mScale.x < 0.f)
-			deltaAngle *= -1.f;
-
-		std::cout << "Angle: " << mAngle*180.f/3.1415f << std::endl; 
-		RotateBodyEvent RotateBody;
-		RotateBody.deltaAngle = deltaAngle;
-		RotateBody.mPivot = glm::vec2(mRotationCenter.x*mScale.x, mRotationCenter.y*mScale.y);
-		mpOwner->HandleEvent(&RotateBody);
+		RotateBody(deltaAngle);
 	}
 		break;
 	}
@@ -102,4 +100,14 @@ void Transform::Serialize(rapidjson::Document& objectFile)
 		else if (componentValueName == "yRotationCenter")
 			mRotationCenter.y = ComponentValues.value.GetFloat();
 	}
+}
+
+void Transform::RotateBody(float deltaAngle)
+{
+	if (mScale.x > 0.f)
+		deltaAngle *= -1.f;
+	RotateBodyEvent RotateBody;
+	RotateBody.deltaAngle = deltaAngle;
+	RotateBody.mPivot = glm::vec2(mRotationCenter.x*mScale.x, mRotationCenter.y*mScale.y);
+	mpOwner->HandleEvent(&RotateBody);
 }

@@ -1,7 +1,7 @@
 {
   "Transform": {
-    "Z": 1.1,
-    "xRotationCenter": 0.125,
+    "Z": 1.2,
+    "xRotationCenter": 0.08,
     "yRotationCenter": 0.31,
     "Angle": 0.0,
     "xScale": 200.0,
@@ -10,8 +10,8 @@
   "Sprite": "Pudge_Arm.png",
   "Body": {
     "Shape": "AABB",
-    "xColliderCenter": 0.15,
-    "yColliderCenter": 0.21,
+    "xColliderCenter": 0.05,
+    "yColliderCenter": -0.05,
     "Width": 0,
     "Height": 0
   }

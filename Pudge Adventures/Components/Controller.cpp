@@ -7,6 +7,7 @@
 #include "..\Events\PlayerHit.h"
 #include "..\Events\PlayerMove.h"
 #include "..\Events\InvokeHook.h"
+#include "..\Events\InvokeCleave.h"
 #include <SDL2/SDL_scancode.h>
 
 extern Input_Manager* gpInputManager;
@@ -46,8 +47,8 @@ void Controller::Update()
 		}
 		if (gpInputManager->isTriggered(SDL_SCANCODE_E))
 		{
-			//PIE.aType = CLEAVE;
-			//gpEventManager->BroadcaseEventToSubscribers(&PIE);
+			InvokeCleaveEvent InvokeCleave;
+			mpOwner->HandleEvent(&InvokeCleave);
 		}
 	}
 

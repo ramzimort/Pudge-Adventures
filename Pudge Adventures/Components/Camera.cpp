@@ -6,6 +6,7 @@
 #include "..\Events\RotateTowardPointer.h"
 #include "..\Events\UpdatePosition.h"
 #include "..\Events\CameraMove.h"
+#include <iostream>
 
 extern GraphicsManager* gpGfxManager;
 extern EventManager* gpEventManager;
@@ -23,13 +24,12 @@ void Camera::Init()
 {
 	rightBound = (float)gpGfxManager->getWindowWidth() / 4.0f;
 	upperBound = 0;
+
 	//upperBound = (float)gpGfxManager->getWindowHeight() / 4.0f;
 }
 
 void Camera::Update()
-{
-
-}
+{ }
 
 void Camera::HandleEvent(Event* pEvent)
 {
@@ -50,8 +50,8 @@ void Camera::HandleEvent(Event* pEvent)
 			gpEventManager->BroadcaseEventToSubscribers(&CameraMove);
 		}
 		mCameraCenter.y = bodyCurrentPos.y;
-		if (mCameraCenter.y < 0.f)
-			mCameraCenter.y = 0.f;
+		if (mCameraCenter.y < 100.f)
+			mCameraCenter.y = 100.f;
 		break;
 	}
 	case INVOKE_HOOK:

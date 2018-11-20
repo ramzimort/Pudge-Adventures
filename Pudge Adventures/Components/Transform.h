@@ -19,4 +19,7 @@ class Transform : public Component{
 		glm::vec2				mScale;				// Current scale
 		glm::vec2				mRotationCenter;	// Center of Rotation
 		float					mAngle;				// Currenting value
+
+private:
+	void RotateBody(float deltaAngle);
 };

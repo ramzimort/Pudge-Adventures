@@ -6,15 +6,28 @@
 
 class Arms : public Component
 {
-	public:
-		Arms();
-		~Arms();
+public:
+	Arms();
+	~Arms();
 
-		void Init();
-		void Update();
-		void HandleEvent(Event* pEvent);
-		void Serialize(rapidjson::Document& objectFile);
+	void Init();
+	void Update();
+	void HandleEvent(Event* pEvent);
+	void Serialize(rapidjson::Document& objectFile);
 
-	public:
-		GameObject* mpArms[2];
+private:
+	void SetRightArmAngle();
+	void SetLeftArmAngle();
+
+private:
+	GameObject* leftArm;
+	GameObject*	hook;
+	float leftArmAngle = 0.f;
+
+	GameObject*	rightArm;
+	GameObject*	cleaver;
+	float rightArmAngle = 0.f;
+
+	bool isCleaving = false;
+	bool isHooking = false;
 };

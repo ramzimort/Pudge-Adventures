@@ -1,0 +1,14 @@
+{
+  "Transform": {
+    "X": 300.0,
+    "Y": -125.0,
+    "Z": 100.0,
+    "Angle": 0.0,
+    "xScale": 2048.0,
+    "yScale": 512.0
+  },
+  "Sprite": "Field.png",
+  "Background": {
+    "Scroll_Speed": -1.0
+  }
+}
