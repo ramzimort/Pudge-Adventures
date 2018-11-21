@@ -10,6 +10,7 @@
 #include "..\Events\MirrorObject.h"
 #include "..\Events\SetAngle.h"
 #include "..\Events\UpdateMouseWorldPosition.h"
+#include "..\Events\ReturnHook.h"
 #include "..\Component_Managers\GameObjectManager.h"
 #include <iostream>
 
@@ -49,6 +50,8 @@ void Arms::Init()
 { 
 	leftArm->Init();
 	pivotToCollider_ReferenceL = (static_cast<Body*>(leftArm->GetComponent(BODY))->mPivot_mColliderCenter);
+
+	gpEventManager->Subscribe(RETURN_HOOK, mpOwner);
 }
 
 void Arms::Update()
@@ -79,14 +82,21 @@ void Arms::Update()
 			isWaitingHook = true;
 		}
 		SetLeftArmAngle();
+		
+		if (isWaitingHook)
+		{
+			ReturnHookEvent* ReturnHook = new ReturnHookEvent(1.f);
+			gpEventManager->AddTimeEvent(ReturnHook);
+			glm::vec2 hookDirection = static_cast<Body*>(hook->GetComponent(BODY))->mPivot_mColliderCenter;
+			static_cast<Body*>(hook->GetComponent(BODY))->mVel = hookSpeed * hookDirection / glm::length(hookDirection);
+		}
 	}
 
 	if (isWaitingHook)
 	{
-		glm::vec2 hookDirection = static_cast<Body*>(hook->GetComponent(BODY))->mPivot_mColliderCenter;
-		static_cast<Body*>(hook->GetComponent(BODY))->mVel = hookSpeed * hookDirection / glm::length(hookDirection);
+		
 		static_cast<Body*>(mpOwner->GetComponent(BODY))->mInvMass = 0.f;
-		static_cast<Body*>(mpOwner->GetComponent(BODY))->mVel = glm::vec2(0.f);
+		static_cast<Body*>(mpOwner->GetComponent(BODY))->mVel = glm::vec2(0.f);		
 	}
 }
 
@@ -160,7 +170,9 @@ void Arms::HandleEvent(Event* pEvent)
 			/* ================================================= Block Movement Inputs ===================================================================*/
 		}
 		break;
-
+	case RETURN_HOOK:
+		static_cast<Body*>(hook->GetComponent(BODY))->mVel *= -1.f;
+		break;
 	case UPDATE_MOUSE_WORLD_POSITION:
 		mousePos = static_cast<UpdateMouseWorldPositionEvent*>(pEvent)->MouseWorldPositon;
 		break;

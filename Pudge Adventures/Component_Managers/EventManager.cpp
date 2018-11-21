@@ -35,7 +35,7 @@ void EventManager::Update()
 		pEvent->mTimer -= gpFRC->GetFrameTime();
 		if (pEvent->mTimer <= 0.0f)
 		{
-			BroadcastEvent(pEvent);
+			BroadcaseEventToSubscribers(pEvent);
 			delete pEvent;
 			it = mTimedEvents.erase(it);
 		}

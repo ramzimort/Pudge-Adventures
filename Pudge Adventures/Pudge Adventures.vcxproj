@@ -211,6 +211,7 @@
     <ClInclude Include="Events\MirrorObject.h" />
     <ClInclude Include="Events\PlayerHit.h" />
     <ClInclude Include="Events\PlayerMove.h" />
+    <ClInclude Include="Events\ReturnHook.h" />
     <ClInclude Include="Events\RotateBody.h" />
     <ClInclude Include="Events\RotateTowardPointer.h" />
     <ClInclude Include="Events\ScaleBody.h" />
