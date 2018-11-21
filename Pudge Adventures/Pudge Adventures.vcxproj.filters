@@ -259,6 +259,12 @@
     <ClInclude Include="Events\SetAngle.h">
       <Filter>Events\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Events\UpdateMouseScreenPosition.h">
+      <Filter>Events\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Events\UpdateMouseWorldPosition.h">
+      <Filter>Events\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

@@ -76,7 +76,7 @@ public:
 	BodyType mType;
 	glm::vec2				mColliderCenter;	// Center of Collider
 
-private:
+public:
 	glm::vec2				mPos_mPivot;
 	glm::vec2				mPivot_mColliderCenter;
 	float					isMirrored;

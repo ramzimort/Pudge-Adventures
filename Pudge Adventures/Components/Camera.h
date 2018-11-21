@@ -6,17 +6,20 @@
 
 class Camera : public Component
 {
-	public:
-		Camera();
-		~Camera();
+public:
+	Camera();
+	~Camera();
 
-		void Init();
-		void Update();
-		void HandleEvent(Event* pEvent);
-		void Serialize(rapidjson::Document& objectFile);
+	void Init();
+	void Update();
+	void HandleEvent(Event* pEvent);
+	void Serialize(rapidjson::Document& objectFile);
 
-	public:
-		glm::vec2 mCameraCenter;
-		float rightBound;
-		float upperBound;
+public:
+	glm::vec2 mCameraCenter;
+	float rightBound;
+	float upperBound;
+
+private:
+	void UpdateMousePosWorldSpace(glm::vec2& MouseScreenPosition);
 };

@@ -20,14 +20,27 @@ private:
 	void SetLeftArmAngle();
 
 private:
+	/* =============== Left Arm Data =================== */
 	GameObject* leftArm;
 	GameObject*	hook;
 	float leftArmAngle = 0.f;
+	float leftArmFinalAngle = 0.f;
+	float leftArmRotationSpeed = 0.f;
+	glm::vec2 pivotToCollider_ReferenceL;
+	float hookSpeed;
+	bool isHooking = false;
+	bool isWaitingHook = false;
 
+	/* =============== Right Arm Data =================== */
 	GameObject*	rightArm;
 	GameObject*	cleaver;
 	float rightArmAngle = 0.f;
-
+	float rightArmFinalAngle = 0.f;
+	float rightArmRotationSpeed = 0.f;
+	glm::vec2 pivotToCollider_ReferenceR;
 	bool isCleaving = false;
-	bool isHooking = false;
+	
+	/* =============== General Data ===================== */
+	bool isMirrored = false;
+	glm::vec2 mousePos;
 };

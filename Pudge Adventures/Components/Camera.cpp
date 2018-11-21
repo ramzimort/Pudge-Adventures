@@ -6,6 +6,8 @@
 #include "..\Events\RotateTowardPointer.h"
 #include "..\Events\UpdatePosition.h"
 #include "..\Events\CameraMove.h"
+#include "..\Events\UpdateMouseScreenPosition.h"
+#include "..\Events\UpdateMouseWorldPosition.h"
 #include <iostream>
 
 extern GraphicsManager* gpGfxManager;
@@ -54,14 +56,8 @@ void Camera::HandleEvent(Event* pEvent)
 			mCameraCenter.y = 100.f;
 		break;
 	}
-	case INVOKE_HOOK:
-		InvokeHookEvent* invokeHook = static_cast<InvokeHookEvent*>(pEvent);
-		RotateTowardPointerEvent RTPe;
-		glm::vec2 cameraPosWorldSpace = invokeHook->pointerPos + mCameraCenter;
-		cameraPosWorldSpace.x -= (float)gpGfxManager->getWindowWidth() / 2.f;
-		cameraPosWorldSpace.y -= (float)gpGfxManager->getWindowHeight() / 2.f;
-		RTPe.PointerPositonWorldSpace = cameraPosWorldSpace;
-		gpEventManager->BroadcaseEventToSubscribers(&RTPe);
+	case UPDATE_MOUSE_SCREEN_POSITION:
+		UpdateMousePosWorldSpace(static_cast<UpdateMouseScreenPositionEvent*>(pEvent)->MouseScreenPosition);
 		break;
 	}
 }
@@ -69,4 +65,13 @@ void Camera::HandleEvent(Event* pEvent)
 void Camera::Serialize(rapidjson::Document& objectFile)
 {
 
+}
+
+void Camera::UpdateMousePosWorldSpace(glm::vec2& MouseScreenPosition)
+{
+	glm::vec2 cameraPosWorldSpace = MouseScreenPosition + mCameraCenter;
+	cameraPosWorldSpace.x -= (float)gpGfxManager->getWindowWidth() / 2.f;
+	cameraPosWorldSpace.y -= (float)gpGfxManager->getWindowHeight() / 2.f;
+	UpdateMouseWorldPositionEvent UpdateMouseWorldPos(cameraPosWorldSpace);
+	mpOwner->HandleEvent(&UpdateMouseWorldPos);
 }

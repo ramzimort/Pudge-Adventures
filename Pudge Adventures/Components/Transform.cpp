@@ -48,7 +48,7 @@ void Transform::HandleEvent(Event* pEvent)
 		}
 		break;
 	case UPDATE_POSITION:
-		mPosition = static_cast<UpdatePositionEvent*>(pEvent)->newPosition; 
+		mPosition = static_cast<UpdatePositionEvent*>(pEvent)->newPosition;
 		break;
 	case MIRROR_OBJECT:
 		mScale.x *= -1.f;
@@ -56,23 +56,6 @@ void Transform::HandleEvent(Event* pEvent)
 	case SET_ANGLE:
 		RotateBody(mAngle - static_cast<SetAngleEvent*>(pEvent)->mAngle);
 		mAngle = static_cast<SetAngleEvent*>(pEvent)->mAngle;
-		break;
-	case ROTATE_TOWARD_POINTER:
-	{
-		float angle0 = mAngle;
-		RotateTowardPointerEvent* RTPe = static_cast<RotateTowardPointerEvent*>(pEvent);
-		glm::vec2 pivotToPointer =
-			RTPe->PointerPositonWorldSpace -
-			(mPosition +
-			glm::vec2(mRotationCenter.x*mScale.x, mRotationCenter.y*mScale.y));;
-		mAngle = PI/2 + atan2f(pivotToPointer.y, pivotToPointer.x);
-		
-		if (mScale.x < 0.f)
-			mAngle *= -1.f;
-
-		float deltaAngle = mAngle - angle0;
-		RotateBody(deltaAngle);
-	}
 		break;
 	}
 }

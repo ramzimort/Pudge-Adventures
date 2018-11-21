@@ -8,6 +8,7 @@
 #include "..\Events\PlayerMove.h"
 #include "..\Events\InvokeHook.h"
 #include "..\Events\InvokeCleave.h"
+#include "..\Events\UpdateMouseScreenPosition.h"
 #include <SDL2/SDL_scancode.h>
 
 extern Input_Manager* gpInputManager;
@@ -40,9 +41,10 @@ void Controller::Update()
 		}
 		if (gpInputManager->isTriggered(SDL_SCANCODE_Q))
 		{
+			// Broadcast Pointer Position
+			UpdateMouseScreenPositionEvent UpdateMouseScreenPosition((float)gpInputManager->PointerLocation()[0], (float)gpInputManager->PointerLocation()[1]);
+			mpOwner->HandleEvent(&UpdateMouseScreenPosition);
 			InvokeHookEvent InvokeHook;
-			InvokeHook.pointerPos.x = (float)gpInputManager->PointerLocation()[0];
-			InvokeHook.pointerPos.y = (float)gpInputManager->PointerLocation()[1];
 			mpOwner->HandleEvent(&InvokeHook);
 		}
 		if (gpInputManager->isTriggered(SDL_SCANCODE_E))
