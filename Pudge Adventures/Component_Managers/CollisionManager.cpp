@@ -81,24 +81,50 @@ bool CheckCollisionCircleAABB(	Shape* pShape1,
 {
 	ShapeCircle* C1 = static_cast<ShapeCircle*>(pShape1);
 	ShapeAABB* S2 = static_cast<ShapeAABB*>(pShape2);
+	
+	glm::vec2 
+		Center1 = C1->mpOwnerBody->mColliderCenter,
+		Center2 = S2->mpOwnerBody->mColliderCenter;
+	float
+		L1 = Center1.x - C1->mRadius,
+		R1 = Center1.x + C1->mRadius,
+		U1 = Center1.y + C1->mRadius,
+		B1 = Center1.y - C1->mRadius,
+		L2 = Center2.x - S2->mWidth / 2.f,
+		R2 = Center2.x + S2->mWidth / 2.f,
+		U2 = Center2.y + S2->mHeight / 2.f,
+		B2 = Center2.y - S2->mHeight / 2.f;
 
-	float 
-		L1 = C1->mpOwnerBody->mPos.x - C1->mRadius,
-		R1 = C1->mpOwnerBody->mPos.x + C1->mRadius,
-		U1 = C1->mpOwnerBody->mPos.y + C1->mRadius,
-		B1 = C1->mpOwnerBody->mPos.y - C1->mRadius,
-		L2 = S2->mpOwnerBody->mPos.x - S2->mWidth / 2.f,
-		R2 = S2->mpOwnerBody->mPos.x + S2->mWidth / 2.f,
-		U2 = S2->mpOwnerBody->mPos.y + S2->mHeight / 2.f,
-		B2 = S2->mpOwnerBody->mPos.y - S2->mHeight / 2.f;
+	// 8 different cases for CIRCLE location wrt AABB
+	// West 
 	if (L2 > R1)
 		return false;
+	// East
 	if (L1 > R2)
 		return false;
+	// North
 	if (B1 > U2)
 		return false;
+	// South
 	if (B2 > U1)
 		return false;
+	// NorthWest
+	if (Center1.x < L2 && Center1.y > U2)
+		if (glm::length2(Center1 - glm::vec2(L2, U2)) > C1->mRadius)
+			return false;
+	// Northeast
+	if (Center1.x > R2 && Center1.y > U2)
+		if (glm::length2(Center1 - glm::vec2(R2, U2)) > C1->mRadius)
+			return false;
+	// Southwest
+	if (Center1.x < L2 && Center1.y < B2)
+		if (glm::length2(Center1 - glm::vec2(L2, B2)) > C1->mRadius)
+			return false;
+	// Southeast
+	if (Center1.x > R2 && Center1.y < B2)
+		if (glm::length2(Center1 - glm::vec2(R2, B2)) > C1->mRadius)
+			return false;
+
 
 	glm::vec2 C2C1 = C1->mpOwnerBody->mPos - S2->mpOwnerBody->mPos;
 	float centerDistance = glm::length(C2C1);
