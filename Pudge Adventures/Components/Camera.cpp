@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include "Transform.h"
 #include "..\Component_Managers\GraphicsManager.h"
 #include "..\Component_Managers\EventManager.h"
 #include "..\Events\InitializeBody.h"
@@ -28,6 +29,10 @@ void Camera::Init()
 	upperBound = 0;
 
 	//upperBound = (float)gpGfxManager->getWindowHeight() / 4.0f;
+	
+	Transform* pTr = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM));
+	if(pTr != nullptr)
+		mCameraCenter = pTr->mPosition;
 }
 
 void Camera::Update()
@@ -37,9 +42,6 @@ void Camera::HandleEvent(Event* pEvent)
 {
 	switch (pEvent->mType)
 	{
-	case INITIALIZE_BODY:
-		mCameraCenter = static_cast<InitializeBodyEvent*>(pEvent)->InitialPosition;
-		break;
 	case UPDATE_POSITION:
 	{
 		glm::vec2 bodyCurrentPos = static_cast<UpdatePositionEvent*>(pEvent)->newPosition;
@@ -64,7 +66,6 @@ void Camera::HandleEvent(Event* pEvent)
 
 void Camera::Serialize(rapidjson::Document& objectFile)
 {
-
 }
 
 void Camera::UpdateMousePosWorldSpace(glm::vec2& MouseScreenPosition)

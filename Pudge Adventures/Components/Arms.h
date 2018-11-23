@@ -28,6 +28,7 @@ private:
 	float leftArmRotationSpeed = 0.f;
 	glm::vec2 pivotToCollider_ReferenceL;
 	float hookSpeed;
+	float hookReturnTime;
 	bool isHooking = false;
 	bool isWaitingHook = false;
 

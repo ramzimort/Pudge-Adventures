@@ -1,6 +1,7 @@
 
 #include "Background.h"
 #include "GameObject.h"
+#include "Transform.h"
 #include "..\Component_Managers\EventManager.h"
 #include "..\Events\InitializeBody.h"
 #include "..\Events\CameraMove.h"
@@ -20,6 +21,8 @@ Background::~Background()
 void Background::Init()
 { 
 	gpEventManager->Subscribe(CAMERA_MOVE, mpOwner);
+	Transform* pTr = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM));
+	mPos = pTr->mPosition;
 }
 
 void Background::Update()
@@ -33,9 +36,6 @@ void Background::HandleEvent(Event* pEvent)
 { 
 	switch (pEvent->mType)
 	{
-	case INITIALIZE_BODY:
-		mPos = static_cast<InitializeBodyEvent*>(pEvent)->InitialPosition;
-		break;
 	case CAMERA_MOVE:
 		mPos.x -= static_cast<CameraMoveEvent*>(pEvent)->deltaX*scrollingSpeed;
 		break;

@@ -1,5 +1,6 @@
 #include "Body.h"
 #include "GameObject.h"
+#include "Transform.h"
 #include "..\Component_Managers\CollisionManager.h"
 #include "..\Events\PlayerMove.h"
 #include "..\Events\UpdatePosition.h"
@@ -69,7 +70,15 @@ Body::~Body()
 }
 void Body::Init()
 { 
-	
+	Transform* pTr = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM));
+	if (pTr != nullptr)
+	{
+		mPos = pTr->mPosition;
+		mPos_mPivot = pTr->mRotationCenter * pTr->mScale;
+		mColliderCenter = mColliderCenter * pTr->mScale;
+		mColliderCenter += mPos;
+		mPivot_mColliderCenter = mColliderCenter - (mPos + mPos_mPivot);
+	}
 }
 void Body::Update()
 {
@@ -128,10 +137,16 @@ void Body::Serialize(rapidjson::Document& objectFile)
 			std::string objectType = ComponentValues.value.GetString();
 			if (objectType == "Rigid")
 				mType = RIGID;
-			else if (objectType == "Interactive")
-				mType = INTERACTIVE;
+			else if (objectType == "Pudge")
+				mType = PUDGE;
+			else if (objectType == "Enemy")
+				mType = ENEMY;
+			else if (objectFile == "Cleaver")
+				mType = CLEAVER;
 			else if (objectType == "Hook")
 				mType = HOOK;
+			else if (objectType == "Rune")
+				mType = RUNE;
 			else
 				mType = NONE;
 		}
@@ -181,7 +196,7 @@ void Body::HandleEvent(Event * pEvent)
 				mForce.y += 400000.0f;
 				break;
 			}
-			break;
+			break;/*
 		case INITIALIZE_BODY:
 			mPos = static_cast<InitializeBodyEvent*>(pEvent)->InitialPosition;
 			mPos_mPivot = static_cast<InitializeBodyEvent*>(pEvent)->mPivot;
@@ -189,8 +204,7 @@ void Body::HandleEvent(Event * pEvent)
 			mColliderCenter.y *= static_cast<InitializeBodyEvent*>(pEvent)->mScale.y;
 			mColliderCenter += mPos;
 			mPivot_mColliderCenter = mColliderCenter - (mPos + mPos_mPivot);
-
-			break;
+			break;*/
 		case UPDATE_BODY:
 		{
 			mPos = static_cast<UpdateBodyEvent*>(pEvent)->newPosition;

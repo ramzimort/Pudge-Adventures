@@ -20,6 +20,7 @@ class EventManager
 		void AddTimeEvent(Event* pEvent);
 		void Subscribe(EventType type, GameObject* pGameObject);
 		void Unsubscribe(EventType type, GameObject* pGameObject);
+		void ForceTimedEvent(EventType type);
 	
 public:
 		std::list<Event*> mTimedEvents;

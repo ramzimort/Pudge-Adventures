@@ -70,6 +70,7 @@ void ObjectFactory::LoadLevel(std::string& pFileName) {
 							pTr->mScale.y = Override.value.GetFloat();
 					}
 				}
+				pGameObject->Init();
 			}
 		}
 	}

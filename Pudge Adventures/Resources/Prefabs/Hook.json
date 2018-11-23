@@ -10,6 +10,7 @@
   "Sprite": "Hook.png",
   "Body": {
     "Shape": "AABB",
+    "Type": "Hook",
     "xColliderCenter": 0.075,
     "yColliderCenter": -0.3,
     "Width": 30,

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <stb_image.h>
 
+
 extern ResourceManager* gpResourceManager;
 
 Texture::Texture(std::string& pFileName)

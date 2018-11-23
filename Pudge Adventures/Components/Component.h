@@ -26,8 +26,8 @@ public:
 	virtual void Init() = 0;
 	virtual void Update() = 0;
 	unsigned int getType();
-	virtual void Serialize(rapidjson::Document& objFile) {}
-	virtual void HandleEvent(Event* pEvent) {}
+	virtual void Serialize(rapidjson::Document& objFile) { }
+	virtual void HandleEvent(Event* pEvent) { }
 
 public:
 	GameObject* mpOwner;

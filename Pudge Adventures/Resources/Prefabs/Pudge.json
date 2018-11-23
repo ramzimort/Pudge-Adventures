@@ -14,8 +14,8 @@
   "Body": {
     "Mass": 10.0,
     "Shape": "AABB",
-    "Type": "Interactive",
-    "Width": 200,
+    "Type": "Pudge",
+    "Width": 60,
     "Height": 200
   },
   "Arms": {

@@ -10,6 +10,7 @@
 #include "..\Events\MirrorObject.h"
 #include "..\Events\SetAngle.h"
 #include "..\Events\UpdateMouseWorldPosition.h"
+#include "..\Events\InitializeBody.h"
 #include "..\Events\ReturnHook.h"
 #include "..\Component_Managers\GameObjectManager.h"
 #include <iostream>
@@ -19,39 +20,49 @@ extern EventManager* gpEventManager;
 extern GameObjectManager* gpGameObjectManager;
 
 constexpr float PI = 3.14159265358979323846f;
+float findAcuteAngle(glm::vec2&, glm::vec2&);
 
 Arms::Arms() : Component(ARMS)
 { }
-
 Arms::~Arms()
 { }
-
 void Arms::Serialize(rapidjson::Document& objectFile)
 {
 	std::string objectFileName;
 	objectFileName = objectFile["Arms"]["LeftArm"].GetString();
 	leftArm = gpObjectFactory->LoadObject(objectFileName);
+	leftArm->Init();
 
 	objectFileName = objectFile["Arms"]["RightArm"].GetString();
 	rightArm = gpObjectFactory->LoadObject(objectFileName);
+	rightArm->Init();
 
 	objectFileName = objectFile["Arms"]["LeftArmWeapon"].GetString();
 	hook = gpObjectFactory->LoadObject(objectFileName);
+	hook->Init();
 
 	objectFileName = objectFile["Arms"]["RightArmWeapon"].GetString();
 	cleaver = gpObjectFactory->LoadObject(objectFileName);
+	cleaver->Init();
 
 	leftArmRotationSpeed = PI / 10;
 	rightArmRotationSpeed = PI / 100;
 	hookSpeed = 500.f;
+	hookReturnTime = 1.f;
+
+	
 }
 
 void Arms::Init()
 { 
-	leftArm->Init();
-	pivotToCollider_ReferenceL = (static_cast<Body*>(leftArm->GetComponent(BODY))->mPivot_mColliderCenter);
-
 	gpEventManager->Subscribe(RETURN_HOOK, mpOwner);
+	gpEventManager->Subscribe(GRAB_HOOK, mpOwner);
+
+	Body* pBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
+	if(pBody != nullptr)
+		pivotToCollider_ReferenceL = (static_cast<Body*>(hook->GetComponent(BODY))->mPivot_mColliderCenter);
+
+	static_cast<Body*>(hook->GetComponent(BODY))->mType = NONE;
 }
 
 void Arms::Update()
@@ -85,19 +96,20 @@ void Arms::Update()
 		
 		if (isWaitingHook)
 		{
-			ReturnHookEvent* ReturnHook = new ReturnHookEvent(1.f);
+			ReturnHookEvent* ReturnHook = new ReturnHookEvent(hookReturnTime);
 			gpEventManager->AddTimeEvent(ReturnHook);
 			glm::vec2 hookDirection = static_cast<Body*>(hook->GetComponent(BODY))->mPivot_mColliderCenter;
 			static_cast<Body*>(hook->GetComponent(BODY))->mVel = hookSpeed * hookDirection / glm::length(hookDirection);
+			static_cast<Body*>(hook->GetComponent(BODY))->mType = HOOK;
 		}
 	}
 
 	if (isWaitingHook)
 	{
-		
 		static_cast<Body*>(mpOwner->GetComponent(BODY))->mInvMass = 0.f;
-		static_cast<Body*>(mpOwner->GetComponent(BODY))->mVel = glm::vec2(0.f);		
+		static_cast<Body*>(mpOwner->GetComponent(BODY))->mVel = glm::vec2(0.f);
 	}
+
 }
 
 void Arms::HandleEvent(Event* pEvent)
@@ -118,6 +130,7 @@ void Arms::HandleEvent(Event* pEvent)
 		if (!isCleaving)
 		{
 			isCleaving = true;
+			static_cast<Body*>(cleaver->GetComponent(BODY))->mType = CLEAVER;
 			rightArmAngle = -PI;
 			rightArmFinalAngle = 0.f;
 			SetRightArmAngle();
@@ -127,38 +140,20 @@ void Arms::HandleEvent(Event* pEvent)
 		if (!isHooking)
 		{
 			isHooking = true;			
-
 			// Check if Mirroring required
-			glm::vec2 pivotToMouse = mousePos - (static_cast<Body*>(leftArm->GetComponent(BODY))->mPos + static_cast<Body*>(leftArm->GetComponent(BODY))->mPos_mPivot);
+			glm::vec2 pivotToMouse = mousePos - (static_cast<Body*>(hook->GetComponent(BODY))->mPos + static_cast<Body*>(hook->GetComponent(BODY))->mPos_mPivot);
 			if (pivotToMouse.x > 0.f && !isMirrored || pivotToMouse.x < 0.f && isMirrored)
 			{
 				MirrorObjectEvent MirrorObject;
 				mpOwner->HandleEvent(&MirrorObject);
 			}
 			// Update Pivot to Mouse after Mirroring
-			pivotToMouse = mousePos - (static_cast<Body*>(mpOwner->GetComponent(BODY))->mPos + static_cast<Body*>(leftArm->GetComponent(BODY))->mPos_mPivot);
-			std::cout << pivotToMouse.x << std::endl;
+			pivotToMouse = mousePos - (static_cast<Body*>(hook->GetComponent(BODY))->mPos + static_cast<Body*>(hook->GetComponent(BODY))->mPos_mPivot);
+
 
 			/* ================================================= Get Angle for Arm Rotation ===================================================================*/
-			glm::vec2 v1 = glm::normalize(pivotToCollider_ReferenceL);
-			glm::vec2 v2 = glm::normalize(pivotToMouse);
 
-			// Get proper angle
-			float dotProduct = glm::dot(v1, v2);
-			float newAngle;
-			if (dotProduct > 1.f)
-				newAngle = 0.f;
-			else if (dotProduct < -1.f)
-				newAngle = PI;
-			else
-				newAngle = acosf(dotProduct);
-			
-			glm::vec2 n1;
-			n1.x = -1.f * v1.y;
-			n1.y = v1.x;
-
-			if (glm::dot(n1, v2) < 0)
-				newAngle *= -1.f;
+			float newAngle = findAcuteAngle(pivotToCollider_ReferenceL, pivotToMouse);
 			if (isMirrored)
 				newAngle *= -1.f;
 
@@ -172,6 +167,15 @@ void Arms::HandleEvent(Event* pEvent)
 		break;
 	case RETURN_HOOK:
 		static_cast<Body*>(hook->GetComponent(BODY))->mVel *= -1.f;
+		break;
+	case GRAB_HOOK:
+		isHooking = false;
+		isWaitingHook = false;
+		static_cast<Body*>(mpOwner->GetComponent(BODY))->mInvMass = 1.f/ static_cast<Body*>(mpOwner->GetComponent(BODY))->mMass;
+		leftArmAngle = 0.f;
+		SetLeftArmAngle();
+		static_cast<Body*>(hook->GetComponent(BODY))->mVel = glm::vec2(0.f);
+		static_cast<Body*>(hook->GetComponent(BODY))->mType = NONE;
 		break;
 	case UPDATE_MOUSE_WORLD_POSITION:
 		mousePos = static_cast<UpdateMouseWorldPositionEvent*>(pEvent)->MouseWorldPositon;
@@ -215,4 +219,29 @@ void Arms::SetRightArmAngle()
 	SetAngleEvent SetAngle(rightArmAngle);
 	rightArm->HandleEvent(&SetAngle);
 	cleaver->HandleEvent(&SetAngle);
+}
+
+float findAcuteAngle(glm::vec2& V1, glm::vec2& V2)
+{
+	glm::vec2 v1 = glm::normalize(V1);
+	glm::vec2 v2 = glm::normalize(V2);
+
+	// Get proper angle
+	float dotProduct = glm::dot(v1, v2);
+	float newAngle;
+	if (dotProduct > 1.f)
+		newAngle = 0.f;
+	else if (dotProduct < -1.f)
+		newAngle = PI;
+	else
+		newAngle = acosf(dotProduct);
+
+	glm::vec2 n1;
+	n1.x = -1.f * v1.y;
+	n1.y = v1.x;
+
+	if (glm::dot(n1, v2) < 0)
+		newAngle *= -1.f;
+
+	return newAngle;
 }

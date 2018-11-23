@@ -13,8 +13,12 @@ enum ShapeType
 enum BodyType {
 	NONE,
 	RIGID,
-	INTERACTIVE,
-	HOOK
+	PUDGE,
+	ENEMY,
+	HOOK,
+	CLEAVER,
+	RUNE,
+	BODYNUM
 };
 
 class Shape

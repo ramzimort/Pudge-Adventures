@@ -84,3 +84,20 @@ void EventManager::Unsubscribe(EventType type, GameObject * pGameObject)
 			listofSubscribers.remove(pGameObject);;
 	}
 }
+
+void EventManager::ForceTimedEvent(EventType type)
+{
+	auto it = mTimedEvents.begin();
+	while (it != mTimedEvents.end())
+	{
+		Event* pEvent = *it;
+		if (pEvent->mType == type)
+		{
+			BroadcaseEventToSubscribers(pEvent);
+			delete pEvent;
+			it = mTimedEvents.erase(it);
+		}
+		else
+			++it;
+	}
+}

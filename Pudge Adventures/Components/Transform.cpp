@@ -25,12 +25,12 @@ Transform::~Transform() { }
 
 void Transform::Init()
 {
-	InitializeBodyEvent InitializeBody;
-	InitializeBody.InitialPosition = mPosition;
-	InitializeBody.mScale = mScale;
-	InitializeBody.InitialAngle = mAngle;
-	InitializeBody.mPivot = mRotationCenter * mScale;
-	mpOwner->HandleEvent(&InitializeBody);
+	//InitializeBodyEvent InitializeBody;
+	//InitializeBody.InitialPosition = mPosition;
+	//InitializeBody.mScale = mScale;
+	//InitializeBody.InitialAngle = mAngle;
+	//InitializeBody.mPivot = mRotationCenter * mScale;
+	//mpOwner->HandleEvent(&InitializeBody);
 }
 
 void Transform::Update() { }

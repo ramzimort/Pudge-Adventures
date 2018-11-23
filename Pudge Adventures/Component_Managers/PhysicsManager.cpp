@@ -1,5 +1,6 @@
 #include "PhysicsManager.h"
 #include "CollisionManager.h"
+#include "EventManager.h"
 #include "..\Components\GameObject.h"
 #include "..\Components\Body.h"
 #include "GameObjectManager.h"
@@ -9,7 +10,13 @@
 
 extern GameObjectManager* gpGameObjectManager;
 extern CollisionManager* gpCollisionManager;
+extern EventManager* gpEventManager;
 extern FrameRateController* gpFRC;
+
+void noop(Body* pBody1, Body* pBody2, glm::vec2& offset);
+void InteractiveRigid(Body* pBody1, Body* pBody2, glm::vec2& offset);
+void HookRigid(Body* pBody1, Body* pBody2, glm::vec2& offset);
+void HookPudge(Body* pBody1, Body* pBody2, glm::vec2& offset);
 
 PhysicsManager::PhysicsManager()
 {
@@ -21,6 +28,18 @@ PhysicsManager::~PhysicsManager()
 
 void PhysicsManager::Init()
 {
+	// Set all interaction types to no-op
+	for (unsigned int i = 0; i < BODYNUM; ++i)
+		for (unsigned int j = 0; j < BODYNUM; ++j)
+			InteractionTypes[i][j] = noop;
+
+	InteractionTypes[PUDGE][RIGID] = InteractiveRigid;
+	InteractionTypes[ENEMY][RIGID] = InteractiveRigid;
+	InteractionTypes[HOOK][RIGID] = HookRigid;
+	InteractionTypes[HOOK][PUDGE] = HookPudge;
+
+	// Reset contacts
+	gpCollisionManager->Reset();
 }
 
 void PhysicsManager::Update(float FrameTime)
@@ -44,14 +63,10 @@ void PhysicsManager::Update(float FrameTime)
 		Body* pBody1 = static_cast<Body*>((*pObj1)->GetComponent(BODY));
 		if (pBody1 == nullptr)
 			continue;
-		if (pBody1->mType != INTERACTIVE)
-			continue;
 		for (auto pObj2 = gpGameObjectManager->mGameObjects.begin(); pObj2 != pObjLast; ++pObj2)
 		{
 			Body* pBody2 = static_cast<Body*>((*pObj2)->GetComponent(BODY));
 			if (pBody2 == nullptr)
-				continue;
-			if (pBody2->mType != RIGID)
 				continue;
 			gpCollisionManager->checkCollisionandGenerateContact(
 				pBody1->mpShape,
@@ -63,26 +78,43 @@ void PhysicsManager::Update(float FrameTime)
 	// Add own physics functions here
 	for (auto mContact : gpCollisionManager->mContacts)
 	{
-		if (mContact.first->mBodies[1]->mType == RIGID)		// All collisions with RIGID bodies
-		{           
-			Body* pInteractiveBody = mContact.first->mBodies[0];
-			glm::vec2 offset = mContact.second;
-			if (offset.y != 0.0f)							// Vertical Collision!
-			{
-				pInteractiveBody->mVel.y = 0.f;	// Set vertical speed to 0
-				if (offset.y > 0)							// Apply Friction
-					pInteractiveBody->mForce += -0.01*pInteractiveBody->mVel.x*pInteractiveBody->mMass/gpFRC->GetFrameTime();
-			}
-			if (offset.x != 0.0f)
-				mContact.first->mBodies[0]->mVel.x = 0.f;
-			
-			mContact.first->mBodies[0]->mPos += offset;
-
-		}
-		//std::cout << "Collision!" << std::endl;
-		//if(mContact->mBodies[0]->mpOwner->HasComponent(OBSTACLE) && mContact->mBodies[1]->mpOwner->HasComponent(INTERACTIVE))
-		//CollideEvent ce;
-		//mContact->mBodies[0]->mpOwner->HandleEvent(&ce);
-		//mContact->mBodies[1]->mpOwner->HandleEvent(&ce);
+		Body* pBody1 = mContact.first->mBodies[0];
+		Body* pBody2 = mContact.first->mBodies[1];
+		glm::vec2 offset = mContact.second;
+		InteractionTypes[pBody1->mType][pBody2->mType](pBody1, pBody2, offset);
 	}
+}
+
+void noop(Body* pBody1, Body* pBody2, glm::vec2& a) { }
+void InteractiveRigid(Body* pBody1, Body* pBody2, glm::vec2& offset)
+{ 
+	Body* pInteractiveBody = pBody1;
+	Body* pRigidBody = pBody2;
+
+	if (offset.y != 0.0f) // Vertical Collision!							
+	{
+		// Reset Vertical Speed
+		pInteractiveBody->mVel.y = 0.f;	
+		// Apply Friction
+		if (offset.y > 0.f)							
+			pInteractiveBody->mForce += -0.01f*(pInteractiveBody->mVel.x)*(pInteractiveBody->mMass) / (gpFRC->GetFrameTime());
+	}
+	if (offset.x != 0.0f) // Horizontal Collision!
+	{
+		// Reset Horizontal Speed
+		pInteractiveBody->mVel.x = 0.f;
+	}
+	// Separate Objects
+	pInteractiveBody->mPos += offset;
+}
+
+void HookRigid(Body* pBody1, Body* pBody2, glm::vec2& offset)
+{
+	gpEventManager->ForceTimedEvent(RETURN_HOOK);
+}
+
+void HookPudge(Body* pBody1, Body* pBody2, glm::vec2& offset)
+{
+	Event Grab_Hook(GRAB_HOOK);
+	gpEventManager->BroadcaseEventToSubscribers(&Grab_Hook);
 }
