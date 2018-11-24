@@ -4,6 +4,7 @@
 #include "..\Components\Transform.h"
 #include <vector>
 #include <set>
+#include <list>
 #include <iostream>
 
 struct APtrComp
@@ -25,5 +26,6 @@ class GameObjectManager {
 		~GameObjectManager();
 		void Update();
 	public:
-		std::set<GameObject*, APtrComp> mGameObjects;
+		std::set<GameObject*, APtrComp> mGameObjects;		// Using a set to keep objects sorted from furthest to nearest (based on z-value)
+		std::set<GameObject*> toBeDeleted;					// Using a set to prevent duplicate GameObjects as these will be destroyed at the end of every frame
 };

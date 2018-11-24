@@ -14,4 +14,7 @@ public:
 	void Init();
 	void Update();
 	void HandleEvent(Event* pEvent);
+
+public:
+	bool moveEnable;
 };

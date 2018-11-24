@@ -13,7 +13,7 @@
 
 extern Input_Manager* gpInputManager;
 
-Controller::Controller() : Component(CONTROLLER) 
+Controller::Controller() : Component(CONTROLLER) , moveEnable(true)
 { }
 Controller::~Controller() 
 { }
@@ -23,21 +23,25 @@ void Controller::Update()
 {
 	if (mpOwner != nullptr  && gpInputManager != nullptr) 
 	{
-		PlayerMoveEvent PlayerMove;
-		if (gpInputManager->isPressed(SDL_SCANCODE_A)) 
+		if (moveEnable)
 		{
-			PlayerMove.aType = MOVE_LEFT;
-			mpOwner->HandleEvent(&PlayerMove);
-		}
-		if (gpInputManager->isPressed(SDL_SCANCODE_D))
-		{
-			PlayerMove.aType = MOVE_RIGHT;
-			mpOwner->HandleEvent(&PlayerMove);
-		}
-		if (gpInputManager->isTriggered(SDL_SCANCODE_SPACE)) 
-		{		
-			PlayerMove.aType = JUMP;
-			mpOwner->HandleEvent(&PlayerMove);
+			PlayerMoveEvent PlayerMove;
+			if (gpInputManager->isPressed(SDL_SCANCODE_A))
+			{
+				PlayerMove.aType = MOVE_LEFT;
+				mpOwner->HandleEvent(&PlayerMove);
+			}
+			if (gpInputManager->isPressed(SDL_SCANCODE_D))
+			{
+				PlayerMove.aType = MOVE_RIGHT;
+				mpOwner->HandleEvent(&PlayerMove);
+			}
+			if (gpInputManager->isTriggered(SDL_SCANCODE_SPACE))
+			{
+				PlayerMove.aType = JUMP;
+				mpOwner->HandleEvent(&PlayerMove);
+				moveEnable = false;
+			}
 		}
 		if (gpInputManager->isTriggered(SDL_SCANCODE_Q))
 		{
@@ -57,5 +61,14 @@ void Controller::Update()
 }
 void Controller::HandleEvent(Event * pEvent)
 {
-
+	switch (pEvent->mType)
+	{
+	case BLOCK_MOVE:
+		moveEnable = false;
+		break;
+	case UNBLOCK_MOVE:
+		moveEnable = true;
+		break;
+	}
+	
 }

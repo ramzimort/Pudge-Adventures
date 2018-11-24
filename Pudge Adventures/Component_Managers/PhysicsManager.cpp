@@ -17,6 +17,7 @@ void noop(Body* pBody1, Body* pBody2, glm::vec2& offset);
 void InteractiveRigid(Body* pBody1, Body* pBody2, glm::vec2& offset);
 void HookRigid(Body* pBody1, Body* pBody2, glm::vec2& offset);
 void HookPudge(Body* pBody1, Body* pBody2, glm::vec2& offset);
+void HookInteractive(Body* pBody1, Body* pBody2, glm::vec2& offset);
 
 PhysicsManager::PhysicsManager()
 {
@@ -37,6 +38,7 @@ void PhysicsManager::Init()
 	InteractionTypes[ENEMY][RIGID] = InteractiveRigid;
 	InteractionTypes[HOOK][RIGID] = HookRigid;
 	InteractionTypes[HOOK][PUDGE] = HookPudge;
+	InteractionTypes[HOOK][RUNE] = HookInteractive;
 
 	// Reset contacts
 	gpCollisionManager->Reset();
@@ -44,7 +46,7 @@ void PhysicsManager::Init()
 
 void PhysicsManager::Update(float FrameTime)
 {
-	// Integrate all body components
+	/* ================================ Integrate Body Components S========================================== */
 	for (auto go : gpGameObjectManager->mGameObjects)
 	{
 		Body* pBody = static_cast<Body*>(go->GetComponent(BODY));
@@ -52,10 +54,10 @@ void PhysicsManager::Update(float FrameTime)
 			pBody->Integrate(-1000.f, FrameTime);
 	}
 
-	// Reset previous contacts
+	/* ================================ Reset Previous Collisions ========================================== */
 	gpCollisionManager->Reset();
 
-	// Check for intersections
+	/* ================================ Check for New Collisions ========================================== */
 	auto pObj1 = gpGameObjectManager->mGameObjects.begin();
 	auto pObjLast = gpGameObjectManager->mGameObjects.end();
 	for (auto pObj1 = gpGameObjectManager->mGameObjects.begin(); pObj1 != pObjLast; ++pObj1)
@@ -75,7 +77,7 @@ void PhysicsManager::Update(float FrameTime)
 			);
 		}
 	}
-	// Add own physics functions here
+	/* ================================ Collision Interactions ========================================== */
 	for (auto mContact : gpCollisionManager->mContacts)
 	{
 		Body* pBody1 = mContact.first->mBodies[0];
@@ -90,31 +92,40 @@ void InteractiveRigid(Body* pBody1, Body* pBody2, glm::vec2& offset)
 { 
 	Body* pInteractiveBody = pBody1;
 	Body* pRigidBody = pBody2;
-
-	if (offset.y != 0.0f) // Vertical Collision!							
+	/* ================================ Vertical Collision ========================================== */
+	if (offset.y != 0.0f) 						
 	{
-		// Reset Vertical Speed
-		pInteractiveBody->mVel.y = 0.f;	
-		// Apply Friction
-		if (offset.y > 0.f)							
-			pInteractiveBody->mForce += -0.01f*(pInteractiveBody->mVel.x)*(pInteractiveBody->mMass) / (gpFRC->GetFrameTime());
+		pInteractiveBody->mVel.y = 0.f;										// Reset Vertical Velocity													
+		if (offset.y > 0.f)
+		{
+			pInteractiveBody->mForce +=										// Apply Friction
+				-0.01f*(pInteractiveBody->mVel.x)*(pInteractiveBody->mMass) 
+				/ (gpFRC->GetFrameTime());									
+			pInteractiveBody->mpOwner->HandleEvent(&Event(UNBLOCK_MOVE));	// Enable Movement													
+		}
 	}
+	/* ================================ Horizontal Collision ========================================== */
 	if (offset.x != 0.0f) // Horizontal Collision!
-	{
-		// Reset Horizontal Speed
-		pInteractiveBody->mVel.x = 0.f;
-	}
-	// Separate Objects
+		pInteractiveBody->mVel.x = 0.f;										// Reset Vertical Velocity
+	/* ================================ Object Separation ========================================== */
 	pInteractiveBody->mPos += offset;
 }
-
 void HookRigid(Body* pBody1, Body* pBody2, glm::vec2& offset)
 {
+	/* ================================ Force Return Hook upon collision with rigid bodies ========================================== */
 	gpEventManager->ForceTimedEvent(RETURN_HOOK);
 }
-
 void HookPudge(Body* pBody1, Body* pBody2, glm::vec2& offset)
 {
+	/* ================================ Grab hook once it collides with Pudge ========================================== */
 	Event Grab_Hook(GRAB_HOOK);
 	gpEventManager->BroadcaseEventToSubscribers(&Grab_Hook);
+}
+void HookInteractive(Body* pBody1, Body* pBody2, glm::vec2& offset)
+{
+	/* ================================ Attach Object Body to Hook Collider Center upon collision ========================================== */
+	Body* hookBody = pBody1;
+	Body* interactiveBody = pBody2;
+
+	interactiveBody->mPos = hookBody->mPos + hookBody->mPos_mPivot + hookBody->mPivot_mColliderCenter;
 }

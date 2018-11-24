@@ -140,6 +140,10 @@ void Arms::HandleEvent(Event* pEvent)
 		if (!isHooking)
 		{
 			isHooking = true;			
+			// Block all input
+			Event DisableMovement(BLOCK_MOVE);
+			mpOwner->HandleEvent(&DisableMovement);
+
 			// Check if Mirroring required
 			glm::vec2 pivotToMouse = mousePos - (static_cast<Body*>(hook->GetComponent(BODY))->mPos + static_cast<Body*>(hook->GetComponent(BODY))->mPos_mPivot);
 			if (pivotToMouse.x > 0.f && !isMirrored || pivotToMouse.x < 0.f && isMirrored)
@@ -176,6 +180,9 @@ void Arms::HandleEvent(Event* pEvent)
 		SetLeftArmAngle();
 		static_cast<Body*>(hook->GetComponent(BODY))->mVel = glm::vec2(0.f);
 		static_cast<Body*>(hook->GetComponent(BODY))->mType = NONE;
+
+		// Unblock all input
+		mpOwner->HandleEvent(&Event(UNBLOCK_MOVE));
 		break;
 	case UPDATE_MOUSE_WORLD_POSITION:
 		mousePos = static_cast<UpdateMouseWorldPositionEvent*>(pEvent)->MouseWorldPositon;
