@@ -2,9 +2,6 @@
 #include "Transform.h"
 #include "..\Component_Managers\GraphicsManager.h"
 #include "..\Component_Managers\EventManager.h"
-#include "..\Events\InitializeBody.h"
-#include "..\Events\InvokeHook.h"
-#include "..\Events\RotateTowardPointer.h"
 #include "..\Events\UpdatePosition.h"
 #include "..\Events\CameraMove.h"
 #include "..\Events\UpdateMouseScreenPosition.h"
@@ -51,6 +48,7 @@ void Camera::HandleEvent(Event* pEvent)
 			mCameraCenter.x += deltaCameraPos.x;
 			CameraMoveEvent CameraMove;
 			CameraMove.deltaX = deltaCameraPos.x;
+			CameraMove.currentPos = mCameraCenter;
 			gpEventManager->BroadcaseEventToSubscribers(&CameraMove);
 		}
 		mCameraCenter.y = bodyCurrentPos.y;

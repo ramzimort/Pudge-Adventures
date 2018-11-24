@@ -7,8 +7,8 @@
     "xScale": 64.0,
     "yScale": 64.0
   },
-  "Sprite": "DD_Rune.png",
+  "Sprite": "Light_Tower.png",
   "Background": {
-    "Scroll_Speed": -0.2
+    "Scroll_Speed": -0.8
   }
 }

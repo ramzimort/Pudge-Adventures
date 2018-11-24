@@ -6,9 +6,10 @@
 class CameraMoveEvent : public Event
 {
 public:
-	CameraMoveEvent();
-	~CameraMoveEvent();
+	CameraMoveEvent() : Event(CAMERA_MOVE), deltaX(0.f), currentPos(0.f) { }
+	~CameraMoveEvent() { }
 
 public:
 	float deltaX;
+	glm::vec2 currentPos;
 };

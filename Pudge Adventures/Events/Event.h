@@ -2,36 +2,37 @@
 
 enum EventType
 {
-	INITIALIZE_BODY,
-	SCALE_BODY,
-	SET_ANGLE,
-	ROTATE_BODY,
-	UPDATE_BODY,
+	MOVE_LEFT,
+	MOVE_RIGHT,
+	JUMP,
+	BLOCK_MOVE,
+	UNBLOCK_MOVE,
+
 	UPDATE_POSITION,
+	SET_ANGLE,
+	UPDATE_BODY,
+	ROTATE_BODY,
 	MIRROR_OBJECT,
-	MIRROR_ARM,
-	CAMERA_MOVE,
+
 	INVOKE_CLEAVE,
 	INVOKE_HOOK,
 	RETURN_HOOK,
 	GRAB_HOOK,
-	PLAYER_MOVE,
-	BLOCK_MOVE,
-	UNBLOCK_MOVE,
+
+	CAMERA_MOVE,
 	UPDATE_MOUSE_SCREEN_POSITION,
 	UPDATE_MOUSE_WORLD_POSITION,
-	ROTATE_TOWARD_POINTER,
-	PLAYER_HIT,
-	COLLIDE,
+
 	NUM
 };
 
 class Event
 {
 public:
-	Event(EventType Type);
-	virtual ~Event() {}
+	Event(EventType Type) : mType(Type), mTimer(0.f) { }
+	virtual ~Event() { }
 
+public:
 	EventType mType;
 	float mTimer;
 };

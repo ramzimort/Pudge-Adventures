@@ -6,8 +6,8 @@
 class UpdatePositionEvent : public Event
 {
 public:
-	UpdatePositionEvent();
-	~UpdatePositionEvent();
+	UpdatePositionEvent() :	Event(UPDATE_POSITION),	newPosition(0.f),newAngle(0.f) { }
+	~UpdatePositionEvent() { }
 
 public:
 	glm::vec2 newPosition;

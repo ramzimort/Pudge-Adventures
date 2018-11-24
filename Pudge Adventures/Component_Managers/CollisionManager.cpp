@@ -58,14 +58,15 @@ bool CheckCollisionCircleCircle(
 {
 	ShapeCircle* C1 = static_cast<ShapeCircle*>(pShape1);
 	ShapeCircle* C2 = static_cast<ShapeCircle*>(pShape2);
-	//Intersection!
-	if ((C1->mRadius + C2->mRadius)*(C1->mRadius + C2->mRadius) >= glm::distance2(C1->mpOwnerBody->mPos, C2->mpOwnerBody->mPos)) {
-		glm::vec2 C2C1 = C1->mpOwnerBody->mPos - C2->mpOwnerBody->mPos;
-		float centerDistance = glm::length(C2C1);
 
-		glm::vec2 deltaPos = C2C1 / centerDistance;
-		deltaPos *= C1->mRadius + C2->mRadius - centerDistance;
-		//Create a new contact and add itd
+	glm::vec2
+		Center1 = C1->mpOwnerBody->mColliderCenter,
+		Center2 = C2->mpOwnerBody->mColliderCenter;
+	//Intersection!
+	if ((C1->mRadius + C2->mRadius)*(C1->mRadius + C2->mRadius) >= glm::distance2(Center1, Center2)) 
+	{
+		glm::vec2 deltaPos(0.f);
+		//Create a new contact and add it
 		Contact* pNewContact = new Contact();
 		pNewContact->mBodies[0] = pShape1->mpOwnerBody;
 		pNewContact->mBodies[1] = pShape2->mpOwnerBody;
@@ -90,40 +91,40 @@ bool CheckCollisionCircleAABB(	Shape* pShape1,
 		R1 = Center1.x + C1->mRadius,
 		U1 = Center1.y + C1->mRadius,
 		B1 = Center1.y - C1->mRadius,
-		L2 = Center2.x - S2->mWidth / 2.f,
-		R2 = Center2.x + S2->mWidth / 2.f,
+		L2 = Center2.x - S2->mWidth  / 2.f,
+		R2 = Center2.x + S2->mWidth  / 2.f,
 		U2 = Center2.y + S2->mHeight / 2.f,
 		B2 = Center2.y - S2->mHeight / 2.f;
 
+	//std::cout << L1 << " " << R1 << " " << U1 << " " << B1 << std::endl;
+	//std::cout << L2 << " " << R2 << " " << U2 << " " << B2 << std::endl << std::endl;
+
 	// 8 different cases for CIRCLE location wrt AABB
 	// West 
-	if (L2 > R1)
-		return false;
-	// East
 	if (L1 > R2)
 		return false;
-	// North
+	if (L2 > R1)
+		return false;
 	if (B1 > U2)
 		return false;
-	// South
 	if (B2 > U1)
 		return false;
-	// NorthWest
-	if (Center1.x < L2 && Center1.y > U2)
-		if (glm::length2(Center1 - glm::vec2(L2, U2)) > C1->mRadius)
-			return false;
-	// Northeast
-	if (Center1.x > R2 && Center1.y > U2)
-		if (glm::length2(Center1 - glm::vec2(R2, U2)) > C1->mRadius)
-			return false;
-	// Southwest
-	if (Center1.x < L2 && Center1.y < B2)
-		if (glm::length2(Center1 - glm::vec2(L2, B2)) > C1->mRadius)
-			return false;
-	// Southeast
-	if (Center1.x > R2 && Center1.y < B2)
-		if (glm::length2(Center1 - glm::vec2(R2, B2)) > C1->mRadius)
-			return false;
+	//// NorthWest
+	//if (Center1.x < L2 && Center1.y > U2)
+	//	if (glm::length2(Center1 - glm::vec2(L2, U2)) > C1->mRadius*C1->mRadius)
+	//		return false;
+	//// Northeast
+	//if (Center1.x > R2 && Center1.y > U2)
+	//	if (glm::length2(Center1 - glm::vec2(R2, U2)) > C1->mRadius*C1->mRadius)
+	//		return false;
+	//// Southwest
+	//if (Center1.x < L2 && Center1.y < B2)
+	//	if (glm::length2(Center1 - glm::vec2(L2, B2)) > C1->mRadius*C1->mRadius)
+	//		return false;
+	//// Southeast
+	//if (Center1.x > R2 && Center1.y < B2)
+	//	if (glm::length2(Center1 - glm::vec2(R2, B2)) > C1->mRadius*C1->mRadius)
+	//		return false;
 
 
 	glm::vec2 C2C1 = C1->mpOwnerBody->mPos - S2->mpOwnerBody->mPos;

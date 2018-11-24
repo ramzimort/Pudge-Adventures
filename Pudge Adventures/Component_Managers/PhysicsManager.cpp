@@ -5,7 +5,7 @@
 #include "..\Components\Body.h"
 #include "GameObjectManager.h"
 #include "FrameRateController.h"
-#include "..\Events\Collide.h"
+#include "..\Events\Event.h"
 
 
 extern GameObjectManager* gpGameObjectManager;
@@ -75,6 +75,8 @@ void PhysicsManager::Update(float FrameTime)
 				pBody2->mpShape,
 				gpCollisionManager->mContacts
 			);
+			if (pBody1->mType == RUNE && pBody2->mType == HOOK)
+				std::cout << pBody1->mColliderCenter.x << " " << pBody1->mColliderCenter.y << std::endl << pBody2->mColliderCenter.x << " " << pBody2->mColliderCenter.x << std::endl << std::endl;
 		}
 	}
 	/* ================================ Collision Interactions ========================================== */
@@ -128,4 +130,5 @@ void HookInteractive(Body* pBody1, Body* pBody2, glm::vec2& offset)
 	Body* interactiveBody = pBody2;
 
 	interactiveBody->mPos = hookBody->mPos + hookBody->mPos_mPivot + hookBody->mPivot_mColliderCenter;
+	gpEventManager->ForceTimedEvent(RETURN_HOOK);
 }

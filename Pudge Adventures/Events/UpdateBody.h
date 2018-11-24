@@ -6,8 +6,8 @@
 class UpdateBodyEvent : public Event
 {
 public:
-	UpdateBodyEvent();
-	~UpdateBodyEvent();
+	UpdateBodyEvent() : Event(UPDATE_BODY) , newPosition(0.f) { }
+	~UpdateBodyEvent() { }
 
 public:
 	glm::vec2 newPosition;

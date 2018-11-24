@@ -7,35 +7,16 @@
       "Name": "Field"
     },
     {
+      "Name": "DD_Rune"
+    },
+    {
       "Name": "Platform4",
-      "PosX": 842,
-      "PosY": -150
-    },
-    {
-      "Name": "Platform_Cliff",
-      "xScale": -128,
-      "PosX": 655,
-      "PosY": -150
-    },
-    {
-      "Name": "Platform_Cliff",
-      "PosX": 1029,
-      "PosY": -150
-    },
-    {
-      "Name": "Platform_Cliff",
-      "xScale": -128,
-      "PosX": 120,
+      "PosX": 0,
       "PosY": -200
     },
     {
       "Name": "Platform4",
-      "PosX": 307,
-      "PosY": -200
-    },
-    {
-      "Name": "Platform_Cliff",
-      "PosX": 494,
+      "PosX": 800,
       "PosY": -200
     },
     {

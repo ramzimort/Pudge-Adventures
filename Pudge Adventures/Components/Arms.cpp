@@ -6,12 +6,8 @@
 #include "GameObject.h"
 #include "..\Events\Event.h"
 #include "..\Events\UpdatePosition.h"
-#include "..\Events\MIrrorArms.h"
-#include "..\Events\MirrorObject.h"
 #include "..\Events\SetAngle.h"
 #include "..\Events\UpdateMouseWorldPosition.h"
-#include "..\Events\InitializeBody.h"
-#include "..\Events\ReturnHook.h"
 #include "..\Component_Managers\GameObjectManager.h"
 #include <iostream>
 
@@ -83,6 +79,9 @@ void Arms::Update()
 	// Hook Arm Animation (NOT SAME AS WAITING FOR HOOK)
 	if (isHooking)
 	{
+		// Block Movement
+		mpOwner->HandleEvent(&Event(BLOCK_MOVE));
+
 		leftArmAngle -= leftArmRotationSpeed;
 		if (leftArmAngle < leftArmFinalAngle)
 		{
@@ -96,8 +95,13 @@ void Arms::Update()
 		
 		if (isWaitingHook)
 		{
-			ReturnHookEvent* ReturnHook = new ReturnHookEvent(hookReturnTime);
+			// Block Movement
+			mpOwner->HandleEvent(&Event(BLOCK_MOVE));
+			// Set timer for hook return event
+			Event* ReturnHook = new Event(RETURN_HOOK);
+			ReturnHook->mTimer = hookReturnTime;
 			gpEventManager->AddTimeEvent(ReturnHook);
+
 			glm::vec2 hookDirection = static_cast<Body*>(hook->GetComponent(BODY))->mPivot_mColliderCenter;
 			static_cast<Body*>(hook->GetComponent(BODY))->mVel = hookSpeed * hookDirection / glm::length(hookDirection);
 			static_cast<Body*>(hook->GetComponent(BODY))->mType = HOOK;
@@ -137,24 +141,18 @@ void Arms::HandleEvent(Event* pEvent)
 		}
 		break;
 	case INVOKE_HOOK:
-		if (!isHooking)
+		if (!(isHooking || isWaitingHook))
 		{
 			isHooking = true;			
 			// Block all input
-			Event DisableMovement(BLOCK_MOVE);
-			mpOwner->HandleEvent(&DisableMovement);
+			mpOwner->HandleEvent(&Event(BLOCK_MOVE));
 
 			// Check if Mirroring required
 			glm::vec2 pivotToMouse = mousePos - (static_cast<Body*>(hook->GetComponent(BODY))->mPos + static_cast<Body*>(hook->GetComponent(BODY))->mPos_mPivot);
 			if (pivotToMouse.x > 0.f && !isMirrored || pivotToMouse.x < 0.f && isMirrored)
-			{
-				MirrorObjectEvent MirrorObject;
-				mpOwner->HandleEvent(&MirrorObject);
-			}
+				mpOwner->HandleEvent(&Event(MIRROR_OBJECT));
 			// Update Pivot to Mouse after Mirroring
 			pivotToMouse = mousePos - (static_cast<Body*>(hook->GetComponent(BODY))->mPos + static_cast<Body*>(hook->GetComponent(BODY))->mPos_mPivot);
-
-
 			/* ================================================= Get Angle for Arm Rotation ===================================================================*/
 
 			float newAngle = findAcuteAngle(pivotToCollider_ReferenceL, pivotToMouse);

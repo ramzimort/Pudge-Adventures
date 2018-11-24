@@ -3,7 +3,6 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "..\Component_Managers\EventManager.h"
-#include "..\Events\InitializeBody.h"
 #include "..\Events\CameraMove.h"
 #include "..\Events\UpdatePosition.h"
 

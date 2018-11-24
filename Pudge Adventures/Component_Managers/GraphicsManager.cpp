@@ -200,17 +200,7 @@ void GraphicsManager::Draw(GameObject* go)
 				
 				if (pBody->mpShape->mType == AABB)
 				{					
-					ShapeAABB* pShape = static_cast<ShapeAABB*>(pBody->mpShape);/*
-					std::cout << pBody->mColliderCenter.x << " " << pBody->mColliderCenter.y << std::endl;
-					std::cout << pBody->mAngle << " " << pTr->mAngle << std::endl << std::endl;*/
-
-					//glm::vec4 colliderCenter(pBody->mColliderCenter.x, pBody->mColliderCenter.y, 0.f, 0.f);
-					//if(pTr->mScale.x < 0.f)
-					//	colliderCenter = glm::rotate(glm::mat4(), glm::radians(-1.f*pBody->mAngle), glm::vec3(0, 0, 1))*colliderCenter;
-					//else
-					//	colliderCenter = glm::rotate(glm::mat4(), glm::radians(1.f*pBody->mAngle), glm::vec3(0, 0, 1))*colliderCenter;
-
-					
+					ShapeAABB* pShape = static_cast<ShapeAABB*>(pBody->mpShape);
 					Model = 
 						glm::translate(glm::mat4(), glm::vec3(pBody->mColliderCenter.x, pBody->mColliderCenter.y,  0.f))*
 						glm::scale(glm::mat4(), glm::vec3(pShape->mWidth, pShape->mHeight, 0.0f));
@@ -223,7 +213,7 @@ void GraphicsManager::Draw(GameObject* go)
 				{
 					ShapeCircle* pShape = static_cast<ShapeCircle*>(pBody->mpShape);
 					Model =
-						glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y, 0.0f))*
+						glm::translate(glm::mat4(), glm::vec3(pBody->mColliderCenter.x, pBody->mColliderCenter.y, 0.f))*
 						glm::scale(glm::mat4(), glm::vec3(2 * pShape->mRadius, 2 * pShape->mRadius, 0.0f));
 					glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
 					glBindVertexArray(VAO[2]);

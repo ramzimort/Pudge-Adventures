@@ -1,13 +1,13 @@
 {
   "Transform": {
-    "X": 100.0,
-    "Y": 100.0,
+    "X": 0.0,
+    "Y": 0.0,
     "Z": 2.0,
     "Angle": 0.0,
     "xScale": 512.0,
     "yScale": 128.0
   },
-  "Sprite": "Platform4.png",
+  "Sprite": "Platform4_1.png",
   "Body": {
     "Mass": 0.0,
     "Shape": "AABB",

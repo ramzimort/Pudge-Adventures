@@ -1,14 +1,9 @@
 
 #include "Transform.h"
 #include "GameObject.h"
-#include "..\Events\InitializeBody.h"
-#include "..\Events\RotateTowardPointer.h"
 #include "..\Events\SetAngle.h"
 #include "..\Events\UpdatePosition.h"
 #include "..\Events\RotateBody.h"
-#include "..\Events\MirrorObject.h"
-#include "..\Events\MIrrorArms.h"
-#include "..\Events\PlayerMove.h"
 #include <iostream>
 
 constexpr auto PI = 3.14159265358979323846f;
@@ -24,14 +19,7 @@ Transform::Transform() :
 Transform::~Transform() { }
 
 void Transform::Init()
-{
-	//InitializeBodyEvent InitializeBody;
-	//InitializeBody.InitialPosition = mPosition;
-	//InitializeBody.mScale = mScale;
-	//InitializeBody.InitialAngle = mAngle;
-	//InitializeBody.mPivot = mRotationCenter * mScale;
-	//mpOwner->HandleEvent(&InitializeBody);
-}
+{ }
 
 void Transform::Update() { }
 
@@ -39,13 +27,13 @@ void Transform::HandleEvent(Event* pEvent)
 {
 	switch (pEvent->mType)
 	{
-	case PLAYER_MOVE:
-		if (static_cast<PlayerMoveEvent*>(pEvent)->aType == MOVE_LEFT && mScale.x < 0.f ||
-			static_cast<PlayerMoveEvent*>(pEvent)->aType == MOVE_RIGHT && mScale.x > 0.f)
-		{
-			MirrorObjectEvent MirrorObject;
-			mpOwner->HandleEvent(&MirrorObject);
-		}
+	case MOVE_LEFT:
+		if (mScale.x < 0.f)
+			mpOwner->HandleEvent(&Event(MIRROR_OBJECT));
+		break;
+	case MOVE_RIGHT:
+		if (mScale.x > 0.f)
+			mpOwner->HandleEvent(&Event(MIRROR_OBJECT));
 		break;
 	case UPDATE_POSITION:
 		mPosition = static_cast<UpdatePositionEvent*>(pEvent)->newPosition;

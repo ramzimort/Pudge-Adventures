@@ -2,11 +2,8 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "..\Component_Managers\CollisionManager.h"
-#include "..\Events\PlayerMove.h"
 #include "..\Events\UpdatePosition.h"
-#include "..\Events\InitializeBody.h"
 #include "..\Events\UpdateBody.h"
-#include "..\Events\MirrorObject.h"
 #include "..\Events\RotateBody.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -183,28 +180,16 @@ void Body::HandleEvent(Event * pEvent)
 {
 	switch (pEvent->mType)
 	{
-		case PLAYER_MOVE:
-			switch (static_cast<PlayerMoveEvent*>(pEvent)->aType)
-			{
-			case MOVE_LEFT:
-				mForce.x -= 5000.f;
-				break;
-			case MOVE_RIGHT:
-				mForce.x += 5000.0f;
-				break;
-			case JUMP:
-				mForce.y += 400000.0f;
-				break;
-			}
-			break;/*
-		case INITIALIZE_BODY:
-			mPos = static_cast<InitializeBodyEvent*>(pEvent)->InitialPosition;
-			mPos_mPivot = static_cast<InitializeBodyEvent*>(pEvent)->mPivot;
-			mColliderCenter.x *= static_cast<InitializeBodyEvent*>(pEvent)->mScale.x;
-			mColliderCenter.y *= static_cast<InitializeBodyEvent*>(pEvent)->mScale.y;
-			mColliderCenter += mPos;
-			mPivot_mColliderCenter = mColliderCenter - (mPos + mPos_mPivot);
-			break;*/
+	case MOVE_LEFT:
+		mForce.x -= 5000.f;
+		break;
+	case MOVE_RIGHT:
+		mForce.x += 5000.0f;
+		break;
+	case JUMP:
+		mForce.y += 400000.0f;
+		break;
+		
 		case UPDATE_BODY:
 		{
 			mPos = static_cast<UpdateBodyEvent*>(pEvent)->newPosition;

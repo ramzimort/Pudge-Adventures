@@ -47,12 +47,4 @@ void botAI::Serialize(rapidjson::Document& objectFile)
 
 void botAI::HandleEvent(Event * pEvent)
 {
-	if (pEvent->mType == PLAYER_HIT)
-	{
-		Body* pBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
-		if (pBody != nullptr)
-		{
-			pBody->mPos.x += 50;
-		}
-	}
 }
