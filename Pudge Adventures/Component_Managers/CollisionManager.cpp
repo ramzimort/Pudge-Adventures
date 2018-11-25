@@ -96,9 +96,6 @@ bool CheckCollisionCircleAABB(	Shape* pShape1,
 		U2 = Center2.y + S2->mHeight / 2.f,
 		B2 = Center2.y - S2->mHeight / 2.f;
 
-	//std::cout << L1 << " " << R1 << " " << U1 << " " << B1 << std::endl;
-	//std::cout << L2 << " " << R2 << " " << U2 << " " << B2 << std::endl << std::endl;
-
 	// 8 different cases for CIRCLE location wrt AABB
 	// West 
 	if (L1 > R2)
@@ -109,22 +106,22 @@ bool CheckCollisionCircleAABB(	Shape* pShape1,
 		return false;
 	if (B2 > U1)
 		return false;
-	//// NorthWest
-	//if (Center1.x < L2 && Center1.y > U2)
-	//	if (glm::length2(Center1 - glm::vec2(L2, U2)) > C1->mRadius*C1->mRadius)
-	//		return false;
-	//// Northeast
-	//if (Center1.x > R2 && Center1.y > U2)
-	//	if (glm::length2(Center1 - glm::vec2(R2, U2)) > C1->mRadius*C1->mRadius)
-	//		return false;
-	//// Southwest
-	//if (Center1.x < L2 && Center1.y < B2)
-	//	if (glm::length2(Center1 - glm::vec2(L2, B2)) > C1->mRadius*C1->mRadius)
-	//		return false;
-	//// Southeast
-	//if (Center1.x > R2 && Center1.y < B2)
-	//	if (glm::length2(Center1 - glm::vec2(R2, B2)) > C1->mRadius*C1->mRadius)
-	//		return false;
+	// NorthWest
+	if (Center1.x < L2 && Center1.y > U2)
+		if (glm::length2(Center1 - glm::vec2(L2, U2)) > C1->mRadius*C1->mRadius)
+			return false;
+	// Northeast
+	if (Center1.x > R2 && Center1.y > U2)
+		if (glm::length2(Center1 - glm::vec2(R2, U2)) > C1->mRadius*C1->mRadius)
+			return false;
+	// Southwest
+	if (Center1.x < L2 && Center1.y < B2)
+		if (glm::length2(Center1 - glm::vec2(L2, B2)) > C1->mRadius*C1->mRadius)
+			return false;
+	// Southeast
+	if (Center1.x > R2 && Center1.y < B2)
+		if (glm::length2(Center1 - glm::vec2(R2, B2)) > C1->mRadius*C1->mRadius)
+			return false;
 
 
 	glm::vec2 C2C1 = C1->mpOwnerBody->mPos - S2->mpOwnerBody->mPos;
@@ -207,8 +204,6 @@ bool CheckCollisionAABBAABB(
 		else
 			deltaPos.y = 0.f;
 	}
-
-	//std::cout << deltaPos.x << " " << deltaPos.y << std::endl;
 
 
 

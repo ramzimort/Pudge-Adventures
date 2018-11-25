@@ -15,8 +15,8 @@ void GameObjectManager::Update()
 {
 	for (auto go : toBeDeleted)
 	{
-		delete go;
 		mGameObjects.erase(go);
+		delete go;
 	}
 
 	for (auto go : mGameObjects) 

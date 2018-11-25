@@ -169,6 +169,9 @@ void Body::Integrate(float Gravity, float dt)
 	mPos.x += mVel.x * dt;
 	mPos.y += mVel.y * dt;
 
+	if (isHaste)
+		mPos += mVel * dt;
+
 	// Zero all applied forces
 	mForce = { 0.0f,0.0f };
 	UpdateBodyEvent UpdateBodyPosition;
@@ -189,25 +192,32 @@ void Body::HandleEvent(Event * pEvent)
 	case JUMP:
 		mForce.y += 400000.0f;
 		break;
-		
-		case UPDATE_BODY:
-		{
-			mPos = static_cast<UpdateBodyEvent*>(pEvent)->newPosition;
-			mColliderCenter = mPos + mPos_mPivot + mPivot_mColliderCenter;
-			UpdatePositionEvent UpdatePosition;
-			UpdatePosition.newPosition = mPos;
-			mpOwner->HandleEvent(&UpdatePosition);
-			break;
+	case UPDATE_BODY:
+	{
+		mPos = static_cast<UpdateBodyEvent*>(pEvent)->newPosition;
+		mColliderCenter = mPos + mPos_mPivot + mPivot_mColliderCenter;
+		UpdatePositionEvent UpdatePosition;
+		UpdatePosition.newPosition = mPos;
+		mpOwner->HandleEvent(&UpdatePosition);
+		break;
 
-		}
-		case ROTATE_BODY:
-			mPivot_mColliderCenter =
-				static_cast<glm::vec2>(glm::rotate(glm::mat4(), static_cast<RotateBodyEvent*>(pEvent)->deltaAngle, glm::vec3(0, 0, 1))*
-				glm::vec4(mPivot_mColliderCenter,0.f,0.f));
-			break;
-		case MIRROR_OBJECT:
-			mPos_mPivot.x = -mPos_mPivot.x;
-			mPivot_mColliderCenter.x = -mPivot_mColliderCenter.x;
-			mColliderCenter = mPos + mPos_mPivot + mPivot_mColliderCenter;
 	}
+	case ROTATE_BODY:
+		mPivot_mColliderCenter =
+			static_cast<glm::vec2>(glm::rotate(glm::mat4(), static_cast<RotateBodyEvent*>(pEvent)->deltaAngle, glm::vec3(0, 0, 1))*
+				glm::vec4(mPivot_mColliderCenter, 0.f, 0.f));
+		break;
+	case MIRROR_OBJECT:
+		mPos_mPivot.x = -mPos_mPivot.x;
+		mPivot_mColliderCenter.x = -mPivot_mColliderCenter.x;
+		mColliderCenter = mPos + mPos_mPivot + mPivot_mColliderCenter;
+		break;
+	case ENABLE_HASTE:
+		isHaste = true;
+		break;
+	case DISABLE_HASTE:
+		isHaste = false;
+		break;
+	}
+
 }

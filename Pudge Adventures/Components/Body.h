@@ -84,4 +84,7 @@ public:
 	glm::vec2				mPos_mPivot;
 	glm::vec2				mPivot_mColliderCenter;
 	float					isMirrored;
+
+private:
+	bool isHaste = false;
 };

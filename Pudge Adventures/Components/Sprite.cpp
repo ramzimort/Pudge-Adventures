@@ -30,7 +30,7 @@ Texture::Texture(std::string& pFileName)
 	}
 	else
 	{
-		std::cout << "Failed to load texture" << std::endl;
+		std::cout << "Failed to load texture: " << pFileName << std::endl;
 	}
 	stbi_image_free(data);
 }

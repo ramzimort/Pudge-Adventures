@@ -16,7 +16,8 @@ Transform::Transform() :
 	mRotationCenter(0.0f),
 	mAngle(0.0f) { }
 
-Transform::~Transform() { }
+Transform::~Transform() 
+{ }
 
 void Transform::Init()
 { }

@@ -6,11 +6,12 @@
     "xScale": 32.0,
     "yScale": 32.0
   },
-  "Sprite": "DD_Rune.png",
+  "Sprite": "Rune_DD.png",
   "Body": {
     "Shape": "Circle",
     "Type": "Rune",
     "Radius": 16
-  }
+  },
+  "PowerUp": "DD"
 }
 

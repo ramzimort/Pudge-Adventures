@@ -146,6 +146,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Components\AI.cpp" />
+    <ClCompile Include="Components\Attributes.cpp" />
     <ClCompile Include="Components\Body.cpp" />
     <ClCompile Include="Components\Camera.cpp" />
     <ClCompile Include="Components\Component.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="Components\GameObject.cpp" />
     <ClCompile Include="Components\Arms.cpp" />
     <ClCompile Include="Components\Background.cpp" />
+    <ClCompile Include="Components\PowerUp.cpp" />
     <ClCompile Include="Components\Sprite.cpp" />
     <ClCompile Include="Components\Transform.cpp" />
     <ClCompile Include="Component_Managers\CollisionManager.cpp" />
@@ -168,7 +170,9 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Attributes.h" />
     <ClInclude Include="Components\AI.h" />
+    <ClInclude Include="Components\Attributes.h" />
     <ClInclude Include="Components\Body.h" />
     <ClInclude Include="Components\Camera.h" />
     <ClInclude Include="Components\Component.h" />
@@ -176,6 +180,7 @@
     <ClInclude Include="Components\GameObject.h" />
     <ClInclude Include="Components\Arms.h" />
     <ClInclude Include="Components\Background.h" />
+    <ClInclude Include="Components\PowerUp.h" />
     <ClInclude Include="Components\Sprite.h" />
     <ClInclude Include="Components\Transform.h" />
     <ClInclude Include="Component_Managers\CollisionManager.h" />

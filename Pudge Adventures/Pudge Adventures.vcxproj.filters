@@ -104,6 +104,12 @@
     <ClCompile Include="Components\Background.cpp">
       <Filter>Components\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Components\Attributes.cpp">
+      <Filter>Components\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\PowerUp.cpp">
+      <Filter>Components\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\Component.h">
@@ -189,6 +195,13 @@
     </ClInclude>
     <ClInclude Include="Events\UpdateMouseWorldPosition.h">
       <Filter>Events\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Attributes.h" />
+    <ClInclude Include="Components\Attributes.h">
+      <Filter>Components\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\PowerUp.h">
+      <Filter>Components\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

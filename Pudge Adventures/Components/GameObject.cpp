@@ -7,6 +7,8 @@
 #include "Arms.h"
 #include "Camera.h"
 #include "Background.h"
+#include "Attributes.h"
+#include "PowerUp.h"
 
 GameObject::GameObject()
 {
@@ -30,17 +32,17 @@ void GameObject::Update() {
 		c->Update();
 }
 
-Component* GameObject::AddComponent(unsigned int Type) {
+Component* GameObject::AddComponent(unsigned int Type) 
+{
 	Component* pNewComponent = nullptr;
-	switch (Type) {
+	switch (Type)
+	{
 	case TRANSFORM:
 		pNewComponent = new Transform();
 		break;
-
 	case SPRITE:
 		pNewComponent = new Sprite();
 		break;
-
 	case CONTROLLER:
 		pNewComponent = new Controller();
 		break;
@@ -59,9 +61,15 @@ Component* GameObject::AddComponent(unsigned int Type) {
 	case BACKGROUND:
 		pNewComponent = new Background();
 		break;
+	case ATTRIBUTES:
+		pNewComponent = new Attributes();
+		break;
+	case POWERUP:
+		pNewComponent = new PowerUp();
+		break;
 	}
-
-	if (pNewComponent != nullptr) {
+	if (pNewComponent != nullptr)
+	{
 		mComponents.push_back(pNewComponent);
 		pNewComponent->mpOwner = this;
 	}

@@ -7,6 +7,7 @@
 #include "..\Components\Sprite.h"
 #include "..\Components\Transform.h"
 #include "..\Components\Body.h"
+#include "..\Components\Attributes.h"
 #include "..\Components\Camera.h"
 #include <glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/constants.hpp>
@@ -152,7 +153,6 @@ void GraphicsManager::Draw(GameObject* go)
 	{
 		textureShader->use();
 		glBindVertexArray(VAO[0]);
-
 		/* TEXTURE START */
 		float textCoords[] = {
 			 1.0f, 1.0f,  // top right
@@ -160,6 +160,7 @@ void GraphicsManager::Draw(GameObject* go)
 			 0.0f, 0.0f,  // bottom left
 			 0.0f, 1.0f,  // top left 
 		};
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, pSpr->mpTexture->textureID);
 		glBindBuffer(GL_ARRAY_BUFFER, textureBuffer);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(textCoords), textCoords, GL_STATIC_DRAW);
@@ -186,7 +187,82 @@ void GraphicsManager::Draw(GameObject* go)
 		glUniformMatrix4fv(apersp_matrix, 1, false, (float*)&Persp);
 		glUniformMatrix4fv(aview_matrix, 1, false, (float*)&View);
 		/* TRANSFORM END */
+				// Draw Object
+
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		
+
+		// Draw Attributes
+		Attributes* pAttr = static_cast<Attributes*>(go->GetComponent(ATTRIBUTES));
+		if (pAttr != nullptr)
+		{
+
+			if (pAttr->hasteBar != nullptr)
+			{
+				textureShader->use();
+				glBindVertexArray(VAO[0]);
+				// Draw Object
+				glUniformMatrix4fv(apersp_matrix, 1, false, (float*)&Persp);
+				glUniformMatrix4fv(aview_matrix, 1, false, (float*)&View);
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, pAttr->hasteBar->textureID);
+				glBindBuffer(GL_ARRAY_BUFFER, textureBuffer);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(textCoords), textCoords, GL_STATIC_DRAW);
+				glVertexAttribPointer(aTexCoord, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+				glEnableVertexAttribArray(aTexCoord);
+				/* TEXTURE END */
+				Model =
+					glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y + 100.f, 0.0f))*
+					glm::scale(glm::mat4(), glm::vec3(128, 16, 0.0f));
+				glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
+
+				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+			}
+			else if (pAttr->DDBar != nullptr)
+			{
+				textureShader->use();
+				glBindVertexArray(VAO[0]);
+				// Draw Object
+				glUniformMatrix4fv(apersp_matrix, 1, false, (float*)&Persp);
+				glUniformMatrix4fv(aview_matrix, 1, false, (float*)&View);
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, pAttr->DDBar->textureID);
+				glBindBuffer(GL_ARRAY_BUFFER, textureBuffer);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(textCoords), textCoords, GL_STATIC_DRAW);
+				glVertexAttribPointer(aTexCoord, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+				glEnableVertexAttribArray(aTexCoord);
+				/* TEXTURE END */
+				Model =
+					glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y + 100.f, 0.0f))*
+					glm::scale(glm::mat4(), glm::vec3(128, 16, 0.0f));
+				glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
+
+				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+			}
+			else if (pAttr->healthBar != nullptr)
+			{
+				textureShader->use();
+				glBindVertexArray(VAO[0]);
+				// Draw Object
+				glUniformMatrix4fv(apersp_matrix, 1, false, (float*)&Persp);
+				glUniformMatrix4fv(aview_matrix, 1, false, (float*)&View);
+
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, pAttr->healthBar->textureID);
+				glBindBuffer(GL_ARRAY_BUFFER, textureBuffer);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(textCoords), textCoords, GL_STATIC_DRAW);
+				glVertexAttribPointer(aTexCoord, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+				glEnableVertexAttribArray(aTexCoord);
+				/* TEXTURE END */
+				Model =
+					glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y + 100.f, 0.0f))*
+					glm::scale(glm::mat4(), glm::vec3(128, 16, 0.0f));
+				glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
+				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+			}
+		}
 
 		// Debug Mode:
 		if (debugModeFlag)

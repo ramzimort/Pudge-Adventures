@@ -40,7 +40,7 @@ void ObjectFactory::LoadLevel(std::string& pFileName) {
 		{
 
 			auto listOfObjects = Data.value.GetArray();
-			for (int i = 0; i < listOfObjects.Size(); i++)
+			for (unsigned int i = 0; i < listOfObjects.Size(); i++)
 			{
 				auto ObjectInstance = listOfObjects[i].GetObject();
 				std::string PrefabName = ObjectInstance["Name"].GetString();
@@ -118,6 +118,7 @@ Component * ObjectFactory::LoadComponent(std::string& componentName, GameObject*
 	else if ("Controller" == componentName)
 	{
 		pNewComponent = pNewGameObject->AddComponent(CONTROLLER);
+		pNewComponent->Serialize(objectFile);
 	}
 	else if ("AI" == componentName)
 	{
@@ -142,6 +143,16 @@ Component * ObjectFactory::LoadComponent(std::string& componentName, GameObject*
 	else if ("Background" == componentName)
 	{
 		pNewComponent = pNewGameObject->AddComponent(BACKGROUND);
+		pNewComponent->Serialize(objectFile);
+	}
+	else if ("Attributes" == componentName)
+	{
+		pNewComponent = pNewGameObject->AddComponent(ATTRIBUTES);
+		pNewComponent->Serialize(objectFile);
+	}
+	else if ("PowerUp" == componentName)
+	{
+		pNewComponent = pNewGameObject->AddComponent(POWERUP);
 		pNewComponent->Serialize(objectFile);
 	}
 	return pNewComponent;

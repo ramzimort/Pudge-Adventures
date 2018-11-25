@@ -7,7 +7,19 @@
       "Name": "Field"
     },
     {
-      "Name": "DD_Rune"
+      "Name": "Rune_DD",
+      "PosX": 0,
+      "PosY": 200
+    },
+    {
+      "Name": "Rune_Regen",
+      "PosX": 200,
+      "PosY": 200
+    },
+    {
+      "Name": "Rune_Haste",
+      "PosX": 400,
+      "PosY": 200
     },
     {
       "Name": "Platform4",
