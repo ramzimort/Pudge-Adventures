@@ -21,7 +21,12 @@ float findAcuteAngle(glm::vec2&, glm::vec2&);
 Arms::Arms() : Component(ARMS)
 { }
 Arms::~Arms()
-{ }
+{ 
+	gpGameObjectManager->toBeDeleted.push(leftArm);
+	gpGameObjectManager->toBeDeleted.push(rightArm);
+	gpGameObjectManager->toBeDeleted.push(hook);
+	gpGameObjectManager->toBeDeleted.push(cleaver);
+}
 void Arms::Serialize(rapidjson::Document& objectFile)
 {
 	std::string objectFileName;
@@ -41,12 +46,19 @@ void Arms::Serialize(rapidjson::Document& objectFile)
 	cleaver = gpObjectFactory->LoadObject(objectFileName);
 	cleaver->Init();
 
-	leftArmRotationSpeed = PI / 10;
-	rightArmRotationSpeed = PI / 50;
-	hookSpeed = 500.f;
-	hookReturnTime = 10.f;
-
-	
+	std::string componentValueName;
+	for (auto& ComponentValues : objectFile["Arms"].GetObject())
+	{
+		componentValueName = ComponentValues.name.GetString();
+		if (componentValueName == "LeftArmRotationSpeed")
+			leftArmRotationSpeed = ComponentValues.value.GetFloat()*(PI / 180.f);
+		else if (componentValueName == "HookSpeed")
+			hookSpeed = ComponentValues.value.GetFloat();
+		else if (componentValueName == "HookReturnTime")
+			hookReturnTime = ComponentValues.value.GetFloat();
+		else if (componentValueName == "RightArmRotationSpeed")
+			rightArmRotationSpeed = ComponentValues.value.GetFloat()*(PI / 180.f);
+	}	
 }
 
 void Arms::Init()
@@ -210,6 +222,14 @@ void Arms::HandleEvent(Event* pEvent)
 			(static_cast<Transform*>(cleaver->GetComponent(TRANSFORM))->zValue));
 		gpGameObjectManager->mGameObjects.insert(hook);
 		gpGameObjectManager->mGameObjects.insert(cleaver);
+		break;
+	case ENABLE_DD:
+		hook->HandleEvent(&Event(ENABLE_DD));
+		cleaver->HandleEvent(&Event(ENABLE_DD));
+		break;
+	case DISABLE_DD:
+		hook->HandleEvent(&Event(DISABLE_DD));
+		cleaver->HandleEvent(&Event(DISABLE_DD));
 		break;
 	}
 }

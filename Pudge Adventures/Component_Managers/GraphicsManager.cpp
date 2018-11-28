@@ -213,7 +213,7 @@ void GraphicsManager::Draw(GameObject* go)
 				glEnableVertexAttribArray(aTexCoord);
 				/* TEXTURE END */
 				Model =
-					glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y + 100.f, 0.0f))*
+					glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y + 85.f, 0.0f))*
 					glm::scale(glm::mat4(), glm::vec3(128, 16, 0.0f));
 				glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
 
@@ -235,13 +235,13 @@ void GraphicsManager::Draw(GameObject* go)
 				glEnableVertexAttribArray(aTexCoord);
 				/* TEXTURE END */
 				Model =
-					glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y + 100.f, 0.0f))*
+					glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y + 85.f, 0.0f))*
 					glm::scale(glm::mat4(), glm::vec3(128, 16, 0.0f));
 				glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
 
 				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 			}
-			else if (pAttr->healthBar != nullptr)
+			if (pAttr->healthBar != nullptr)
 			{
 				textureShader->use();
 				glBindVertexArray(VAO[0]);
@@ -257,7 +257,7 @@ void GraphicsManager::Draw(GameObject* go)
 				glEnableVertexAttribArray(aTexCoord);
 				/* TEXTURE END */
 				Model =
-					glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y + 100.f, 0.0f))*
+					glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y + 75.f, 0.0f))*
 					glm::scale(glm::mat4(), glm::vec3(128, 16, 0.0f));
 				glUniformMatrix4fv(amodel_matrix, 1, false, (float*)&Model);
 				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

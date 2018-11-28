@@ -49,6 +49,8 @@ void Camera::HandleEvent(Event* pEvent)
 			CameraMoveEvent CameraMove;
 			CameraMove.deltaX = deltaCameraPos.x;
 			CameraMove.currentPos = mCameraCenter;
+			CameraMove.SCR_HEIGHT = (float)gpGfxManager->getWindowHeight();
+			CameraMove.SCR_WIDTH = (float)gpGfxManager->getWindowWidth();
 			gpEventManager->BroadcaseEventToSubscribers(&CameraMove);
 		}
 		mCameraCenter.y = bodyCurrentPos.y;

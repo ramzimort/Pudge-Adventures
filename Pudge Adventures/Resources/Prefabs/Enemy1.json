@@ -1,6 +1,6 @@
 {
   "Transform": {
-    "X": 0.0,
+    "X": 1000.0,
     "Y": 0.0,
     "Z": 1.0,
     "xRotationCenter": 0.0,
@@ -25,6 +25,8 @@
   "AI": {
     "MoveInterval": 3.0,
     "Speed": 50,
-    "Projectile": "Enemy1_Projectile"
+    "Projectile": "Enemy1_Projectile",
+    "ProjectileSpeed": 500.0,
+    "ProjectileOffset": [ 0.0, 0.5 ]
   }
 }

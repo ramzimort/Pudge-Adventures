@@ -9,6 +9,7 @@
 #include "FrameRateController.h"
 #include "..\Events\Event.h"
 #include "..\Events\ApplyDamage.h"
+#include "..\Events\UpdatePosition.h"
 
 
 extern GameObjectManager* gpGameObjectManager;
@@ -33,6 +34,8 @@ void HookInteractive2(Body* pBody1, Body* pBody2, glm::vec2& offset);
 void CleaverInteractive(Body* pBody1, Body* pBody2, glm::vec2& offset);
 void CleaverInteractive2(Body* pBody1, Body* pBody2, glm::vec2& offset);
 
+void CleaverDeny(Body* pBody1, Body* pBody2, glm::vec2& offset);
+void CleaverDeny2(Body* pBody1, Body* pBody2, glm::vec2& offset);
 
 void ApplyRune(Body* pBody1, Body* pBody2, glm::vec2& offset);
 void ApplyRune2(Body* pBody1, Body* pBody2, glm::vec2& offset);
@@ -75,6 +78,11 @@ void PhysicsManager::Init()
 	InteractionTypes[CLEAVER][ENEMY] = CleaverInteractive;
 	InteractionTypes[ENEMY][CLEAVER] = CleaverInteractive2;
 
+	InteractionTypes[CLEAVER][RUNE] = CleaverDeny;
+	InteractionTypes[RUNE][CLEAVER] = CleaverDeny2;
+	InteractionTypes[CLEAVER][PROJECTILE] = CleaverDeny;
+	InteractionTypes[PROJECTILE][CLEAVER] = CleaverDeny2;
+
 	InteractionTypes[HOOK][PUDGE] = HookPudge;
 	InteractionTypes[PUDGE][HOOK] = HookPudge2;
 
@@ -111,6 +119,15 @@ void PhysicsManager::Update(float FrameTime)
 		++pObj1;
 		if (pBody1 == nullptr)
 			continue;
+
+		// Broadcast Pudge's position to any subscribers (enemies that will direct their attacks towards pudge)
+		if (pBody1->mType == PUDGE)
+		{
+			UpdatePositionEvent UpdatePudgePosition;
+			UpdatePudgePosition.newPosition = pBody1->mPos;
+			gpEventManager->BroadcaseEventToSubscribers(&UpdatePudgePosition);
+		}
+
 		for (pObj2 = pObj1; pObj2 != pObjLast; ++pObj2)
 		{
 			Body* pBody2 = static_cast<Body*>((*pObj2)->GetComponent(BODY));
@@ -222,7 +239,7 @@ void ApplyRune(Body* pBody1, Body* pBody2, glm::vec2& offset)
 	Body* InteractiveBody = pBody1;
 	Body* RuneBody = pBody2;
 
-	gpGameObjectManager->toBeDeleted.insert(RuneBody->mpOwner);
+	gpGameObjectManager->toBeDeleted.push(RuneBody->mpOwner);
 
 	switch (static_cast<PowerUp*>(RuneBody->mpOwner->GetComponent(POWERUP))->mType)
 	{
@@ -250,9 +267,19 @@ void PudgeProjectile(Body* pBody1, Body* pBody2, glm::vec2& offset)
 	float projectileDamage = static_cast<Attributes*>(projectileBody->mpOwner->GetComponent(ATTRIBUTES))->Damage;
 	pudgeBody->mpOwner->HandleEvent(&ApplyDamageEvent(projectileDamage));
 
-	gpGameObjectManager->toBeDeleted.insert(projectileBody->mpOwner);
+	gpGameObjectManager->toBeDeleted.push(projectileBody->mpOwner);
 }
 void PudgeProjectile2(Body* pBody1, Body* pBody2, glm::vec2& offset)
 {
 	PudgeProjectile(pBody2, pBody1, offset);
+}
+
+void CleaverDeny(Body* pBody1, Body* pBody2, glm::vec2& offset)
+{
+	Body* projectileBody = pBody2;
+	gpGameObjectManager->toBeDeleted.push(projectileBody->mpOwner);
+}
+void CleaverDeny2(Body* pBody1, Body* pBody2, glm::vec2& offset)
+{
+	CleaverDeny(pBody2, pBody1, offset);
 }

@@ -13,21 +13,22 @@ GameObjectManager::~GameObjectManager(){
 
 void GameObjectManager::Update()
 {
+	while (!toBeDeleted.empty())
+	{
+		GameObject* go = toBeDeleted.front();
+		toBeDeleted.pop();
+
+		mGameObjects.erase(go);
+		delete go;
+	}
+
 	while (!toBeCreated.empty())
 	{
 		mGameObjects.insert(toBeCreated.front());
 		toBeCreated.pop();
 	}
 
-	for (auto go : toBeDeleted)
-	{
-		mGameObjects.erase(go);
-		delete go;
-	}
-
 	for (auto go : mGameObjects) 
 		go->Update();
-
-	toBeDeleted.clear();
 }
 

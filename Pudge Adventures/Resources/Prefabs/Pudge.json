@@ -20,12 +20,17 @@
   },
   "Arms": {
     "LeftArm": "Left_Arm",
-    "RightArm": "Right_Arm",
     "LeftArmWeapon": "Hook",
-    "RightArmWeapon": "Cleaver"
+    "LeftArmRotationSpeed": 18,
+    "HookSpeed": 500,
+    "HookReturnTime": 1,
+    "RightArm": "Right_Arm",
+    "RightArmWeapon": "Cleaver",
+    "RightArmRotationSpeed": 5
   },
   "Attributes": {
-    "HP": 4
+    "HP": 4,
+    "RuneTime": 5
   },
   "Camera": {
 

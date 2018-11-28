@@ -19,10 +19,14 @@ class botAI : public Component
 	public:
 		float changeDirectionInterval;
 		float speed;
+		float projectileSpeed;
 		float currentTime;
-		
+		bool isAwake;
+
+		glm::vec2 ProjectileOffset;
 
 		std::string ProjectileName;
 private:
 	void ShootProjectile();
+	void CheckCamera(Event* pEvent);
 };

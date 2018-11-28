@@ -3,7 +3,7 @@
 #include "GameObject.h"
 #include "..\Component_Managers\FrameRateController.h"
 #include "..\Component_Managers\Resource Manager.h"
-#include "..\Component_Managers\ObjectFactory.h"
+#include "..\Component_Managers\GameObjectManager.h"
 #include "Sprite.h"
 #include "..\Events\Event.h"
 #include "..\Events\ApplyDamage.h"
@@ -11,7 +11,7 @@
 
 extern FrameRateController* gpFRC;
 extern ResourceManager* gpResourceManager;
-extern ObjectFactory* gpObjectFactory;
+extern GameObjectManager* gpGameObjectManager;
 
 
 Attributes::Attributes() : 
@@ -83,6 +83,9 @@ void Attributes::Update()
 	UpdateHealthBar();
 	UpdateDDBar();
 	UpdateHasteBar();
+
+	if (currentHealth < 0.f)
+		gpGameObjectManager->toBeDeleted.push(mpOwner);
 }
 
 void Attributes::Serialize(rapidjson::Document& objectFile)
@@ -95,8 +98,9 @@ void Attributes::Serialize(rapidjson::Document& objectFile)
 			maxHealth = componenentValues.value.GetFloat();
 		else if (componentValueName == "Damage")
 			Damage = componenentValues.value.GetFloat();
+		else if (componentValueName == "RuneTime")
+			RuneEffectTime = componenentValues.value.GetFloat();
 	}
-	RuneEffectTime = 10.f;
 }
 
 void Attributes::HandleEvent(Event* pEvent)
@@ -114,10 +118,13 @@ void Attributes::HandleEvent(Event* pEvent)
 	case ENABLE_DD:
 		DD = true;
 		DDTimer = RuneEffectTime;
+		Damage *= 2.f;
+		std::cout << Damage << std::endl;
 		break;
 	case DISABLE_DD:
 		DD = false;
 		DDTimer = 0.f;
+		Damage /= 2.f;
 		break;
 	case ENABLE_REGEN:
 		Regen = true;
@@ -127,6 +134,7 @@ void Attributes::HandleEvent(Event* pEvent)
 		break;
 	case APPLY_DAMAGE:
 		currentHealth -= static_cast<ApplyDamageEvent*>(pEvent)->damage;
+		std::cout << currentHealth << std::endl;
 	}
 }
 
@@ -138,13 +146,13 @@ void Attributes::UpdateHealthBar()
 		healthBar = nullptr;
 		return;
 	}
-	if (currentHealth > 0.f && currentHealth < 0.25*maxHealth)
+	if (currentHealth > 0.f && currentHealth <= 0.25*maxHealth)
 		textureName = "HP1.png";
-	else if (currentHealth >= 0.25*maxHealth && currentHealth < 0.5*maxHealth)
+	else if (currentHealth > 0.25*maxHealth && currentHealth <= 0.5*maxHealth)
 		textureName = "HP2.png";
-	else if (currentHealth >= 0.5*maxHealth && currentHealth < 0.75*maxHealth)
+	else if (currentHealth > 0.5*maxHealth && currentHealth <= 0.75*maxHealth)
 		textureName = "HP3.png";
-	else if ((currentHealth >= 0.75*maxHealth && currentHealth <= maxHealth))
+	else if ((currentHealth > 0.75*maxHealth && currentHealth <= maxHealth))
 		textureName = "HP4.png";
 	else
 	{

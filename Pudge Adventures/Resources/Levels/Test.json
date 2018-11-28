@@ -31,7 +31,12 @@
     },
     {
       "Name": "Platform4",
-      "PosX": 800,
+      "PosX": 500,
+      "PosY": -200
+    },
+    {
+      "Name": "Platform4",
+      "PosX": 1000,
       "PosY": -200
     },
     {

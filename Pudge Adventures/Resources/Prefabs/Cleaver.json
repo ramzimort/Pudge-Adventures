@@ -9,14 +9,13 @@
   },
   "Sprite": "Cleaver.png",
   "Body": {
-    "Shape": "AABB",
+    "Shape": "Circle",
     "xColliderCenter": -0.35,
     "yColliderCenter": -0.1,
-    "Width": 16,
-    "Height": 16
+    "Radius": 16
   },
   "Attributes": {
-    "Damage": 10
+    "Damage": 20
   }
 }
 
