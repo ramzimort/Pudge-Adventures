@@ -42,9 +42,9 @@ void Arms::Serialize(rapidjson::Document& objectFile)
 	cleaver->Init();
 
 	leftArmRotationSpeed = PI / 10;
-	rightArmRotationSpeed = PI / 100;
+	rightArmRotationSpeed = PI / 50;
 	hookSpeed = 500.f;
-	hookReturnTime = 1.f;
+	hookReturnTime = 10.f;
 
 	
 }
@@ -72,6 +72,7 @@ void Arms::Update()
 		{
 			rightArmAngle = rightArmFinalAngle;
 			isCleaving = false;
+			static_cast<Body*>(cleaver->GetComponent(BODY))->mType = NONE;
 		}
 		SetRightArmAngle();
 	}

@@ -6,6 +6,7 @@
 #include "..\Component_Managers\ObjectFactory.h"
 #include "Sprite.h"
 #include "..\Events\Event.h"
+#include "..\Events\ApplyDamage.h"
 #include <iostream>
 
 extern FrameRateController* gpFRC;
@@ -17,6 +18,7 @@ Attributes::Attributes() :
 	Component(ATTRIBUTES),
 	maxHealth(0.f),
 	currentHealth(0.f),
+	Damage(0.f),
 	Regen(false),
 	Haste(false),
 	HasteTimer(0.f),
@@ -29,7 +31,6 @@ Attributes::~Attributes()
 
 void Attributes::Init()
 {
-	currentHealth = maxHealth/2;
 	std::string textureName;
 	textureName = "HP1.png";
 	healthBar = gpResourceManager->LoadTexture(textureName);
@@ -57,6 +58,7 @@ void Attributes::Init()
 	healthBar = gpResourceManager->LoadTexture(textureName);
 	textureName = "Haste4.png";
 	healthBar = gpResourceManager->LoadTexture(textureName);
+	currentHealth = maxHealth;
 }
 
 void Attributes::Update()
@@ -94,7 +96,7 @@ void Attributes::Serialize(rapidjson::Document& objectFile)
 		else if (componentValueName == "Damage")
 			Damage = componenentValues.value.GetFloat();
 	}
-	RuneEffectTime = 3.f;
+	RuneEffectTime = 10.f;
 }
 
 void Attributes::HandleEvent(Event* pEvent)
@@ -123,18 +125,20 @@ void Attributes::HandleEvent(Event* pEvent)
 	case DISABLE_REGEN:
 		Regen = false;
 		break;
+	case APPLY_DAMAGE:
+		currentHealth -= static_cast<ApplyDamageEvent*>(pEvent)->damage;
 	}
 }
 
 void Attributes::UpdateHealthBar()
 {
 	std::string textureName;
-	if (currentHealth < 0.f)
+	if (maxHealth == 0.f)
 	{
 		healthBar = nullptr;
 		return;
 	}
-	else if (currentHealth > 0.f && currentHealth < 0.25*maxHealth)
+	if (currentHealth > 0.f && currentHealth < 0.25*maxHealth)
 		textureName = "HP1.png";
 	else if (currentHealth >= 0.25*maxHealth && currentHealth < 0.5*maxHealth)
 		textureName = "HP2.png";
@@ -142,6 +146,11 @@ void Attributes::UpdateHealthBar()
 		textureName = "HP3.png";
 	else if ((currentHealth >= 0.75*maxHealth && currentHealth <= maxHealth))
 		textureName = "HP4.png";
+	else
+	{
+		healthBar = nullptr;
+		return;
+	}
 	healthBar = gpResourceManager->LoadTexture(textureName);
 }
 

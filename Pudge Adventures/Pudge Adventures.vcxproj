@@ -192,6 +192,7 @@
     <ClInclude Include="Component_Managers\ObjectFactory.h" />
     <ClInclude Include="Component_Managers\PhysicsManager.h" />
     <ClInclude Include="Component_Managers\Resource Manager.h" />
+    <ClInclude Include="Events\ApplyDamage.h" />
     <ClInclude Include="Events\CameraMove.h" />
     <ClInclude Include="Events\Event.h" />
     <ClInclude Include="Events\RotateBody.h" />

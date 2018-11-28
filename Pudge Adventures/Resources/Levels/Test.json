@@ -1,6 +1,9 @@
 {
   "Objects": [
     {
+      "Name": "Enemy1"
+    },
+    {
       "Name": "Pudge"
     },
     {

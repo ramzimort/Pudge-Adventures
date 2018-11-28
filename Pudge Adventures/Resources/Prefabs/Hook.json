@@ -4,8 +4,8 @@
     "xRotationCenter": 0.08,
     "yRotationCenter": 0.31,
     "Angle": 0.0,
-    "xScale": 200.0,
-    "yScale": 200.0
+    "xScale": 128.0,
+    "yScale": 128.0
   },
   "Sprite": "Hook.png",
   "Body": {
@@ -13,7 +13,10 @@
     "Type": "Hook",
     "xColliderCenter": 0.075,
     "yColliderCenter": -0.3,
-    "Radius": 16
+    "Radius": 8
+  },
+  "Attributes": {
+    "Damage": 1
   }
 }
 

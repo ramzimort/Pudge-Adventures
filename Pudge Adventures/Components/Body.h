@@ -17,6 +17,7 @@ enum BodyType {
 	ENEMY,
 	HOOK,
 	CLEAVER,
+	PROJECTILE,
 	RUNE,
 	BODYNUM
 };

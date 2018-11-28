@@ -12,7 +12,7 @@
     "Mass": 0.0,
     "Shape": "AABB",
     "Type": "Rigid",
-    "Width": 512,
-    "Height": 128
+    "Width": 460,
+    "Height": 110
   }
 }

@@ -203,6 +203,9 @@
     <ClInclude Include="Components\PowerUp.h">
       <Filter>Components\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Events\ApplyDamage.h">
+      <Filter>Events\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

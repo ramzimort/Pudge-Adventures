@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Component.h"
+#include <glm/glm.hpp>
 
 #include <fstream>
 
@@ -19,4 +20,9 @@ class botAI : public Component
 		float changeDirectionInterval;
 		float speed;
 		float currentTime;
+		
+
+		std::string ProjectileName;
+private:
+	void ShootProjectile();
 };

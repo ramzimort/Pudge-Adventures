@@ -6,8 +6,8 @@
     "xRotationCenter": 0.0,
     "yRotationCenter": 0.0,
     "Angle": 0.0,
-    "xScale": 200.0,
-    "yScale": 200.0
+    "xScale": 128.0,
+    "yScale": 128.0
   },
   "Sprite": "Pudge_Body.png",
   "Controller": true,
@@ -16,7 +16,7 @@
     "Shape": "AABB",
     "Type": "Pudge",
     "Width": 60,
-    "Height": 200
+    "Height": 120
   },
   "Arms": {
     "LeftArm": "Left_Arm",
@@ -25,7 +25,7 @@
     "RightArmWeapon": "Cleaver"
   },
   "Attributes": {
-    "HP": 10
+    "HP": 4
   },
   "Camera": {
 

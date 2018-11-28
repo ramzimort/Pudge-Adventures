@@ -144,6 +144,8 @@ void Body::Serialize(rapidjson::Document& objectFile)
 				mType = HOOK;
 			else if (objectType == "Rune")
 				mType = RUNE;
+			else if (objectType == "Projectile")
+				mType = PROJECTILE;
 			else
 				mType = NONE;
 		}

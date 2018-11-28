@@ -1,0 +1,18 @@
+{
+  "Transform": {
+    "Z": 0,
+    "Angle": 0.0,
+    "xScale": 32.0,
+    "yScale": 32.0
+  },
+  "Sprite": "Enemy1_Projectile.png",
+  "Body": {
+    "Shape": "Circle",
+    "Type": "Projectile",
+    "Radius": 4
+  },
+  "Attributes": {
+    "Damage": 1
+  }
+}
+

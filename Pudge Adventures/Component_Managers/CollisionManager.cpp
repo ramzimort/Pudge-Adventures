@@ -52,7 +52,7 @@ bool CollisionManager::checkCollisionandGenerateContact(Shape * pShape1, Shape *
 
 
 bool CheckCollisionCircleCircle(
-	Shape* pShape1,		
+	Shape* pShape1,
 	Shape* pShape2,
 	std::list<std::pair<Contact*, glm::vec2>> &Contacts)
 {

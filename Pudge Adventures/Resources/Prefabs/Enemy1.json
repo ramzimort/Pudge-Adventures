@@ -1,0 +1,30 @@
+{
+  "Transform": {
+    "X": 0.0,
+    "Y": 0.0,
+    "Z": 1.0,
+    "xRotationCenter": 0.0,
+    "yRotationCenter": 0.0,
+    "Angle": 0.0,
+    "xScale": 128.0,
+    "yScale": 128.0
+  },
+  "Sprite": "Creep.png",
+  "Body": {
+    "Mass": 10.0,
+    "Shape": "AABB",
+    "Type": "Enemy",
+    "xColliderCenter": 0.1,
+    "yColliderCenter": -0.15,
+    "Width": 40,
+    "Height": 65
+  },
+  "Attributes": {
+    "HP": 4
+  },
+  "AI": {
+    "MoveInterval": 3.0,
+    "Speed": 50,
+    "Projectile": "Enemy1_Projectile"
+  }
+}

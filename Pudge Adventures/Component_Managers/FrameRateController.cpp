@@ -41,5 +41,7 @@ void FrameRateController::FrameEnd() {
 }
 
 float FrameRateController::GetFrameTime() {
+	if (mFrameTime == 0.f)
+		return -1.f;
 	return mFrameTime/1000.f;
 }

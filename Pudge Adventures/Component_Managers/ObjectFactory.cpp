@@ -97,7 +97,7 @@ GameObject* ObjectFactory::LoadObject(std::string& pFileName) {
 		componentName = Components.name.GetString();
 		LoadComponent(componentName, pNewGameObject, objectFile);			
 	}
-	gpGameObjectManager->mGameObjects.insert(pNewGameObject);
+	gpGameObjectManager->toBeCreated.push(pNewGameObject);
 	inFile.close();
 	return pNewGameObject;
 

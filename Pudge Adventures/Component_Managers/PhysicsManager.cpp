@@ -3,10 +3,12 @@
 #include "EventManager.h"
 #include "..\Components\GameObject.h"
 #include "..\Components\Body.h"
+#include "..\Components\Attributes.h"
 #include "..\Components\PowerUp.h"
 #include "GameObjectManager.h"
 #include "FrameRateController.h"
 #include "..\Events\Event.h"
+#include "..\Events\ApplyDamage.h"
 
 
 extern GameObjectManager* gpGameObjectManager;
@@ -25,12 +27,19 @@ void HookRigid2(Body* pBody1, Body* pBody2, glm::vec2& offset);
 void HookPudge(Body* pBody1, Body* pBody2, glm::vec2& offset);
 void HookPudge2(Body* pBody1, Body* pBody2, glm::vec2& offset);
 
-
 void HookInteractive(Body* pBody1, Body* pBody2, glm::vec2& offset);
 void HookInteractive2(Body* pBody1, Body* pBody2, glm::vec2& offset);
 
+void CleaverInteractive(Body* pBody1, Body* pBody2, glm::vec2& offset);
+void CleaverInteractive2(Body* pBody1, Body* pBody2, glm::vec2& offset);
+
+
 void ApplyRune(Body* pBody1, Body* pBody2, glm::vec2& offset);
 void ApplyRune2(Body* pBody1, Body* pBody2, glm::vec2& offset);
+
+void PudgeProjectile(Body* pBody1, Body* pBody2, glm::vec2& offset);
+void PudgeProjectile2(Body* pBody1, Body* pBody2, glm::vec2& offset);
+
 
 PhysicsManager::PhysicsManager()
 {
@@ -49,18 +58,28 @@ void PhysicsManager::Init()
 
 	InteractionTypes[PUDGE][RIGID] = InteractiveRigid;
 	InteractionTypes[RIGID][PUDGE] = InteractiveRigid2;
+	InteractionTypes[ENEMY][RIGID] = InteractiveRigid;
+	InteractionTypes[RIGID][ENEMY] = InteractiveRigid2;
 
 	InteractionTypes[PUDGE][RUNE] = ApplyRune;
 	InteractionTypes[RUNE][PUDGE] = ApplyRune2;
-
-	InteractionTypes[ENEMY][RIGID] = InteractiveRigid;
-	InteractionTypes[RIGID][ENEMY] = InteractiveRigid2;
+	InteractionTypes[ENEMY][RUNE] = ApplyRune;
+	InteractionTypes[RUNE][ENEMY] = ApplyRune2;
 
 	InteractionTypes[HOOK][RIGID] = HookRigid;
 	InteractionTypes[RIGID][HOOK] = HookRigid2;
 
+	InteractionTypes[PUDGE][PROJECTILE] = PudgeProjectile;
+	InteractionTypes[PROJECTILE][PUDGE] = PudgeProjectile2;
+
+	InteractionTypes[CLEAVER][ENEMY] = CleaverInteractive;
+	InteractionTypes[ENEMY][CLEAVER] = CleaverInteractive2;
+
 	InteractionTypes[HOOK][PUDGE] = HookPudge;
 	InteractionTypes[PUDGE][HOOK] = HookPudge2;
+
+	InteractionTypes[HOOK][ENEMY] = HookInteractive;
+	InteractionTypes[ENEMY][HOOK] = HookInteractive2;
 
 	InteractionTypes[HOOK][RUNE] = HookInteractive;
 	InteractionTypes[RUNE][HOOK] = HookInteractive2;
@@ -171,11 +190,31 @@ void HookInteractive(Body* pBody1, Body* pBody2, glm::vec2& offset)
 	Body* interactiveBody = pBody2;
 
 	interactiveBody->mPos = hookBody->mPos + hookBody->mPos_mPivot + hookBody->mPivot_mColliderCenter;
+	interactiveBody->mVel = glm::vec2(0.f);
+
+	float hookDamage = static_cast<Attributes*>(hookBody->mpOwner->GetComponent(ATTRIBUTES))->Damage;
+	interactiveBody->mpOwner->HandleEvent(&ApplyDamageEvent(hookDamage*gpFRC->GetFrameTime()));
+
 	gpEventManager->ForceTimedEvent(RETURN_HOOK);
+	// PLay Audio
+	
 }
 void HookInteractive2(Body* pBody1, Body* pBody2, glm::vec2& offset)
 {
 	HookInteractive(pBody2, pBody1, offset);
+}
+
+void CleaverInteractive(Body* pBody1, Body* pBody2, glm::vec2& offset)
+{
+	Body* cleaverBody = pBody1;
+	Body* interactiveBody = pBody2;
+
+	float cleaverDamage = static_cast<Attributes*>(cleaverBody->mpOwner->GetComponent(ATTRIBUTES))->Damage;
+	interactiveBody->mpOwner->HandleEvent(&ApplyDamageEvent(cleaverDamage*gpFRC->GetFrameTime()));
+}
+void CleaverInteractive2(Body* pBody1, Body* pBody2, glm::vec2& offset)
+{
+	CleaverInteractive(pBody2, pBody1, offset);
 }
 
 void ApplyRune(Body* pBody1, Body* pBody2, glm::vec2& offset)
@@ -201,4 +240,19 @@ void ApplyRune(Body* pBody1, Body* pBody2, glm::vec2& offset)
 void ApplyRune2(Body* pBody1, Body* pBody2, glm::vec2& offset)
 {
 	ApplyRune(pBody2, pBody1, offset);
+}
+
+void PudgeProjectile(Body* pBody1, Body* pBody2, glm::vec2& offset)
+{
+	Body* pudgeBody = pBody1;
+	Body* projectileBody = pBody2;
+
+	float projectileDamage = static_cast<Attributes*>(projectileBody->mpOwner->GetComponent(ATTRIBUTES))->Damage;
+	pudgeBody->mpOwner->HandleEvent(&ApplyDamageEvent(projectileDamage));
+
+	gpGameObjectManager->toBeDeleted.insert(projectileBody->mpOwner);
+}
+void PudgeProjectile2(Body* pBody1, Body* pBody2, glm::vec2& offset)
+{
+	PudgeProjectile(pBody2, pBody1, offset);
 }
