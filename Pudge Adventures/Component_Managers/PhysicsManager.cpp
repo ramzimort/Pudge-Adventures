@@ -43,6 +43,9 @@ void ApplyRune2(Body* pBody1, Body* pBody2, glm::vec2& offset);
 void PudgeProjectile(Body* pBody1, Body* pBody2, glm::vec2& offset);
 void PudgeProjectile2(Body* pBody1, Body* pBody2, glm::vec2& offset);
 
+void ProjectileRigid(Body* pBody1, Body* pBody2, glm::vec2& offset);
+void ProjectileRigid2(Body* pBody1, Body* pBody2, glm::vec2& offset);
+
 
 PhysicsManager::PhysicsManager()
 {
@@ -91,6 +94,9 @@ void PhysicsManager::Init()
 
 	InteractionTypes[HOOK][RUNE] = HookInteractive;
 	InteractionTypes[RUNE][HOOK] = HookInteractive2;
+
+	InteractionTypes[PROJECTILE][RIGID] = ProjectileRigid;
+	InteractionTypes[RIGID][PROJECTILE] = ProjectileRigid2;
 
 	// Reset contacts
 	gpCollisionManager->Reset();
@@ -282,4 +288,14 @@ void CleaverDeny(Body* pBody1, Body* pBody2, glm::vec2& offset)
 void CleaverDeny2(Body* pBody1, Body* pBody2, glm::vec2& offset)
 {
 	CleaverDeny(pBody2, pBody1, offset);
+}
+
+void ProjectileRigid(Body* pBody1, Body* pBody2, glm::vec2& offset)
+{
+	Body* projectileBody = pBody1;
+	gpGameObjectManager->toBeDeleted.push(projectileBody->mpOwner);
+}
+void ProjectileRigid2(Body* pBody1, Body* pBody2, glm::vec2& offset)
+{
+	ProjectileRigid(pBody2, pBody1, offset);
 }
