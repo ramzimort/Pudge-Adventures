@@ -1,8 +1,8 @@
 #pragma once
 #define STB_IMAGE_IMPLEMENTATION
 
-#include"Component.h"
-
+#include "Component.h"
+#include <vector>
 
 class Texture {
 public:
@@ -23,8 +23,14 @@ public:
 	void Update();
 
 	void Serialize(rapidjson::Document& objectFile);
+
+	bool enableAnimation;
+	float currentTime;
+	float AnimationTime;
 	
 	Texture* mpTexture;
-	int uCoord = 0;
-	int vCoord = 0;
+
+private:
+	unsigned int currentAnimation;
+	std::vector<Texture*> SpriteAnimation;
 };

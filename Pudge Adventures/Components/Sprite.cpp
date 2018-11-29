@@ -1,13 +1,19 @@
 
 #define STB_IMAGE_IMPLEMENTATION
+
 #include "Sprite.h"
 #include "..\Component_Managers\Resource Manager.h"
+#include "..\Component_Managers\FrameRateController.h"
 #include <GLAD/glad.h>
 #include <iostream>
 #include <stb_image.h>
+#include <iostream>
+
+#undef GetObject
 
 
 extern ResourceManager* gpResourceManager;
+extern FrameRateController* gpFRC;
 
 Texture::Texture(std::string& pFileName)
 {
@@ -45,11 +51,50 @@ Sprite::Sprite() :
 Sprite::~Sprite() 
 { }
 void Sprite::Init()
-{ }
+{ 
+	currentTime = AnimationTime;
+	currentAnimation = 0;
+	enableAnimation = false;
+
+}
 void Sprite::Update()
-{ }
+{ 
+	if (enableAnimation)
+	{
+		std::cout << "AnimationCurrent: " << currentTime << std::endl;
+		currentTime -= gpFRC->GetFrameTime();
+		if (currentTime < 0.f)
+		{
+			currentAnimation++;
+			if (currentAnimation >= SpriteAnimation.size())
+				currentAnimation = 0;
+			currentTime = AnimationTime;
+		}
+	}
+	else
+		currentAnimation = 0;
+
+	mpTexture = SpriteAnimation[currentAnimation];
+}
+
+using namespace rapidjson;
 void Sprite::Serialize(rapidjson::Document& objectFile)
 {
-	std::string imageName = objectFile["Sprite"].GetString();
-	mpTexture = gpResourceManager->LoadTexture(imageName);
+	std::string componentValueName;
+	for (auto& ComponentValues : objectFile["Sprite"].GetObject())
+	{
+		componentValueName = ComponentValues.name.GetString();
+		if (componentValueName == "Animation")
+		{
+			for (unsigned int i = 0; i < ComponentValues.value.GetArray().Size(); ++i)
+			{
+				
+				std::string imageName = ComponentValues.value.GetArray()[i].GetString();
+				mpTexture = gpResourceManager->LoadTexture(imageName);
+				SpriteAnimation.push_back(mpTexture);
+			}
+		}
+		else if (componentValueName == "AnimationTime")
+			AnimationTime = ComponentValues.value.GetFloat();
+	}
 }

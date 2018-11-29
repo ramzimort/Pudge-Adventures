@@ -7,7 +7,10 @@
     "xScale": 128.0,
     "yScale": 128.0
   },
-  "Sprite": "Light_Tree.png",
+  "Sprite": {
+    "Animation": [ "Light_Tree.png" ],
+    "AnimationTime": 0.5
+  },
   "Background": {
     "Scroll_Speed": -0.5
   }

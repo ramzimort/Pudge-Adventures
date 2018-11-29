@@ -1,0 +1,21 @@
+{
+  "Transform": {
+    "X": 400.0,
+    "Y": 200.0,
+    "Z": 0.0,
+    "xRotationCenter": 0.0,
+    "yRotationCenter": 0.0,
+    "Angle": 0.0,
+    "xScale": 64.0,
+    "yScale": 64.0
+  },
+  "AI2": {
+    "AttackSpeed": 1.0,
+    "Projectile": "Enemy2_Projectile",
+    "ProjectileSpeed": 500.0
+  },
+  "Sprite": {
+    "Animation": [ "Ballista1.png", "Ballista2.png", "Ballista3.png", "Ballista4.png" ],
+    "AnimationTime": 0.25
+  }
+}

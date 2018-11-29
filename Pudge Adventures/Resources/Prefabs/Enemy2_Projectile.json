@@ -2,11 +2,11 @@
   "Transform": {
     "Z": 0,
     "Angle": 0.0,
-    "xScale": 32.0,
-    "yScale": 32.0
+    "xScale": 64.0,
+    "yScale": 64.0
   },
   "Sprite": {
-    "Animation": [ "Enemy1_Projectile.png" ],
+    "Animation": [ "Arrow.png" ],
     "AnimationTime": 0.5
   },
   "Body": {

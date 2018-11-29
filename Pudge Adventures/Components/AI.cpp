@@ -19,7 +19,10 @@ botAI::botAI() :
 	changeDirectionInterval(0.0f),
 	currentTime(0.0f) { }
 
-botAI::~botAI() { }
+botAI::~botAI() 
+{
+	gpEventManager->Unsubscribe(CAMERA_MOVE, mpOwner);
+}
 
 void botAI::Init()
 {

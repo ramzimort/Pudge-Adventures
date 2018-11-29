@@ -4,7 +4,6 @@
 #include "Transform.h"
 #include "..\Component_Managers\EventManager.h"
 #include "..\Events\CameraMove.h"
-#include "..\Events\UpdatePosition.h"
 
 extern EventManager* gpEventManager;
 
@@ -26,9 +25,9 @@ void Background::Init()
 
 void Background::Update()
 { 
-	UpdatePositionEvent UpdatePosition;
-	UpdatePosition.newPosition = mPos;
-	mpOwner->HandleEvent(&UpdatePosition);
+	Transform* pTr = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM));
+	if (pTr != nullptr)
+		pTr->mPosition = mPos;
 }
 
 void Background::HandleEvent(Event* pEvent)

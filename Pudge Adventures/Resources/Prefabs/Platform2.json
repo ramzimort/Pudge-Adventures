@@ -7,7 +7,7 @@
     "xScale": 256.0,
     "yScale": 128.0
   },
-  "Sprite": "Platform2.png",
+  "Sprite": [ "Platform2.png" ],
   "Body": {
     "Mass": 0.0,
     "Shape": "AABB",

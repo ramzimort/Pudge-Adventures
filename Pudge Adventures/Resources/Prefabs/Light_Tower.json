@@ -7,7 +7,10 @@
     "xScale": 64.0,
     "yScale": 64.0
   },
-  "Sprite": "Light_Tower.png",
+  "Sprite": {
+    "Animation": [ "Light_Tower.png" ],
+    "AnimationTime": 0.5
+  },
   "Background": {
     "Scroll_Speed": -0.8
   }

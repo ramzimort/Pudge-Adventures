@@ -7,7 +7,10 @@
     "xScale": 2048.0,
     "yScale": 512.0
   },
-  "Sprite": "Field.png",
+  "Sprite": {
+    "Animation": [ "Field.png" ],
+    "AnimationTime": 0.5
+  },
   "Background": {
     "Scroll_Speed": -1.0
   }

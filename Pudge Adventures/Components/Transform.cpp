@@ -1,6 +1,7 @@
 
 #include "Transform.h"
 #include "GameObject.h"
+#include "Body.h"
 #include "..\Events\SetAngle.h"
 #include "..\Events\UpdatePosition.h"
 #include "..\Events\RotateBody.h"
@@ -22,7 +23,10 @@ Transform::~Transform()
 void Transform::Init()
 { }
 
-void Transform::Update() { }
+void Transform::Update() 
+{ 
+
+}
 
 void Transform::HandleEvent(Event* pEvent)
 {
@@ -35,9 +39,6 @@ void Transform::HandleEvent(Event* pEvent)
 	case MOVE_RIGHT:
 		if (mScale.x > 0.f)
 			mpOwner->HandleEvent(&Event(MIRROR_OBJECT));
-		break;
-	case UPDATE_POSITION:
-		mPosition = static_cast<UpdatePositionEvent*>(pEvent)->newPosition;
 		break;
 	case MIRROR_OBJECT:
 		mScale.x *= -1.f;

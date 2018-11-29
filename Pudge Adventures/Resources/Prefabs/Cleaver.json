@@ -7,7 +7,10 @@
     "xScale": 128.0,
     "yScale": 128.0
   },
-  "Sprite": "Cleaver.png",
+  "Sprite": {
+    "Animation": [ "Cleaver.png" ],
+    "AnimationTime": 0.5
+  },
   "Body": {
     "Shape": "Circle",
     "xColliderCenter": -0.35,

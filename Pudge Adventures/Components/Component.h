@@ -15,6 +15,8 @@ enum COMPONENT_TYPE {
 	ATTRIBUTES,
 	POWERUP,
 	BOTAI,
+	BOTAI2,
+	BOTAI3
 };
 
 class GameObject;

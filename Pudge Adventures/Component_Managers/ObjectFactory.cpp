@@ -125,6 +125,11 @@ Component * ObjectFactory::LoadComponent(std::string& componentName, GameObject*
 		pNewComponent = pNewGameObject->AddComponent(BOTAI);
 		pNewComponent->Serialize(objectFile);
 	}
+	else if ("AI2" == componentName)
+	{
+		pNewComponent = pNewGameObject->AddComponent(BOTAI2);
+		pNewComponent->Serialize(objectFile);
+	}
 	else if ("Body" == componentName)
 	{
 		pNewComponent = pNewGameObject->AddComponent(BODY);

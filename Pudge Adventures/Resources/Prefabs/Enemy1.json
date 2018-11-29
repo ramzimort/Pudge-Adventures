@@ -9,7 +9,10 @@
     "xScale": 128.0,
     "yScale": 128.0
   },
-  "Sprite": "Creep.png",
+  "Sprite": {
+    "Animation": [ "Creep.png" ],
+    "AnimationTime": 0.5
+  },
   "Body": {
     "Mass": 10.0,
     "Shape": "AABB",

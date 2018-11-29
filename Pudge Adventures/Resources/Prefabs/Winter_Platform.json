@@ -7,12 +7,15 @@
     "xScale": 400.0,
     "yScale": 100.0
   },
-  "Sprite": "Ground.png",
-  "Body": {
-    "Mass": 0.0,
-    "Shape": "AABB",
-    "Type": "Rigid",
-    "Width": 400,
-    "Height": 100
+  "Sprite": {
+    "Animation": [ "Ground.png" ],
+    "AnimationTime": 1.0
+  },
+    "Body": {
+      "Mass": 0.0,
+      "Shape": "AABB",
+      "Type": "Rigid",
+      "Width": 400,
+      "Height": 100
+    }
   }
-}

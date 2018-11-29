@@ -33,31 +33,32 @@ void Camera::Init()
 }
 
 void Camera::Update()
-{ }
+{ 
+	glm::vec2 bodyCurrentPos = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM))->mPosition;
+	glm::vec2 deltaCameraPos = bodyCurrentPos - (mCameraCenter + glm::vec2(rightBound, upperBound));
+	if (bodyCurrentPos.x > mCameraCenter.x + rightBound)
+	{
+		mCameraCenter.x += deltaCameraPos.x;
+		CameraMoveEvent CameraMove;
+		CameraMove.deltaX = deltaCameraPos.x;
+		CameraMove.currentPos = mCameraCenter;
+		CameraMove.SCR_HEIGHT = (float)gpGfxManager->getWindowHeight();
+		CameraMove.SCR_WIDTH = (float)gpGfxManager->getWindowWidth();
+		gpEventManager->BroadcaseEventToSubscribers(&CameraMove);
+	}
+	mCameraCenter.y = bodyCurrentPos.y;
+	if (mCameraCenter.y < 100.f)
+		mCameraCenter.y = 100.f;
+}
 
 void Camera::HandleEvent(Event* pEvent)
 {
 	switch (pEvent->mType)
 	{
-	case UPDATE_POSITION:
-	{
-		glm::vec2 bodyCurrentPos = static_cast<UpdatePositionEvent*>(pEvent)->newPosition;
-		glm::vec2 deltaCameraPos = bodyCurrentPos - (mCameraCenter + glm::vec2(rightBound, upperBound));
-		if (bodyCurrentPos.x > mCameraCenter.x + rightBound)
-		{
-			mCameraCenter.x += deltaCameraPos.x;
-			CameraMoveEvent CameraMove;
-			CameraMove.deltaX = deltaCameraPos.x;
-			CameraMove.currentPos = mCameraCenter;
-			CameraMove.SCR_HEIGHT = (float)gpGfxManager->getWindowHeight();
-			CameraMove.SCR_WIDTH = (float)gpGfxManager->getWindowWidth();
-			gpEventManager->BroadcaseEventToSubscribers(&CameraMove);
-		}
-		mCameraCenter.y = bodyCurrentPos.y;
-		if (mCameraCenter.y < 100.f)
-			mCameraCenter.y = 100.f;
-		break;
-	}
+	//case UPDATE_BODY:
+	//{
+
+	//}
 	case UPDATE_MOUSE_SCREEN_POSITION:
 		UpdateMousePosWorldSpace(static_cast<UpdateMouseScreenPositionEvent*>(pEvent)->MouseScreenPosition);
 		break;

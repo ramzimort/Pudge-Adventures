@@ -78,11 +78,10 @@ void Body::Init()
 	}
 }
 void Body::Update()
-{
-	UpdatePositionEvent UpdatePosition;
-	UpdatePosition.newPosition = mPos;
-	mpOwner->HandleEvent(&UpdatePosition);
-	
+{	
+	Transform* pTr = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM));
+	if (pTr != nullptr)
+		pTr->mPosition = mPos;
 }
 void Body::Serialize(rapidjson::Document& objectFile)
 {
@@ -198,11 +197,7 @@ void Body::HandleEvent(Event * pEvent)
 	{
 		mPos = static_cast<UpdateBodyEvent*>(pEvent)->newPosition;
 		mColliderCenter = mPos + mPos_mPivot + mPivot_mColliderCenter;
-		UpdatePositionEvent UpdatePosition;
-		UpdatePosition.newPosition = mPos;
-		mpOwner->HandleEvent(&UpdatePosition);
 		break;
-
 	}
 	case ROTATE_BODY:
 		mPivot_mColliderCenter =

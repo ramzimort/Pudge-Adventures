@@ -27,8 +27,8 @@ class GameObjectManager {
 		~GameObjectManager();
 		void Update();
 	public:
-		std::set<GameObject*, APtrComp> mGameObjects;		// Using a set to keep objects sorted from furthest to nearest (based on z-value)
+		std::set<GameObject*, APtrComp> mGameObjects;			// Using a set to keep objects sorted from furthest to nearest (based on z-value)
 		
 		std::queue<GameObject*> toBeCreated;
-		std::queue<GameObject*> toBeDeleted;					// Using a set to prevent duplicate GameObjects as these will be destroyed at the end of every frame
+		std::queue<GameObject*> toBeDeleted;					
 };
