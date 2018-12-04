@@ -24,6 +24,7 @@ Creation date: 10/18/2018
 #include "Component_Managers/PhysicsManager.h"
 #include "Component_Managers/CollisionManager.h"
 #include "Component_Managers/EventManager.h"
+#include "Component_Managers/LevelManager.h"
 #include "Components/Component.h"
 #include "Components/GameObject.h"
 #include "Components/Sprite.h"
@@ -53,6 +54,7 @@ GraphicsManager* gpGfxManager;
 PhysicsManager* gpPhysicsManager;
 CollisionManager* gpCollisionManager;
 EventManager* gpEventManager;
+LevelManager* gpLevelManager;
 
 
 int main(int argc, char* args[])
@@ -68,11 +70,14 @@ int main(int argc, char* args[])
 	gpPhysicsManager = new PhysicsManager();		// Load Physics Manager
 	gpCollisionManager = new CollisionManager();	// Load Collision Manager
 	gpEventManager = new EventManager();			// Load Events Manager
+	gpLevelManager = new LevelManager();
 	// Load Managers End	=================================================================================================================================================================================
 
+	gpLevelManager->Init("Menu_Main");
+
 	// Load Objects Start =================================================================================================================================================================================
-	std::string lvlPath = "Test";
-	gpObjectFactory->LoadLevel(lvlPath);
+	//std::string lvlPath = "Test";
+	//gpObjectFactory->LoadLevel(lvlPath);
 	// Load Objects End =================================================================================================================================================================================
 
 	gpPhysicsManager->Init();
@@ -94,6 +99,7 @@ int main(int argc, char* args[])
 		gpEventManager->Update();
 		gpGameObjectManager->Update();
 		gpGfxManager->Update();
+		gpLevelManager->Update();
 		// Manager Update End =================================================================================================================================================================================
 		gpFRC->FrameEnd();											// Frame End
 		//std::cout << "FPS: " << 1.0f/gpFRC->GetFrameTime() << std::endl;

@@ -1,0 +1,17 @@
+{
+  "Transform": {
+    "X": 0.0,
+    "Y": 100.0,
+    "Z": 11.0,
+    "Angle": 0.0,
+    "xScale": 512.0,
+    "yScale": 512.0
+  },
+  "Sprite": {
+    "Animation": [ "Light_Mountain.png" ],
+    "AnimationTime": 0.5
+  },
+  "Background": {
+    "Scroll_Speed": -0.9
+  }
+}

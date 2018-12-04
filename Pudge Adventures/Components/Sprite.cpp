@@ -61,7 +61,6 @@ void Sprite::Update()
 { 
 	if (enableAnimation)
 	{
-		std::cout << "AnimationCurrent: " << currentTime << std::endl;
 		currentTime -= gpFRC->GetFrameTime();
 		if (currentTime < 0.f)
 		{

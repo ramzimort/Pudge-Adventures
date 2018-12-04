@@ -78,11 +78,7 @@ void EventManager::Subscribe(EventType type, GameObject * pGameObject)
 void EventManager::Unsubscribe(EventType type, GameObject * pGameObject)
 {
 	std::list<GameObject*> &listofSubscribers = mSubscriptions[type];
-	for (GameObject* pGO : listofSubscribers)
-	{
-		if (pGO == pGameObject)
-			listofSubscribers.remove(pGameObject);;
-	}
+	listofSubscribers.remove(pGameObject);
 }
 
 void EventManager::ForceTimedEvent(EventType type)

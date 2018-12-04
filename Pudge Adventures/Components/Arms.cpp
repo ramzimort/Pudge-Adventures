@@ -26,6 +26,9 @@ Arms::~Arms()
 	gpGameObjectManager->toBeDeleted.push(rightArm);
 	gpGameObjectManager->toBeDeleted.push(hook);
 	gpGameObjectManager->toBeDeleted.push(cleaver);
+
+	gpEventManager->Unsubscribe(RETURN_HOOK, mpOwner);
+	gpEventManager->Unsubscribe(GRAB_HOOK, mpOwner);
 }
 void Arms::Serialize(rapidjson::Document& objectFile)
 {

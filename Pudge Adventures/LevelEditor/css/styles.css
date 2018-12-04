@@ -95,6 +95,11 @@ html, body {
 	opacity: 1;
 }
 
+.elem_32x32 {
+	width: 32px;
+	height: 32px;
+	display: block;
+}
 
 .elem_64x64 {
 	width: 64px;
@@ -127,40 +132,54 @@ html, body {
 	height: 256px;
 	display: block;
 }
+.elem_512x512 {
+	width: 512px;
+	height: 512px;
+	display: block;
+}
 
 /* ACTUAL ELEMENTS */
+.elem_32x32.Rune_DD {
+	background-image: url('../images/Rune_DD.png');
+}
+.elem_32x32.Rune_Haste {
+	background-image: url('../images/Rune_Haste.png');
+}
+.elem_32x32.Rune_Regen {
+	background-image: url('../images/Rune_Regen.png');
+}
 
 /* Platforms */
 
-.elem_128x128.Platform {
+.elem_512x128.Platform1 {
 	background-image: url('../images/Platform1.png');
 }
-.elem_128x128.Platform_Cliff {
-	background-image: url('../images/Platform3.png');
-}
-.elem_128x128.Platform_Cliff_I {
-	background-image: url('../images/Platform3I.png');
-}
-.elem_256x128.Platform {
+.elem_1024x128.Platform2 {
 	background-image: url('../images/Platform2.png');
 }
-.elem_512x128.Platform {
-	background-image: url('../images/Platform4.png');
-}
-.elem_1024x128.Platform {
-	background-image: url('../images/Platform8.png');
+.elem_128x128.Brick {
+	background-image: url('../images/Brick.png');
 }
 
+
 /*  Background */
-.elem_64x64.Dark_Cloud {
-	background-image: url('../images/Dark_CLoud.png');
+.elem_64x64.Light_Cloud {
+	background-image: url('../images/Light_CLoud.png');
+}
+.elem_128x128.Light_Tree {
+	background-image: url('../images/Light_Tree.png');
+}
+.elem_128x128.Rock {
+	background-image: url('../images/Rock.png');
 }
 .elem_256x256.Light_Tower {
 	background-image: url('../images/Light_Tower.png');
 }
-.elem_256x256.Light_Tree {
-	background-image: url('../images/Light_Tree.png');
+.elem_512x512.Light_Mountain {
+	background-image: url('../images/Light_Mountain.png');
 }
+
+
 
 
 

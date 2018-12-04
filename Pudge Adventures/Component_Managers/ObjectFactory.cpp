@@ -1,4 +1,5 @@
 #include "ObjectFactory.h"
+#include "LevelManager.h"
 #include "..\Components\GameObject.h"
 #include "..\Components\Transform.h"
 #include "..\Components\Body.h"
@@ -9,12 +10,13 @@
 #include <glm/glm.hpp>
 
 extern GameObjectManager* gpGameObjectManager;
+extern LevelManager* gpLevelManager;
 
 ObjectFactory::ObjectFactory()
 { }
 ObjectFactory::~ObjectFactory()
 { }
-void ObjectFactory::LoadLevel(std::string& pFileName) {
+void ObjectFactory::LoadLevel(const std::string& pFileName) {
 
 	std::ifstream inFile;
 	std::string pFilePath = "Resources\\Levels\\" + pFileName + ".json";
@@ -28,14 +30,15 @@ void ObjectFactory::LoadLevel(std::string& pFileName) {
 	rapidjson::Document levelFile { };
 	levelFile.ParseStream(isw);
 	assert(levelFile.IsObject());
+
+	// Add code for other level related information (SCR_SIZE, MUSIC, Color)
+	gpLevelManager->Serialize(levelFile);
+
+	////////////////////////////////////////////////////////////////////////
+
 	for (auto& Data : levelFile.GetObject())
 	{
 		std::string DataName = Data.name.GetString();
-		// Add code for other level related information (SCR_SIZE, MUSIC, Color)
-
-
-		////////////////////////////////////////////////////////////////////////
-		
 		if (DataName == "Objects" && Data.value.IsArray())
 		{
 
@@ -51,7 +54,8 @@ void ObjectFactory::LoadLevel(std::string& pFileName) {
 					std::cout << "Could not load object: " << PrefabName << std::endl;
 					continue;
 				}
-				/* Add code for modifying instance positions*/
+
+				/* Archetype Overrides */
 				Transform* pTr = static_cast<Transform*>(pGameObject->GetComponent(TRANSFORM));
 				if (pTr != nullptr)
 				{
@@ -71,6 +75,32 @@ void ObjectFactory::LoadLevel(std::string& pFileName) {
 					}
 				}
 				pGameObject->Init();
+
+				/* Object Repetitions */
+				if (ObjectInstance.HasMember("Repeat"))
+				{
+					// ================================= GET ORIGINAL OBJECT X ===============================
+					float x = 0.f;
+					Transform* pTr = static_cast<Transform*>(pGameObject->GetComponent(TRANSFORM));
+					if (pTr != nullptr)
+						x = pTr->mPosition.x;
+
+					// ================================= GET OFFSETS ===============================
+					int numRepetitions = ObjectInstance["Repeat"].GetArray()[0].GetInt();
+					float offset = ObjectInstance["Repeat"].GetArray()[1].GetFloat();
+
+					// ================================= Recreate objects, override x ===============================
+					for (int i = 0; i < numRepetitions; ++i)
+					{
+						x += offset;
+
+						pGameObject = LoadObject(PrefabName);
+						Transform* pTr = static_cast<Transform*>(pGameObject->GetComponent(TRANSFORM));
+						if (pTr != nullptr)
+							pTr->mPosition.x = x;
+						pGameObject->Init();
+					}
+				}
 			}
 		}
 	}

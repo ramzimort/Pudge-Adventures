@@ -26,6 +26,7 @@ public:
 	bool isPressed(unsigned int KeyScanCode);
 	bool isTriggered(unsigned int KeyScanCode);
 	bool isReleased(unsigned int KeyScanCode);
+	bool isMousePressed();
 	int* PointerLocation();
 	bool isQuit();
 
@@ -34,6 +35,7 @@ private:
 	SDL_Event event;
 	Uint8 mCurrentState[512];
 	Uint8 mPreviousState[512];
+	bool mIsMousePressed;
 	int mousePosition[2];
 	bool quit = { false };
 };

@@ -1,18 +1,21 @@
 {
   "Transform": {
-    "X": 100.0,
-    "Y": 100.0,
+    "X": 0.0,
+    "Y": -200.0,
     "Z": 2.0,
     "Angle": 0.0,
-    "xScale": 128.0,
+    "xScale": 512.0,
     "yScale": 128.0
   },
-  "Sprite": [ "Platform1.png" ],
+  "Sprite": {
+    "Animation": [ "Platform1.png" ],
+    "AnimationTime": 0.5
+  },
   "Body": {
     "Mass": 0.0,
     "Shape": "AABB",
     "Type": "Rigid",
-    "Width": 128,
-    "Height": 128
+    "Width": 460,
+    "Height": 110
   }
 }

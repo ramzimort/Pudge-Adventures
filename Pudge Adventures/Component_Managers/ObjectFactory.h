@@ -11,7 +11,7 @@ public:
 	ObjectFactory();
 	~ObjectFactory();
 
-	void LoadLevel(std::string& pFileName);
+	void LoadLevel(const std::string& pFileName);
 	GameObject* LoadObject(std::string& pFileName);
 
 private:

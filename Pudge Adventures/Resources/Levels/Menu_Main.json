@@ -1,0 +1,9 @@
+{
+  "WinLevel": "Test",
+  "LoseLevel": "Menu_Controls",
+  "Objects": [
+    {
+      "Name": "Menu_Main"
+    }
+  ]
+}

@@ -164,6 +164,7 @@
     <ClCompile Include="Component_Managers\GameObjectManager.cpp" />
     <ClCompile Include="Component_Managers\GraphicsManager.cpp" />
     <ClCompile Include="Component_Managers\Input Manager.cpp" />
+    <ClCompile Include="Component_Managers\LevelManager.cpp" />
     <ClCompile Include="Component_Managers\ObjectFactory.cpp" />
     <ClCompile Include="Component_Managers\PhysicsManager.cpp" />
     <ClCompile Include="Component_Managers\Resource Manager.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Component_Managers\GameObjectManager.h" />
     <ClInclude Include="Component_Managers\GraphicsManager.h" />
     <ClInclude Include="Component_Managers\Input Manager.h" />
+    <ClInclude Include="Component_Managers\LevelManager.h" />
     <ClInclude Include="Component_Managers\ObjectFactory.h" />
     <ClInclude Include="Component_Managers\PhysicsManager.h" />
     <ClInclude Include="Component_Managers\Resource Manager.h" />

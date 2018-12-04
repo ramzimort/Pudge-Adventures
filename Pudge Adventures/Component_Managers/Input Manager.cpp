@@ -36,8 +36,13 @@ void Input_Manager::Update()
 	{
 		if (event.type == SDL_QUIT)
 			quit = true;
+		if (event.type == SDL_MOUSEBUTTONDOWN)
+			mIsMousePressed = true;
+		else
+			mIsMousePressed = false;
 	}
 	int numberOffFetchedKeys = 0;
+	
 	const Uint8* pCurrentKeyStates = SDL_GetKeyboardState(&numberOffFetchedKeys);
 	if (numberOffFetchedKeys > 512)
 		numberOffFetchedKeys = 512;
@@ -82,6 +87,11 @@ bool Input_Manager::isReleased(unsigned int KeyScanCode) {
 int* Input_Manager::PointerLocation()
 {
 	return mousePosition;
+}
+
+bool Input_Manager::isMousePressed()
+{
+	return mIsMousePressed;
 }
 
 bool Input_Manager::isQuit()

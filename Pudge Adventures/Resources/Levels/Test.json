@@ -1,9 +1,6 @@
 {
   "Objects": [
     {
-      "Name": "Enemy2"
-    },
-    {
       "Name": "Pudge"
     },
     {
@@ -25,50 +22,44 @@
       "PosY": 200
     },
     {
-      "Name": "Platform4",
-      "PosX": 0,
-      "PosY": -200
+      "Name": "Platform2",
+      "PosX": 902
     },
     {
-      "Name": "Platform4",
-      "PosX": 500,
-      "PosY": -200
+      "Name": "Platform2",
+      "PosX": 0
     },
     {
-      "Name": "Platform4",
-      "PosX": 1000,
-      "PosY": -200
-    },
-    {
-      "Name": "Dark_Cloud",
-      "PosX": 210,
-      "PosY": 250
-    },
-    {
-      "Name": "Dark_Cloud",
-      "PosX": 872,
-      "PosY": 250
-    },
-    {
-      "Name": "Dark_Cloud",
-      "PosX": 585,
-      "PosY": 250
+      "Name": "Platform2",
+      "PosX": 1800
     },
     {
       "Name": "Light_Tree",
-      "PosX": 159,
-      "PosY": 0
+      "PosX": 0,
+      "Repeat": [ 10, 150.0 ]
+    },
+    {
+      "Name": "Light_Mountain",
+      "PosX": 456
     },
     {
       "Name": "Light_Tower",
-      "PosX": 507,
-      "PosY": 0
+      "PosX": 300
     },
     {
-      "Name": "Light_Tree",
-      "PosX": 914,
-      "PosY": 0
+      "Name": "Light_Cloud",
+      "PosX": 0,
+      "Repeat": [ 50, 400.0 ]
+    },
+    {
+      "Name": "Enemy1",
+      "PosX": 1800,
+      "PosY": 200
+    },
+    {
+      "Name": "Enemy2",
+      "PosX": 1800,
+      "PosY": 200
     }
-
   ]
 }
