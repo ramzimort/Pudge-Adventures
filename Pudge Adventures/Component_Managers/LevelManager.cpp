@@ -2,6 +2,7 @@
 #include "ObjectFactory.h"
 #include "GameObjectManager.h"
 #include "Input Manager.h"
+#include "..\Components\Sprite.h"
 
 extern ObjectFactory* gpObjectFactory;
 extern GameObjectManager* gpGameObjectManager;
@@ -23,30 +24,52 @@ void LevelManager::Init(const std::string& levelName)
 
 void LevelManager::Update()
 {
+
 	if (currentLevel == "Menu_Main")
 	{
-		if (gpInputManager->isMousePressed())
-		{
-			int pointerX = gpInputManager->PointerLocation()[0];
-			int pointerY = gpInputManager->PointerLocation()[1];
+		GameObject* Menu_Object = *(gpGameObjectManager->mGameObjects.begin());
+		int pointerX = gpInputManager->PointerLocation()[0];
+		int pointerY = gpInputManager->PointerLocation()[1];
 
-			if (pointerX > 120 && pointerX < 690 && pointerY > 350 && pointerY < 580)
+		if (pointerX > 120 && pointerX < 690 && pointerY > 350 && pointerY < 580)
+		{
+			static_cast<Sprite*>(Menu_Object->GetComponent(SPRITE))->SetAnimation(1);
+			if (gpInputManager->isMousePressed())
 				WinCondition();
-			else if (pointerX > 140 && pointerX < 670 && pointerY > 90 && pointerY < 300)
-				LoseCondition();
 		}
+
+		else if (pointerX > 140 && pointerX < 670 && pointerY > 90 && pointerY < 300)
+		{
+			static_cast<Sprite*>(Menu_Object->GetComponent(SPRITE))->SetAnimation(2);
+			if (gpInputManager->isMousePressed())
+				LoseCondition();
+			
+		}
+		else
+			static_cast<Sprite*>(Menu_Object->GetComponent(SPRITE))->ResetAnimation();
 	}
 	else if (currentLevel == "Menu_Controls")
 	{
-		if (gpInputManager->isMousePressed())
+		GameObject* Menu_Object = *(gpGameObjectManager->mGameObjects.begin());
+		int pointerX = gpInputManager->PointerLocation()[0];
+		int pointerY = gpInputManager->PointerLocation()[1];
+
+		if (pointerX > 120 && pointerX < 690 && pointerY > 350 && pointerY < 580)
 		{
-			int pointerX = gpInputManager->PointerLocation()[0];
-			int pointerY = gpInputManager->PointerLocation()[1];
-			if (pointerX > 120 && pointerX < 690 && pointerY > 350 && pointerY < 580)
+			static_cast<Sprite*>(Menu_Object->GetComponent(SPRITE))->SetAnimation(1);
+			if (gpInputManager->isMousePressed())
 				WinCondition();
-			else if (pointerX > 20 && pointerX < 120 && pointerY > 650 && pointerY < 680)
-				LoseCondition();
 		}
+
+		else if (pointerX > 20 && pointerX < 120 && pointerY > 650 && pointerY < 680)
+		{
+			static_cast<Sprite*>(Menu_Object->GetComponent(SPRITE))->SetAnimation(2);
+			if (gpInputManager->isMousePressed())
+				LoseCondition();
+
+		}
+		else
+			static_cast<Sprite*>(Menu_Object->GetComponent(SPRITE))->ResetAnimation();
 	}
 	else
 	{

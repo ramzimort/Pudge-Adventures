@@ -30,6 +30,12 @@ public:
 	
 	Texture* mpTexture;
 
+public:
+	void SetAnimation(const unsigned int& ID);
+	void ResetAnimation();
+	void IncrementAnimation();
+
+
 private:
 	unsigned int currentAnimation;
 	std::vector<Texture*> SpriteAnimation;

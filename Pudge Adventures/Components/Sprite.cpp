@@ -64,15 +64,12 @@ void Sprite::Update()
 		currentTime -= gpFRC->GetFrameTime();
 		if (currentTime < 0.f)
 		{
-			currentAnimation++;
-			if (currentAnimation >= SpriteAnimation.size())
-				currentAnimation = 0;
+			IncrementAnimation();
 			currentTime = AnimationTime;
 		}
 	}
-	else
-		currentAnimation = 0;
 
+	// Set Texture to current Animation Sprite
 	mpTexture = SpriteAnimation[currentAnimation];
 }
 
@@ -96,4 +93,21 @@ void Sprite::Serialize(rapidjson::Document& objectFile)
 		else if (componentValueName == "AnimationTime")
 			AnimationTime = ComponentValues.value.GetFloat();
 	}
+}
+
+void Sprite::SetAnimation(const unsigned int & ID)
+{
+	currentAnimation = ID;
+}
+
+void Sprite::ResetAnimation()
+{
+	currentAnimation = 0;
+}
+
+void Sprite::IncrementAnimation()
+{
+	currentAnimation++;
+	if (currentAnimation >= SpriteAnimation.size())
+		currentAnimation = 0;
 }

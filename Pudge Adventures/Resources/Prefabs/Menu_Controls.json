@@ -10,7 +10,11 @@
     "yScale": 720.0
   },
   "Sprite": {
-    "Animation": [ "Controls.png" ]
+    "Animation": [
+      "Controls.png",
+      "Controls_Play.png",
+      "Controls_Back.png"
+    ]
   },
   "Camera": {
   }
