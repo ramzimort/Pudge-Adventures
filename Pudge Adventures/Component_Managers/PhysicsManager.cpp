@@ -134,6 +134,14 @@ void PhysicsManager::Update(float FrameTime)
 			gpEventManager->BroadcaseEventToSubscribers(&UpdatePudgePosition);
 		}
 
+		if (pBody1->mType == PUDGE || pBody1->mType == PROJECTILE || pBody1->mType == ENEMY)
+		{
+			if (pBody1->mPos.y < -1000.f)
+				gpGameObjectManager->toBeDeleted.push(pBody1->mpOwner);
+			
+		}
+
+		// Check for collisions
 		for (pObj2 = pObj1; pObj2 != pObjLast; ++pObj2)
 		{
 			Body* pBody2 = static_cast<Body*>((*pObj2)->GetComponent(BODY));
@@ -168,8 +176,8 @@ void InteractiveRigid(Body* pBody1, Body* pBody2, glm::vec2& offset)
 		if (offset.y > 0.f)
 		{
 			pInteractiveBody->mForce +=										// Apply Friction
-				-0.01f*(pInteractiveBody->mVel.x)*(pInteractiveBody->mMass) 
-				/ (gpFRC->GetFrameTime());									
+				-0.01f*(pInteractiveBody->mVel.x)*(pInteractiveBody->mMass)
+				/ (gpFRC->GetFrameTime());
 			pInteractiveBody->mpOwner->HandleEvent(&Event(UNBLOCK_MOVE));	// Enable Movement													
 		}
 	}

@@ -145,7 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Components\AI.cpp" />
+    <ClCompile Include="Components\botAI.cpp" />
     <ClCompile Include="Components\Attributes.cpp" />
     <ClCompile Include="Components\Body.cpp" />
     <ClCompile Include="Components\botAI2.cpp" />
@@ -173,7 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attributes.h" />
-    <ClInclude Include="Components\AI.h" />
+    <ClInclude Include="Components\botAI.h" />
     <ClInclude Include="Components\Attributes.h" />
     <ClInclude Include="Components\Body.h" />
     <ClInclude Include="Components\botAI2.h" />

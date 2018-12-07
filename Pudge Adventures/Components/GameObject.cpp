@@ -3,7 +3,7 @@
 #include "Sprite.h"
 #include "Controller.h"
 #include "Body.h"
-#include "AI.h"
+#include "botAI.h"
 #include "botAI2.h"
 #include "Arms.h"
 #include "Camera.h"

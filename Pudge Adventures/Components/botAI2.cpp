@@ -62,7 +62,6 @@ void botAI2::Update()
 	if (isAwake)
 	{
 		static_cast<Sprite*>(mpOwner->GetComponent(SPRITE))->enableAnimation = true;
-		std::cout << "AttackTime: " << CurrentTime << std::endl;
 		CurrentTime -= gpFRC->GetFrameTime();
 		if (CurrentTime < 0.f)
 		{

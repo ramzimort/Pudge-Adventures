@@ -1,12 +1,14 @@
 #include "LevelManager.h"
 #include "ObjectFactory.h"
 #include "GameObjectManager.h"
+#include "EventManager.h"
 #include "Input Manager.h"
 #include "..\Components\Sprite.h"
 
 extern ObjectFactory* gpObjectFactory;
 extern GameObjectManager* gpGameObjectManager;
 extern Input_Manager* gpInputManager;
+extern EventManager* gpEventManager;
 
 LevelManager::LevelManager()
 { }
@@ -86,6 +88,8 @@ void LevelManager::WinCondition()
 	currentLevel = nextLevelWin;
 	delete gpGameObjectManager;
 	gpGameObjectManager = new GameObjectManager();
+	delete gpEventManager;
+	gpEventManager = new EventManager();
 	gpObjectFactory->LoadLevel(nextLevelWin);
 	
 }
@@ -96,6 +100,9 @@ void LevelManager::LoseCondition()
 	currentLevel = nextLevelLose;
 	delete gpGameObjectManager;
 	gpGameObjectManager = new GameObjectManager();
+	delete gpEventManager;
+	gpEventManager = new EventManager();
+
 	gpObjectFactory->LoadLevel(nextLevelLose);
 	
 }

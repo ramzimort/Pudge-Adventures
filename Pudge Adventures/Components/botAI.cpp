@@ -1,4 +1,4 @@
-#include "AI.h"
+#include "botAI.h"
 #include "..\Component_Managers\FrameRateController.h"
 #include "..\Component_Managers\ObjectFactory.h"
 #include "..\Component_Managers\EventManager.h"

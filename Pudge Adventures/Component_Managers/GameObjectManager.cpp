@@ -1,5 +1,8 @@
 
 #include "GameObjectManager.h"
+#include "LevelManager.h"
+
+extern LevelManager* gpLevelManager;
 
 GameObjectManager::GameObjectManager() {
 
@@ -18,8 +21,13 @@ void GameObjectManager::Update()
 		GameObject* go = toBeDeleted.front();
 		toBeDeleted.pop();
 
+		if (go->HasComponent(CONTROLLER))
+			gpLevelManager->SetLoseCondition();
+		
 		mGameObjects.erase(go);
 		delete go;
+
+		
 	}
 
 	while (!toBeCreated.empty())

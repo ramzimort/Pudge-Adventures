@@ -1,4 +1,6 @@
 {
+  "WinLevel": "Level_2",
+  "LoseLevel": "Menu_Main",
   "Objects": [
     {
       "Name": "Pudge"

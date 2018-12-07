@@ -80,9 +80,6 @@
     <ClCompile Include="Components\Camera.cpp">
       <Filter>Components\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Components\AI.cpp">
-      <Filter>Components\Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Component_Managers\PhysicsManager.cpp">
       <Filter>Component Managers\Source Files</Filter>
     </ClCompile>
@@ -115,6 +112,9 @@
     </ClCompile>
     <ClCompile Include="Component_Managers\LevelManager.cpp">
       <Filter>Component Managers\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\botAI.cpp">
+      <Filter>Components\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,9 +152,6 @@
       <Filter>Component Managers\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Components\Camera.h">
-      <Filter>Components\Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Components\AI.h">
       <Filter>Components\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Component_Managers\PhysicsManager.h">
@@ -217,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="Component_Managers\LevelManager.h">
       <Filter>Component Managers\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\botAI.h">
+      <Filter>Components\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
