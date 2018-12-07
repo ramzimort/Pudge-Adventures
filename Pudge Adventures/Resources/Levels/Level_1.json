@@ -54,14 +54,9 @@
       "Repeat": [ 50, 400.0 ]
     },
     {
-      "Name": "Enemy1",
+      "Name": "Enemy3",
       "PosX": 1800,
-      "PosY": 200
-    },
-    {
-      "Name": "Enemy2",
-      "PosX": 1800,
-      "PosY": 200
+      "PosY": 300
     }
   ]
 }

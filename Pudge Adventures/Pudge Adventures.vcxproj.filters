@@ -116,6 +116,9 @@
     <ClCompile Include="Components\botAI.cpp">
       <Filter>Components\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Components\botAI3.cpp">
+      <Filter>Components\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\Component.h">
@@ -216,6 +219,9 @@
       <Filter>Component Managers\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Components\botAI.h">
+      <Filter>Components\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\botAI3.h">
       <Filter>Components\Header Files</Filter>
     </ClInclude>
   </ItemGroup>

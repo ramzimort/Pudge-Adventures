@@ -98,11 +98,13 @@ void Sprite::Serialize(rapidjson::Document& objectFile)
 void Sprite::SetAnimation(const unsigned int & ID)
 {
 	currentAnimation = ID;
+	currentTime = AnimationTime;
 }
 
 void Sprite::ResetAnimation()
 {
 	currentAnimation = 0;
+	currentTime = AnimationTime;
 }
 
 void Sprite::IncrementAnimation()
@@ -110,4 +112,5 @@ void Sprite::IncrementAnimation()
 	currentAnimation++;
 	if (currentAnimation >= SpriteAnimation.size())
 		currentAnimation = 0;
+	currentTime = AnimationTime;
 }

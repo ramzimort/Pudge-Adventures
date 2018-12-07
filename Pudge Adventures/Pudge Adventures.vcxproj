@@ -149,6 +149,7 @@
     <ClCompile Include="Components\Attributes.cpp" />
     <ClCompile Include="Components\Body.cpp" />
     <ClCompile Include="Components\botAI2.cpp" />
+    <ClCompile Include="Components\botAI3.cpp" />
     <ClCompile Include="Components\Camera.cpp" />
     <ClCompile Include="Components\Component.cpp" />
     <ClCompile Include="Components\Controller.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Components\Attributes.h" />
     <ClInclude Include="Components\Body.h" />
     <ClInclude Include="Components\botAI2.h" />
+    <ClInclude Include="Components\botAI3.h" />
     <ClInclude Include="Components\Camera.h" />
     <ClInclude Include="Components\Component.h" />
     <ClInclude Include="Components\Controller.h" />

@@ -5,6 +5,7 @@
 #include "Body.h"
 #include "botAI.h"
 #include "botAI2.h"
+#include "botAI3.h"
 #include "Arms.h"
 #include "Camera.h"
 #include "Background.h"
@@ -52,6 +53,9 @@ Component* GameObject::AddComponent(unsigned int Type)
 		break;
 	case BOTAI2:
 		pNewComponent = new botAI2();
+		break;
+	case BOTAI3:
+		pNewComponent = new botAI3();
 		break;
 	case BODY:
 		pNewComponent = new Body();

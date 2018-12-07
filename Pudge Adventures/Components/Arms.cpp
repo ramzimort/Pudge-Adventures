@@ -106,6 +106,7 @@ void Arms::Update()
 
 			// Throw Hook
 			isWaitingHook = true;
+			gpEventManager->BroadcaseEventToSubscribers(&Event(JUKE));
 		}
 		SetLeftArmAngle();
 		
@@ -117,6 +118,7 @@ void Arms::Update()
 			Event* ReturnHook = new Event(RETURN_HOOK);
 			ReturnHook->mTimer = hookReturnTime;
 			gpEventManager->AddTimeEvent(ReturnHook);
+
 
 			glm::vec2 hookDirection = static_cast<Body*>(hook->GetComponent(BODY))->mPivot_mColliderCenter;
 			static_cast<Body*>(hook->GetComponent(BODY))->mVel = hookSpeed * hookDirection / glm::length(hookDirection);
@@ -180,7 +182,6 @@ void Arms::HandleEvent(Event* pEvent)
 			SetLeftArmAngle();
 			leftArmFinalAngle = newAngle;
 
-			/* ================================================= Block Movement Inputs ===================================================================*/
 		}
 		break;
 	case RETURN_HOOK:

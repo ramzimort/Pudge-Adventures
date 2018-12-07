@@ -20,14 +20,14 @@ void GameObjectManager::Update()
 	{
 		GameObject* go = toBeDeleted.front();
 		toBeDeleted.pop();
-
+		// If you die -> Lose Condition
 		if (go->HasComponent(CONTROLLER))
 			gpLevelManager->SetLoseCondition();
-		
+		// If you kill the boss -> Win Condition
+		if (go->HasComponent(BOTAI3))
+			gpLevelManager->SetWinCondition();
 		mGameObjects.erase(go);
 		delete go;
-
-		
 	}
 
 	while (!toBeCreated.empty())

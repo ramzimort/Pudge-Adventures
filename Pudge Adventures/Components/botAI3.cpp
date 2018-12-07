@@ -1,5 +1,6 @@
 
-#include "botAI2.h"
+
+#include "botAI3.h"
 #include "GameObject.h"
 #include "Transform.h"
 #include "Body.h"
@@ -9,6 +10,7 @@
 #include "..\Component_Managers\ObjectFactory.h"
 #include "..\Events\UpdatePosition.h"
 #include "..\Events\CameraMove.h"
+#include <iostream>
 
 constexpr float PI = 3.14159265358979323846f;
 float findAcuteAngle(glm::vec2 const& V1, glm::vec2 const& V2);
@@ -17,49 +19,69 @@ extern FrameRateController* gpFRC;
 extern EventManager* gpEventManager;
 extern ObjectFactory* gpObjectFactory;
 
-botAI2::botAI2() :
-	Component(BOTAI2),
+botAI3::botAI3() :
+	Component(BOTAI3),
 	CurrentTime(0.f),
 	AttackSpeed(0.f),
 	ProjectileName(""),
 	ProjectileSpeed(0.f),
 	isAwake(false),
-	Ballista_Pudge(0.f)
+	Shooter_Pudge(0.f)
 { }
 
-botAI2::~botAI2()
-{ 
+botAI3::~botAI3()
+{
 
 }
 
-void botAI2::Init()
-{ 
+void botAI3::Init()
+{
 	isAwake = false;
 	gpEventManager->Subscribe(UPDATE_POSITION, mpOwner);
 	gpEventManager->Subscribe(CAMERA_MOVE, mpOwner);
+	gpEventManager->Subscribe(JUKE, mpOwner);
 	CurrentTime = AttackSpeed;
+
+	Body* pBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
+	pBody->mVel.x = 0.f;
+
 }
 
-void botAI2::Serialize(rapidjson::Document& objectFile)
+void botAI3::Serialize(rapidjson::Document& objectFile)
 {
 	std::string componentValueName;
-	for (auto& ComponentValues : objectFile["AI2"].GetObject())
+	for (auto& ComponentValues : objectFile["AI3"].GetObject())
 	{
 		componentValueName = ComponentValues.name.GetString();
-		if (componentValueName == "AttackSpeed")
+		if (componentValueName == "MoveSpeed")
+			MoveSpeed = ComponentValues.value.GetFloat();
+		else if (componentValueName == "AttackSpeed")
 			AttackSpeed = ComponentValues.value.GetFloat();
 		else if (componentValueName == "ProjectileSpeed")
-			ProjectileSpeed = ComponentValues.value.GetFloat(); 
+			ProjectileSpeed = ComponentValues.value.GetFloat();
+		else if (componentValueName == "ProjectileOffset")
+			ProjectileOffset = glm::vec2(ComponentValues.value.GetArray()[0].GetFloat(), ComponentValues.value.GetArray()[1].GetFloat());
 		else if (componentValueName == "Projectile")
 			ProjectileName = ComponentValues.value.GetString();
 	}
 }
 
-void botAI2::Update()
+void botAI3::Update()
 {
-	glm::vec2 pos = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM))->mPosition;
+	
 	if (isAwake)
 	{
+		Transform* pTr = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM));
+		Body* pBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
+		if (pBody->mVel.x == 0.f)
+			pBody->mVel.x = MoveSpeed;
+		
+		if (pTr->mPosition.x < camLeft)
+			pBody->mVel.x = MoveSpeed;
+		else if (pTr->mPosition.x > camRight)
+			pBody->mVel.x = -1.f*MoveSpeed;
+
+
 		static_cast<Sprite*>(mpOwner->GetComponent(SPRITE))->enableAnimation = true;
 		CurrentTime -= gpFRC->GetFrameTime();
 		if (CurrentTime < 0.f)
@@ -68,30 +90,34 @@ void botAI2::Update()
 			ShootProjectile();
 		}
 	}
-	else
-		static_cast<Sprite*>(mpOwner->GetComponent(SPRITE))->enableAnimation = false;
 }
 
-void botAI2::HandleEvent(Event* pEvent)
+void botAI3::HandleEvent(Event* pEvent)
 {
 	switch (pEvent->mType)
 	{
 	case UPDATE_POSITION:
 	{
 		Transform* pTr = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM));
-		Ballista_Pudge = (static_cast<UpdatePositionEvent*>(pEvent)->newPosition - pTr->mPosition);
-		float newAngle = findAcuteAngle(glm::vec2(0.f,1.f), Ballista_Pudge);
-		pTr->mAngle = newAngle;
+		glm::vec2 PudgePos = static_cast<UpdatePositionEvent*>(pEvent)->newPosition;
+		Shooter_Pudge = PudgePos - (pTr->mPosition+ProjectileOffset);
+		float newAngle = findAcuteAngle(glm::vec2(0.f, 1.f), Shooter_Pudge);
+
+		if (pTr->mPosition.y - PudgePos.y < 200)
+			static_cast<Body*>(mpOwner->GetComponent(BODY))->mVel.y = MoveSpeed;
+		else if((pTr->mPosition.y - PudgePos.y > 500))
+			static_cast<Body*>(mpOwner->GetComponent(BODY))->mVel.y = -1.f * MoveSpeed;
 		break;
 	}
 	case CAMERA_MOVE:
 		CheckCamera(pEvent);
 		break;
+	case JUKE:
+		static_cast<Body*>(mpOwner->GetComponent(BODY))->mVel.x *= -1.f;
 	}
 }
 
-
-float findAcuteAngle(glm::vec2 const& V1, glm::vec2 const& V2)
+float botAI3::findAcuteAngle(glm::vec2 const& V1, glm::vec2 const& V2)
 {
 	glm::vec2 v1 = glm::normalize(V1);
 	glm::vec2 v2 = glm::normalize(V2);
@@ -116,25 +142,25 @@ float findAcuteAngle(glm::vec2 const& V1, glm::vec2 const& V2)
 	return newAngle;
 }
 
-void botAI2::ShootProjectile()
+void botAI3::ShootProjectile()
 {
 	GameObject* projectile = gpObjectFactory->LoadObject(ProjectileName);
-	Transform* pTr = static_cast<Transform*>(projectile->GetComponent(TRANSFORM));
+		Transform* pTr = static_cast<Transform*>(projectile->GetComponent(TRANSFORM));
 	Body* pBody = static_cast<Body*>(projectile->GetComponent(BODY));
-	if (pTr != nullptr)
+	if (pTr != nullptr && pBody!= nullptr)
 	{
-		pTr->mPosition = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM))->mPosition;
-		pTr->mAngle = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM))->mAngle;
+		pTr->mPosition = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM))->mPosition + ProjectileOffset;
 		projectile->Init();
-		pBody->mVel = glm::normalize(Ballista_Pudge)*ProjectileSpeed;
+		pBody->mVel = glm::normalize(Shooter_Pudge)*ProjectileSpeed;
 	}
 }
 
-void botAI2::CheckCamera(Event* pEvent)
+void botAI3::CheckCamera(Event* pEvent)
 {
 	CameraMoveEvent* CameraMove = static_cast<CameraMoveEvent*>(pEvent);
 
 	Transform* pTr = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM));
+	Body* pBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
 
 	float
 		L = CameraMove->currentPos.x - CameraMove->SCR_WIDTH / 2.f,
@@ -144,7 +170,10 @@ void botAI2::CheckCamera(Event* pEvent)
 
 
 	if (pTr->mPosition.x > L && pTr->mPosition.x < R && pTr->mPosition.y < U && pTr->mPosition.y > B)
+	{
 		isAwake = true;
-	else
-		isAwake = false;
+		camLeft = L;
+		camRight = R;
+	}
+
 }

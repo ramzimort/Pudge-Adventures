@@ -1,0 +1,21 @@
+{
+  "Transform": {
+    "Z": 0,
+    "Angle": 0.0,
+    "xScale": 64.0,
+    "yScale": 64.0
+  },
+  "Sprite": {
+    "Animation": [ "Enemy3_Projectile.png" ],
+    "AnimationTime": 0.5
+  },
+  "Body": {
+    "Shape": "Circle",
+    "Type": "Projectile",
+    "Radius": 4
+  },
+  "Attributes": {
+    "Damage": 1.1
+  }
+}
+
