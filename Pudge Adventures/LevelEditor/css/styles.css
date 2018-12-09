@@ -150,15 +150,25 @@ html, body {
 }
 
 /* Platforms */
-
 .elem_512x128.Platform1 {
 	background-image: url('../images/Platform1.png');
 }
 .elem_1024x128.Platform2 {
 	background-image: url('../images/Platform2.png');
 }
-.elem_128x128.Brick {
+.elem_64x64.Brick {
 	background-image: url('../images/Brick.png');
+}
+
+/* ENEMIES */
+.elem_128x128.Creep {
+	background-image: url('../images/Creep.png');
+}
+.elem_64x64.Ballista {
+	background-image: url('../images/Ballista.png');
+}
+.elem_128x128.Dragon {
+	background-image: url('../images/Dragon.png');
 }
 
 

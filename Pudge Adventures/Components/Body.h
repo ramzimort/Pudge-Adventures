@@ -74,8 +74,9 @@ public:
 	glm::vec2 mPrevPos;
 	glm::vec2 mVel;
 	glm::vec2 mAcc;
-	glm::vec2 mForce;
 	float mMass, mInvMass;
+	float moveSpeed;
+	float jumpPulse;
 
 	Shape* mpShape;
 	BodyType mType;

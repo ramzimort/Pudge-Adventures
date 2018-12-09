@@ -109,7 +109,7 @@ void PhysicsManager::Update(float FrameTime)
 	{
 		Body* pBody = static_cast<Body*>(go->GetComponent(BODY));
 		if (pBody != nullptr)
-			pBody->Integrate(-1000.f, FrameTime);
+			pBody->Integrate(-10000.f, FrameTime);
 	}
 
 	/* ================================ Reset Previous Collisions ========================================== */
@@ -175,9 +175,8 @@ void InteractiveRigid(Body* pBody1, Body* pBody2, glm::vec2& offset)
 		pInteractiveBody->mVel.y = 0.f;										// Reset Vertical Velocity													
 		if (offset.y > 0.f)
 		{
-			pInteractiveBody->mForce +=										// Apply Friction
-				-0.01f*(pInteractiveBody->mVel.x)*(pInteractiveBody->mMass)
-				/ (gpFRC->GetFrameTime());
+			pInteractiveBody->mAcc.x +=										// Apply Friction
+				-0.1f*(pInteractiveBody->mVel.x)*(pInteractiveBody->mMass);
 			pInteractiveBody->mpOwner->HandleEvent(&Event(UNBLOCK_MOVE));	// Enable Movement													
 		}
 	}

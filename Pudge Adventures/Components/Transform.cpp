@@ -15,7 +15,8 @@ Transform::Transform() :
 	zValue(0.0f),
 	mScale(0.0f),
 	mRotationCenter(0.0f),
-	mAngle(0.0f) { }
+	mAngle(0.0f),
+	isTiled(false) { }
 
 Transform::~Transform() 
 { }
@@ -58,7 +59,7 @@ void Transform::Serialize(rapidjson::Document& objectFile)
 		componentValueName = ComponentValues.name.GetString();
 		if (componentValueName == "X")
 			mPosition.x = ComponentValues.value.GetFloat();
-		else if(componentValueName == "Y")
+		else if (componentValueName == "Y")
 			mPosition.y = ComponentValues.value.GetFloat();
 		else if (componentValueName == "Z")
 			zValue = ComponentValues.value.GetFloat();
@@ -72,6 +73,8 @@ void Transform::Serialize(rapidjson::Document& objectFile)
 			mRotationCenter.x = ComponentValues.value.GetFloat();
 		else if (componentValueName == "yRotationCenter")
 			mRotationCenter.y = ComponentValues.value.GetFloat();
+		else if (componentValueName == "Tiled")
+			isTiled = ComponentValues.value.GetBool();
 	}
 }
 

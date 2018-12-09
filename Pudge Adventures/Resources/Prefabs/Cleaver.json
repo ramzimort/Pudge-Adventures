@@ -18,7 +18,8 @@
     "Radius": 16
   },
   "Attributes": {
-    "Damage": 20
+    "Damage": 20,
+    "RuneTime": 10
   }
 }
 

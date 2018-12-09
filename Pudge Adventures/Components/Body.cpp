@@ -52,8 +52,8 @@ Body::Body() : Component(BODY),
 	mPrevPos(0.0f),
 	mVel(0.0f),
 	mAcc(0.0f),
-	mForce(0.0f),
 	mMass(0.0f), mInvMass(0.0f),
+	moveSpeed(0.f), jumpPulse(0.f),
 	mColliderCenter(0.f),
 	mPos_mPivot(0.f),
 	mPivot_mColliderCenter(0.f),
@@ -96,6 +96,10 @@ void Body::Serialize(rapidjson::Document& objectFile)
 			else
 				mInvMass = 0.0f;
 		}
+		else if (componentValueName == "MoveSpeed")
+			moveSpeed = ComponentValues.value.GetFloat();
+		else if(componentValueName == "JumpPulse")
+			jumpPulse = ComponentValues.value.GetFloat();
 		else if (componentValueName == "Shape")
 		{
 			std::string shapeType = ComponentValues.value.GetString();
@@ -158,13 +162,13 @@ void Body::Integrate(float Gravity, float dt)
 {
 	// Save current position
 	mPrevPos = mPos; 
-	// Compute Acceleration
-	mForce.y += mMass * Gravity;
-	mAcc.x = mForce.x * mInvMass;
-	mAcc.y = mForce.y * mInvMass;
+
+
+	mAcc.y = mInvMass * Gravity;
 	// Intergrate the velocity
 	mVel.x += mAcc.x * dt;
 	mVel.y += mAcc.y * dt;
+
 
 	// Integrate the position
 	mPos.x += mVel.x * dt;
@@ -174,7 +178,7 @@ void Body::Integrate(float Gravity, float dt)
 		mPos += mVel * dt;
 
 	// Zero all applied forces
-	mForce = { 0.0f,0.0f };
+	mAcc = { 0.0f,0.0f };
 	UpdateBodyEvent UpdateBodyPosition;
 	UpdateBodyPosition.newPosition = mPos;
 	mpOwner->HandleEvent(&UpdateBodyPosition);
@@ -185,13 +189,13 @@ void Body::HandleEvent(Event * pEvent)
 	switch (pEvent->mType)
 	{
 	case MOVE_LEFT:
-		mForce.x -= 5000.f;
+		mVel.x -= moveSpeed;
 		break;
 	case MOVE_RIGHT:
-		mForce.x += 5000.0f;
+		mVel.x += moveSpeed;
 		break;
 	case JUMP:
-		mForce.y += 400000.0f;
+		mVel.y += jumpPulse;
 		break;
 	case UPDATE_BODY:
 	{

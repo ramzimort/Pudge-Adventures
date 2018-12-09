@@ -151,14 +151,15 @@ void GraphicsManager::Draw(GameObject* go)
 	Sprite* pSpr = static_cast<Sprite*>(go->GetComponent(SPRITE));
 	if (pTr != nullptr && pSpr != nullptr)
 	{
+		float* uv = (pSpr->uv);
 		textureShader->use();
 		glBindVertexArray(VAO[0]);
 		/* TEXTURE START */
 		float textCoords[] = {
-			 1.0f, 1.0f,  // top right
-			 1.0f, 0.0f,  // bottom right
+			 uv[0], uv[1],  // top right
+			 uv[0], 0.0f,  // bottom right
 			 0.0f, 0.0f,  // bottom left
-			 0.0f, 1.0f,  // top left 
+			 0.0f, uv[1],  // top left 
 		};
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, pSpr->mpTexture->textureID);
@@ -168,13 +169,20 @@ void GraphicsManager::Draw(GameObject* go)
 		glEnableVertexAttribArray(aTexCoord);
 		/* TEXTURE END */
 
+		glm::mat4 Model;
 		/* TRANSFORM START */
-		glm::mat4 Model = 
+		if(!pTr->isTiled)
+			Model = 
 			glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y, 0.0f))*
 			glm::scale(glm::mat4(), glm::vec3(pTr->mScale.x, pTr->mScale.y, 0.0f))*
 			glm::translate(glm::mat4(), glm::vec3(pTr->mRotationCenter.x, pTr->mRotationCenter.y, 0.0f))*
 			glm::rotate(glm::mat4(), pTr->mAngle, glm::vec3(0.0f, 0.0f, 1.0f))*
 			glm::translate(glm::mat4(), glm::vec3(-1.f*pTr->mRotationCenter.x, -1.f*pTr->mRotationCenter.y, 0.0f));
+		else
+			Model =
+			glm::translate(glm::mat4(), glm::vec3(pTr->mPosition.x, pTr->mPosition.y, 0.0f))*
+			glm::rotate(glm::mat4(), pTr->mAngle, glm::vec3(0.0f, 0.0f, 1.0f))*
+			glm::scale(glm::mat4(), glm::vec3(pTr->mScale.x, pTr->mScale.y, 0.0f));
 
 		glm::mat4 Persp = glm::ortho(0.0f, static_cast<float>(SCR_WIDTH), 0.0f, static_cast<float>(SCR_HEIGHT), 0.1f, 100.0f);
 

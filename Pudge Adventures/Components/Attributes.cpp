@@ -7,7 +7,6 @@
 #include "Sprite.h"
 #include "..\Events\Event.h"
 #include "..\Events\ApplyDamage.h"
-#include <iostream>
 
 extern FrameRateController* gpFRC;
 extern ResourceManager* gpResourceManager;
@@ -119,7 +118,6 @@ void Attributes::HandleEvent(Event* pEvent)
 		DD = true;
 		DDTimer = RuneEffectTime;
 		Damage *= 2.f;
-		std::cout << Damage << std::endl;
 		break;
 	case DISABLE_DD:
 		DD = false;
@@ -134,7 +132,6 @@ void Attributes::HandleEvent(Event* pEvent)
 		break;
 	case APPLY_DAMAGE:
 		currentHealth -= static_cast<ApplyDamageEvent*>(pEvent)->damage;
-		std::cout << currentHealth << std::endl;
 	}
 }
 

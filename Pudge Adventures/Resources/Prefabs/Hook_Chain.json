@@ -1,0 +1,18 @@
+{
+  "Transform": {
+    "Z": 2.0,
+    "Angle": 0.0,
+    "xScale": 16.0,
+    "yScale": 32.0,
+    "Tiled": true
+  },
+  "Body": {
+    "Shape": "AABB",
+    "xColliderCenter": 0.075,
+    "yColliderCenter": -0.3,
+    "Radius": 8
+  },
+  "Sprite": {
+    "Animation": [ "chain_1.png" ]
+  }
+}

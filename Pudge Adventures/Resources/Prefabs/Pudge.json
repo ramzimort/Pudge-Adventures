@@ -10,30 +10,36 @@
     "yScale": 128.0
   },
   "Sprite": {
-    "Animation": [ "Pudge_Body.png" ],
-    "AnimationTime": 0.5
+    "Animation": [
+      "Pudge_Body.png",
+      "Pudge_Body1.png"
+    ],
+    "AnimationTime": 0.2
   },
-    "Controller": true,
-    "Body": {
-      "Mass": 10.0,
-      "Shape": "AABB",
-      "Type": "Pudge",
-      "Width": 60,
-      "Height": 120
-    },
+  "Controller": true,
+  "Body": {
+    "Mass": 10.0,
+    "MoveSpeed": 5.0,
+    "JumpPulse": 400.0,
+    "Shape": "AABB",
+    "Type": "Pudge",
+    "Width": 60,
+    "Height": 120
+  },
     "Arms": {
       "LeftArm": "Left_Arm",
       "LeftArmWeapon": "Hook",
-      "LeftArmRotationSpeed": 18,
+      "Chain": "Hook_Chain",
+      "LeftArmRotationSpeed": 1800,
       "HookSpeed": 500,
       "HookReturnTime": 1,
       "RightArm": "Right_Arm",
       "RightArmWeapon": "Cleaver",
-      "RightArmRotationSpeed": 5
+      "RightArmRotationSpeed": 500
     },
     "Attributes": {
       "HP": 4,
-      "RuneTime": 5
+      "RuneTime": 10
     },
     "Camera": {
 

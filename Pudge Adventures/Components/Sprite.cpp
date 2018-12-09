@@ -55,6 +55,8 @@ void Sprite::Init()
 	currentTime = AnimationTime;
 	currentAnimation = 0;
 	enableAnimation = false;
+	uv[0] = 1.f;
+	uv[1] = 1.f;
 
 }
 void Sprite::Update()

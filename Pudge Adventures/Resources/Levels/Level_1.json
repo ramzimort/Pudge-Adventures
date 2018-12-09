@@ -1,6 +1,7 @@
 {
-  "WinLevel": "Level_2",
+  "WinLevel": "Menu_Main",
   "LoseLevel": "Menu_Main",
+  "CameraEnd": 6600,
   "Objects": [
     {
       "Name": "Pudge"
@@ -8,55 +9,281 @@
     {
       "Name": "Field"
     },
+
+    {
+      "Name": "Platform2",
+      "PosX": 400.0
+    },
+
+    {
+      "Name": "Platform1",
+      "PosX": 1100.0
+    },
+    {
+      "Name": "Enemy1",
+      "PosX": 1100.0,
+      "PosY": 0.0
+    },
+
+    {
+      "Name": "Brick",
+      "PosX": 1500.0,
+      "PosY": -200.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 1564.0,
+      "PosY": -200.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 1564.0,
+      "PosY": -136.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 1628.0,
+      "PosY": -136.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 1628.0,
+      "PosY": -72.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 1692.0,
+      "PosY": -72.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 1756.0,
+      "PosY": -72.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 1820.0,
+      "PosY": -72.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 1884.0,
+      "PosY": -72.0
+    },
     {
       "Name": "Rune_DD",
-      "PosX": 0,
-      "PosY": 200
+      "PosX": 1884.0,
+      "PosY": 0.0
+    },
+
+    {
+      "Name": "Platform2",
+      "PosX": 2450.0
+    },
+    {
+      "Name": "Enemy1",
+      "PosX": 2450.0
+    },
+    {
+      "Name": "Enemy2",
+      "PosX": 2150.0,
+      "PosY": 300.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 2086.0,
+      "PosY": 300.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 2214.0,
+      "PosY": 300.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 2150.0,
+      "PosY": 364.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 2086.0,
+      "PosY": 364.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 2214.0,
+      "PosY": 364.0
+    },
+    {
+      "Name": "Enemy2",
+      "PosX": 2450.0,
+      "PosY": 300.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 2386.0,
+      "PosY": 300.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 2514.0,
+      "PosY": 300.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 2450.0,
+      "PosY": 364.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 2386.0,
+      "PosY": 364.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 2514.0,
+      "PosY": 364.0
+    },
+    {
+      "Name": "Enemy2",
+      "PosX": 2750.0,
+      "PosY": 300.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 2686.0,
+      "PosY": 300.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 2814.0,
+      "PosY": 300.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 2750.0,
+      "PosY": 364.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 2686.0,
+      "PosY": 364.0
+    },
+    {
+      "Name": "Brick",
+      "PosX": 2814.0,
+      "PosY": 364.0
+    },
+
+
+    {
+      "Name": "Platform1",
+      "PosX": 3300
     },
     {
       "Name": "Rune_Regen",
-      "PosX": 200,
-      "PosY": 200
+      "PosX": 3300,
+      "PosY": 300
+    },
+
+    {
+      "Name": "Platform2",
+      "PosX": 4000
+    },
+    {
+      "Name": "Enemy1",
+      "PosX": 3900.0,
+      "PosY": 0.0
+    },
+    {
+      "Name": "Enemy1",
+      "PosX": 4300.0,
+      "PosY": 0.0
     },
     {
       "Name": "Rune_Haste",
-      "PosX": 400,
-      "PosY": 200
+      "PosX": 4500,
+      "PosY": 100.0
+    },
+
+
+    {
+      "Name": "Platform2",
+      "PosX": 5200
+    },
+    {
+      "Name": "Enemy2",
+      "PosX": 4800.0,
+      "PosY": 300.0,
+      "Repeat": [ 6, 128.0 ]
+    },
+    {
+      "Name": "Brick",
+      "PosX": 4736.0,
+      "PosY": 364.0,
+      "Repeat": [ 14, 64.0 ]
+    },
+    {
+      "Name": "Brick",
+      "PosX": 4736.0,
+      "PosY": 300.0,
+      "Repeat": [ 7, 128.0 ]
+    },
+
+    {
+      "Name": "Platform1",
+      "PosX": 6200
+    },
+    {
+      "Name": "Rune_Regen",
+      "PosX": 6200,
+      "PosY": 300
     },
     {
       "Name": "Platform2",
-      "PosX": 902
+      "PosX": 6850
     },
     {
-      "Name": "Platform2",
-      "PosX": 0
+      "Name": "Enemy3",
+      "PosX": 7000,
+      "PosY": 300
     },
     {
-      "Name": "Platform2",
-      "PosX": 1800
+      "Name": "Rune_Haste",
+      "PosX": 6800,
+      "PosY": 300.0
+    },
+
+    {
+      "Name": "Light_Tree",
+      "PosX": -100,
+      "Repeat": [ 50, 150.0 ]
     },
     {
       "Name": "Light_Tree",
       "PosX": 0,
-      "Repeat": [ 10, 150.0 ]
+      "Repeat": [ 25, 300.0 ]
+    },
+    {
+      "Name": "Light_Tree",
+      "PosX": 0,
+      "Repeat": [ 10, 400.0 ]
     },
     {
       "Name": "Light_Mountain",
-      "PosX": 456
+      "PosX": 456,
+      "Repeat": [ 1, 900.0 ]
     },
     {
       "Name": "Light_Tower",
-      "PosX": 300
+      "PosX": 200,
+      "Repeat": [ 3, 800.0 ]
     },
     {
       "Name": "Light_Cloud",
       "PosX": 0,
       "Repeat": [ 50, 400.0 ]
-    },
-    {
-      "Name": "Enemy3",
-      "PosX": 1800,
-      "PosY": 300
     }
+
   ]
 }

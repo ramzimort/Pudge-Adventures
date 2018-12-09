@@ -3,6 +3,7 @@
 #include "..\Components\GameObject.h"
 #include "..\Components\Transform.h"
 #include "..\Components\Body.h"
+#include "..\Components\Camera.h"
 #include "GameObjectManager.h"
 #include <fstream>
 #include <iostream>
@@ -55,6 +56,7 @@ void ObjectFactory::LoadLevel(const std::string& pFileName) {
 					continue;
 				}
 
+				
 				/* Archetype Overrides */
 				Transform* pTr = static_cast<Transform*>(pGameObject->GetComponent(TRANSFORM));
 				if (pTr != nullptr)
@@ -76,14 +78,22 @@ void ObjectFactory::LoadLevel(const std::string& pFileName) {
 				}
 				pGameObject->Init();
 
+				// Camera Archetype Override
+				if (pGameObject->HasComponent(CAMERA))
+					static_cast<Camera*>(pGameObject->GetComponent(CAMERA))->Serialize(levelFile);
+
 				/* Object Repetitions */
 				if (ObjectInstance.HasMember("Repeat"))
 				{
 					// ================================= GET ORIGINAL OBJECT X ===============================
 					float x = 0.f;
+					float y = 0.f;
 					Transform* pTr = static_cast<Transform*>(pGameObject->GetComponent(TRANSFORM));
 					if (pTr != nullptr)
+					{
 						x = pTr->mPosition.x;
+						y = pTr->mPosition.y;
+					}
 
 					// ================================= GET OFFSETS ===============================
 					int numRepetitions = ObjectInstance["Repeat"].GetArray()[0].GetInt();
@@ -97,7 +107,10 @@ void ObjectFactory::LoadLevel(const std::string& pFileName) {
 						pGameObject = LoadObject(PrefabName);
 						Transform* pTr = static_cast<Transform*>(pGameObject->GetComponent(TRANSFORM));
 						if (pTr != nullptr)
+						{
 							pTr->mPosition.x = x;
+							pTr->mPosition.y = y;
+						}
 						pGameObject->Init();
 					}
 				}

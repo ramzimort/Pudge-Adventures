@@ -1,19 +1,24 @@
 #include "Arms.h"
 #include "Body.h"
 #include "Transform.h"
+#include "Sprite.h"
 #include "..\Component_Managers\ObjectFactory.h"
 #include "..\Component_Managers\EventManager.h"
+#include "..\Component_Managers\FrameRateController.h"
+#include "Attributes.h"
 #include "GameObject.h"
 #include "..\Events\Event.h"
 #include "..\Events\UpdatePosition.h"
 #include "..\Events\SetAngle.h"
 #include "..\Events\UpdateMouseWorldPosition.h"
 #include "..\Component_Managers\GameObjectManager.h"
+#include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
 extern ObjectFactory* gpObjectFactory;
 extern EventManager* gpEventManager;
 extern GameObjectManager* gpGameObjectManager;
+extern FrameRateController* gpFRC;
 
 constexpr float PI = 3.14159265358979323846f;
 float findAcuteAngle(glm::vec2&, glm::vec2&);
@@ -49,6 +54,10 @@ void Arms::Serialize(rapidjson::Document& objectFile)
 	cleaver = gpObjectFactory->LoadObject(objectFileName);
 	cleaver->Init();
 
+	objectFileName = objectFile["Arms"]["Chain"].GetString();
+	chain = gpObjectFactory->LoadObject(objectFileName);
+	chain->Init();
+
 	std::string componentValueName;
 	for (auto& ComponentValues : objectFile["Arms"].GetObject())
 	{
@@ -82,7 +91,7 @@ void Arms::Update()
 	if (isCleaving)
 	{
 		// Rotate Arm by angular velocity 
-		rightArmAngle += rightArmRotationSpeed;
+		rightArmAngle += rightArmRotationSpeed*gpFRC->GetFrameTime();
 		if (rightArmAngle > rightArmFinalAngle)
 		{
 			rightArmAngle = rightArmFinalAngle;
@@ -98,7 +107,7 @@ void Arms::Update()
 		// Block Movement
 		mpOwner->HandleEvent(&Event(BLOCK_MOVE));
 
-		leftArmAngle -= leftArmRotationSpeed;
+		leftArmAngle -= leftArmRotationSpeed* gpFRC->GetFrameTime();
 		if (leftArmAngle < leftArmFinalAngle)
 		{
 			leftArmAngle = leftArmFinalAngle;
@@ -130,8 +139,17 @@ void Arms::Update()
 	{
 		static_cast<Body*>(mpOwner->GetComponent(BODY))->mInvMass = 0.f;
 		static_cast<Body*>(mpOwner->GetComponent(BODY))->mVel = glm::vec2(0.f);
+		
+		// Chain Position is between arm and hook
+		static_cast<Body*>(chain->GetComponent(BODY))->mPos = 
+			(static_cast<Body*>(hook->GetComponent(BODY))->mColliderCenter + static_cast<Body*>(leftArm->GetComponent(BODY))->mColliderCenter) / 2.f;
+		// Set u value
+		float hookDistance = glm::length(static_cast<Body*>(hook->GetComponent(BODY))->mColliderCenter - static_cast<Body*>(leftArm->GetComponent(BODY))->mColliderCenter);
+		static_cast<Transform*>(chain->GetComponent(TRANSFORM))->mScale.y = hookDistance;
+		static_cast<Sprite*>(chain->GetComponent(SPRITE))->uv[1] = hookDistance / 32.f;
 	}
-
+	
+	std::cout << static_cast<Attributes*>(cleaver->GetComponent(ATTRIBUTES))->Damage << std::endl;
 }
 
 void Arms::HandleEvent(Event* pEvent)
@@ -145,8 +163,11 @@ void Arms::HandleEvent(Event* pEvent)
 		leftArm->HandleEvent(pEvent);
 		rightArm->HandleEvent(pEvent);
 		cleaver->HandleEvent(pEvent);
-		if(!isWaitingHook)
+		if (!isWaitingHook)
+		{
 			hook->HandleEvent(pEvent);
+			chain->HandleEvent(pEvent);
+		}
 		break;
 	case INVOKE_CLEAVE:
 		if (!isCleaving)
@@ -211,6 +232,7 @@ void Arms::HandleEvent(Event* pEvent)
 		leftArm->HandleEvent(pEvent);
 		rightArm->HandleEvent(pEvent);
 		hook->HandleEvent(pEvent);
+		chain->HandleEvent(pEvent);
 		cleaver->HandleEvent(pEvent);
 		// Swap Arms
 		gpGameObjectManager->mGameObjects.erase(leftArm);
@@ -230,6 +252,7 @@ void Arms::HandleEvent(Event* pEvent)
 	case ENABLE_DD:
 		hook->HandleEvent(&Event(ENABLE_DD));
 		cleaver->HandleEvent(&Event(ENABLE_DD));
+		
 		break;
 	case DISABLE_DD:
 		hook->HandleEvent(&Event(DISABLE_DD));
@@ -243,6 +266,9 @@ void Arms::SetLeftArmAngle()
 	SetAngleEvent SetAngle(leftArmAngle);
 	leftArm->HandleEvent(&SetAngle);
 	hook->HandleEvent(&SetAngle);
+	if (isMirrored)
+		SetAngle.mAngle *= -1.f;
+	chain->HandleEvent(&SetAngle);
 }
 void Arms::SetRightArmAngle()
 {

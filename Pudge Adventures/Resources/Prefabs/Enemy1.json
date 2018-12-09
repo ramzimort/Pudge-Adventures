@@ -23,7 +23,7 @@
     "Height": 65
   },
   "Attributes": {
-    "HP": 4
+    "HP": 2
   },
   "AI": {
     "MoveInterval": 3.0,

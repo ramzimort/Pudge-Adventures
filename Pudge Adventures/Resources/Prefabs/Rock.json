@@ -1,11 +1,11 @@
 {
   "Transform": {
-    "X": 300.0,
-    "Y": 300.0,
+    "X": 0.0,
+    "Y": -50.0,
     "Z": 8.0,
     "Angle": 0.0,
-    "xScale": 128.0,
-    "yScale": 128.0
+    "xScale": 64.0,
+    "yScale": 64.0
   },
   "Sprite": {
     "Animation": [ "Rock.png" ],

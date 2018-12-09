@@ -19,6 +19,7 @@ public:
 	glm::vec2				mScale;				// Current scale
 	glm::vec2				mRotationCenter;	// Center of Rotation
 	float					mAngle;				// Currenting value
+	bool					isTiled;			// Tiled Objects Drawing
 
 private:
 	void RotateBody(float deltaAngle);

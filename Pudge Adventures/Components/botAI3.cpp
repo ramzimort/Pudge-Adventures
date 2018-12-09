@@ -10,7 +10,6 @@
 #include "..\Component_Managers\ObjectFactory.h"
 #include "..\Events\UpdatePosition.h"
 #include "..\Events\CameraMove.h"
-#include <iostream>
 
 constexpr float PI = 3.14159265358979323846f;
 float findAcuteAngle(glm::vec2 const& V1, glm::vec2 const& V2);
@@ -74,7 +73,7 @@ void botAI3::Update()
 		Transform* pTr = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM));
 		Body* pBody = static_cast<Body*>(mpOwner->GetComponent(BODY));
 		if (pBody->mVel.x == 0.f)
-			pBody->mVel.x = MoveSpeed;
+			pBody->mVel.x = -1.f*MoveSpeed;
 		
 		if (pTr->mPosition.x < camLeft)
 			pBody->mVel.x = MoveSpeed;

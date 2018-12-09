@@ -14,7 +14,8 @@ extern EventManager* gpEventManager;
 Camera::Camera():	Component(CAMERA),
 					mCameraCenter(0.0f),
 					rightBound(0.0f),
-					upperBound(0.0f)
+					upperBound(0.0f),
+					CameraEnd(0.0f)
 { }
 
 Camera::~Camera()
@@ -36,7 +37,9 @@ void Camera::Update()
 { 
 	glm::vec2 bodyCurrentPos = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM))->mPosition;
 	glm::vec2 deltaCameraPos = bodyCurrentPos - (mCameraCenter + glm::vec2(rightBound, upperBound));
-	if (bodyCurrentPos.x > mCameraCenter.x + rightBound)
+	if (bodyCurrentPos.x > CameraEnd + rightBound)
+		mCameraCenter.x = CameraEnd;
+	else if (bodyCurrentPos.x > mCameraCenter.x + rightBound)
 	{
 		mCameraCenter.x += deltaCameraPos.x;
 		CameraMoveEvent CameraMove;
@@ -49,24 +52,23 @@ void Camera::Update()
 	mCameraCenter.y = bodyCurrentPos.y;
 	if (mCameraCenter.y < 100.f)
 		mCameraCenter.y = 100.f;
+
 }
 
 void Camera::HandleEvent(Event* pEvent)
 {
 	switch (pEvent->mType)
 	{
-	//case UPDATE_BODY:
-	//{
-
-	//}
 	case UPDATE_MOUSE_SCREEN_POSITION:
 		UpdateMousePosWorldSpace(static_cast<UpdateMouseScreenPositionEvent*>(pEvent)->MouseScreenPosition);
 		break;
 	}
 }
 
-void Camera::Serialize(rapidjson::Document& objectFile)
+void Camera::Serialize(rapidjson::Document& objFile)
 {
+	if (objFile.HasMember("CameraEnd"))
+		CameraEnd = objFile["CameraEnd"].GetFloat();
 }
 
 void Camera::UpdateMousePosWorldSpace(glm::vec2& MouseScreenPosition)

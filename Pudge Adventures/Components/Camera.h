@@ -19,6 +19,7 @@ public:
 	glm::vec2 mCameraCenter;
 	float rightBound;
 	float upperBound;
+	float CameraEnd;
 
 private:
 	void UpdateMousePosWorldSpace(glm::vec2& MouseScreenPosition);

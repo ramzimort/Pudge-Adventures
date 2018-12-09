@@ -29,6 +29,7 @@ public:
 	float AnimationTime;
 	
 	Texture* mpTexture;
+	float uv[2];
 
 public:
 	void SetAnimation(const unsigned int& ID);

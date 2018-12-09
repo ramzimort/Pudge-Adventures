@@ -23,6 +23,7 @@ private:
 	/* =============== Left Arm Data =================== */
 	GameObject* leftArm;
 	GameObject*	hook;
+	GameObject* chain;
 	float leftArmAngle = 0.f;
 	float leftArmFinalAngle = 0.f;
 	float leftArmRotationSpeed = 0.f;
