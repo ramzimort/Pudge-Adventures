@@ -36,8 +36,13 @@ public:
 	float DDTimer;
 	Texture* DDBar;
 
+	GameObject* BloodSplatter;
+	float BloodSplatterTimer;
+	float BloodSplatterTime;
+
 private:
 	void UpdateHealthBar();
 	void UpdateHasteBar();
 	void UpdateDDBar();
+	void CreateBloodSplatter();
 };

@@ -148,8 +148,6 @@ void Arms::Update()
 		static_cast<Transform*>(chain->GetComponent(TRANSFORM))->mScale.y = hookDistance;
 		static_cast<Sprite*>(chain->GetComponent(SPRITE))->uv[1] = hookDistance / 32.f;
 	}
-	
-	std::cout << static_cast<Attributes*>(cleaver->GetComponent(ATTRIBUTES))->Damage << std::endl;
 }
 
 void Arms::HandleEvent(Event* pEvent)

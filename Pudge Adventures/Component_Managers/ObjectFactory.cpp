@@ -6,7 +6,6 @@
 #include "..\Components\Camera.h"
 #include "GameObjectManager.h"
 #include <fstream>
-#include <iostream>
 #include <rapidjson/istreamwrapper.h>
 #include <glm/glm.hpp>
 
@@ -32,11 +31,10 @@ void ObjectFactory::LoadLevel(const std::string& pFileName) {
 	levelFile.ParseStream(isw);
 	assert(levelFile.IsObject());
 
-	// Add code for other level related information (SCR_SIZE, MUSIC, Color)
+	/* ====================================  Load Level Data ======================================== */
 	gpLevelManager->Serialize(levelFile);
 
-	////////////////////////////////////////////////////////////////////////
-
+	/* ====================================  Parse Objects ======================================== */
 	for (auto& Data : levelFile.GetObject())
 	{
 		std::string DataName = Data.name.GetString();
@@ -48,77 +46,30 @@ void ObjectFactory::LoadLevel(const std::string& pFileName) {
 			{
 				auto ObjectInstance = listOfObjects[i].GetObject();
 				std::string PrefabName = ObjectInstance["Name"].GetString();
+				
+				/* ==================================== Load Object ======================================== */
 				GameObject* pGameObject = LoadObject(PrefabName);
-				////////////////////////////////////////
 				if (pGameObject == nullptr)
 				{
 					std::cout << "Could not load object: " << PrefabName << std::endl;
 					continue;
 				}
 
-				
-				/* Archetype Overrides */
-				Transform* pTr = static_cast<Transform*>(pGameObject->GetComponent(TRANSFORM));
-				if (pTr != nullptr)
-				{
-					for (auto& Override : ObjectInstance)
-					{
-						std::string ArchetypeName = Override.name.GetString();
-						if (ArchetypeName == "PosX")
-							pTr->mPosition.x = Override.value.GetFloat();
-						else if (ArchetypeName == "PosY")
-							pTr->mPosition.y = Override.value.GetFloat();
-						else if (ArchetypeName == "Z")
-							pTr->zValue = Override.value.GetFloat();
-						else if (ArchetypeName == "xScale")
-							pTr->mScale.x = Override.value.GetFloat();
-						else if (ArchetypeName == "yScale")
-							pTr->mScale.y = Override.value.GetFloat();
-					}
-				}
-				pGameObject->Init();
+				/* ====================================  Override Archetype ======================================== */
+				OverrideArchetype(pGameObject,ObjectInstance);
 
-				// Camera Archetype Override
+				/* ====================================  Override Camera ======================================== */
 				if (pGameObject->HasComponent(CAMERA))
 					static_cast<Camera*>(pGameObject->GetComponent(CAMERA))->Serialize(levelFile);
 
-				/* Object Repetitions */
+				/* ====================================  Repeat Object ======================================== */
 				if (ObjectInstance.HasMember("Repeat"))
-				{
-					// ================================= GET ORIGINAL OBJECT X ===============================
-					float x = 0.f;
-					float y = 0.f;
-					Transform* pTr = static_cast<Transform*>(pGameObject->GetComponent(TRANSFORM));
-					if (pTr != nullptr)
-					{
-						x = pTr->mPosition.x;
-						y = pTr->mPosition.y;
-					}
-
-					// ================================= GET OFFSETS ===============================
-					int numRepetitions = ObjectInstance["Repeat"].GetArray()[0].GetInt();
-					float offset = ObjectInstance["Repeat"].GetArray()[1].GetFloat();
-
-					// ================================= Recreate objects, override x ===============================
-					for (int i = 0; i < numRepetitions; ++i)
-					{
-						x += offset;
-
-						pGameObject = LoadObject(PrefabName);
-						Transform* pTr = static_cast<Transform*>(pGameObject->GetComponent(TRANSFORM));
-						if (pTr != nullptr)
-						{
-							pTr->mPosition.x = x;
-							pTr->mPosition.y = y;
-						}
-						pGameObject->Init();
-					}
-				}
+					Repeat(pGameObject, ObjectInstance, PrefabName);
 			}
 		}
 	}
 }
-GameObject* ObjectFactory::LoadObject(std::string& pFileName) {
+GameObject* ObjectFactory::LoadObject(const std::string&  pFileName) {
 	std::ifstream inFile;
 	std::string pFilePath = "Resources\\Prefabs\\" + pFileName + ".json";
 	inFile.open(pFilePath);
@@ -209,4 +160,59 @@ Component * ObjectFactory::LoadComponent(std::string& componentName, GameObject*
 		pNewComponent->Serialize(objectFile);
 	}
 	return pNewComponent;
+}
+
+void ObjectFactory::OverrideArchetype(GameObject * pGameObject, rapidjson::Value::Object &ObjectInstance)
+{
+	Transform* pTr = static_cast<Transform*>(pGameObject->GetComponent(TRANSFORM));
+	if (pTr != nullptr)
+	{
+		for (auto& Override : ObjectInstance)
+		{
+			std::string ArchetypeName = Override.name.GetString();
+			if (ArchetypeName == "PosX")
+				pTr->mPosition.x = Override.value.GetFloat();
+			else if (ArchetypeName == "PosY")
+				pTr->mPosition.y = Override.value.GetFloat();
+			else if (ArchetypeName == "Z")
+				pTr->zValue = Override.value.GetFloat();
+			else if (ArchetypeName == "xScale")
+				pTr->mScale.x = Override.value.GetFloat();
+			else if (ArchetypeName == "yScale")
+				pTr->mScale.y = Override.value.GetFloat();
+		}
+	}
+	pGameObject->Init();
+}
+
+void ObjectFactory::Repeat(GameObject* pGameObject, rapidjson::Value::Object &ObjectInstance, std::string& PrefabName)
+{
+	// ================================= GET ORIGINAL OBJECT X ===============================
+	float x = 0.f;
+	float y = 0.f;
+	Transform* pTr = static_cast<Transform*>(pGameObject->GetComponent(TRANSFORM));
+	if (pTr != nullptr)
+	{
+		x = pTr->mPosition.x;
+		y = pTr->mPosition.y;
+	}
+
+	// ================================= GET OFFSETS ===============================
+	int numRepetitions = ObjectInstance["Repeat"].GetArray()[0].GetInt();
+	float offset = ObjectInstance["Repeat"].GetArray()[1].GetFloat();
+
+	// ================================= Recreate objects, override x ===============================
+	for (int i = 0; i < numRepetitions; ++i)
+	{
+		x += offset;
+
+		pGameObject = LoadObject(PrefabName);
+		Transform* pTr = static_cast<Transform*>(pGameObject->GetComponent(TRANSFORM));
+		if (pTr != nullptr)
+		{
+			pTr->mPosition.x = x;
+			pTr->mPosition.y = y;
+		}
+		pGameObject->Init();
+	}
 }

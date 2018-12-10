@@ -49,8 +49,6 @@ private:
 	void InitSDLWindow();
 	void CreateQuadBuffer();
 
-	
-
 private:
 	SDL_Window* pWindow = nullptr;		// Window object pointer
 	Shader* textureShader = nullptr;	// programShader pointer

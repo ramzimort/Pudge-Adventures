@@ -4,6 +4,7 @@
 #include "..\Component_Managers\FrameRateController.h"
 #include "..\Component_Managers\Resource Manager.h"
 #include "..\Component_Managers\GameObjectManager.h"
+#include "..\Component_Managers\ObjectFactory.h"
 #include "Sprite.h"
 #include "..\Events\Event.h"
 #include "..\Events\ApplyDamage.h"
@@ -11,6 +12,7 @@
 extern FrameRateController* gpFRC;
 extern ResourceManager* gpResourceManager;
 extern GameObjectManager* gpGameObjectManager;
+extern ObjectFactory* gpObjectFactory;
 
 
 Attributes::Attributes() : 
@@ -22,11 +24,16 @@ Attributes::Attributes() :
 	Haste(false),
 	HasteTimer(0.f),
 	DD(false),
-	DDTimer(0.f)
+	DDTimer(0.f),
+	BloodSplatter(nullptr),
+	BloodSplatterTimer(0.f)
 { }
 
 Attributes::~Attributes()
-{ }
+{ 
+	if(BloodSplatter != nullptr)
+		gpGameObjectManager->toBeDeleted.push(BloodSplatter);
+}
 
 void Attributes::Init()
 {
@@ -85,6 +92,15 @@ void Attributes::Update()
 
 	if (currentHealth < 0.f)
 		gpGameObjectManager->toBeDeleted.push(mpOwner);
+	if (BloodSplatter != nullptr)
+	{
+		BloodSplatterTimer -= gpFRC->GetFrameTime();
+		if (BloodSplatterTimer <= 0.f)
+		{
+			gpGameObjectManager->toBeDeleted.push(BloodSplatter);
+			BloodSplatter = nullptr;
+		}
+	}
 }
 
 void Attributes::Serialize(rapidjson::Document& objectFile)
@@ -99,6 +115,8 @@ void Attributes::Serialize(rapidjson::Document& objectFile)
 			Damage = componenentValues.value.GetFloat();
 		else if (componentValueName == "RuneTime")
 			RuneEffectTime = componenentValues.value.GetFloat();
+		else if (componentValueName == "BloodSplatterTime")
+			BloodSplatterTime = componenentValues.value.GetFloat();
 	}
 }
 
@@ -132,6 +150,7 @@ void Attributes::HandleEvent(Event* pEvent)
 		break;
 	case APPLY_DAMAGE:
 		currentHealth -= static_cast<ApplyDamageEvent*>(pEvent)->damage;
+		CreateBloodSplatter();
 	}
 }
 
@@ -195,4 +214,21 @@ void Attributes::UpdateDDBar()
 	else if ((DDTimer >= 0.75*RuneEffectTime && DDTimer <= RuneEffectTime))
 		textureName = "DD4.png";
 	DDBar = gpResourceManager->LoadTexture(textureName);
+}
+
+void Attributes::CreateBloodSplatter()
+{
+	if (BloodSplatter == nullptr)
+	{
+		BloodSplatter = gpObjectFactory->LoadObject("Blood_Splatter");
+		BloodSplatterTimer = BloodSplatterTime;
+		Transform* pTr = static_cast<Transform*>(BloodSplatter->GetComponent(TRANSFORM));
+		if (pTr != nullptr)
+			pTr->mPosition = static_cast<Transform*>(mpOwner->GetComponent(TRANSFORM))->mPosition;
+		BloodSplatter->Init();
+		
+		Sprite* pSpr = static_cast<Sprite*>(BloodSplatter->GetComponent(SPRITE));
+		if (pSpr != nullptr)
+			pSpr->enableAnimation = true;
+	}
 }

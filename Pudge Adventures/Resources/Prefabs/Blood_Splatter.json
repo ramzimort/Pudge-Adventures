@@ -1,0 +1,28 @@
+{
+  "Transform": {
+    "X": 0.0,
+    "Y": 0.0,
+    "Z": 2.1,
+    "Angle": 0.0,
+    "xScale": 256.0,
+    "yScale": 256.0
+  },
+  "Sprite": {
+    "Animation": [
+      "Blood0.png",
+      "Blood1.png",
+      "Blood2.png",
+      "Blood3.png",
+      "Blood4.png",
+      "Blood5.png",
+      "Blood6.png",
+      "Blood7.png",
+      "Blood8.png",
+      "Blood9.png",
+      "Blood10.png",
+      "Blood11.png",
+      "Blood12.png"
+    ],
+    "AnimationTime": 0.1
+  }
+}

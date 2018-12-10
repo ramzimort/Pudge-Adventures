@@ -37,10 +37,11 @@
       "RightArmWeapon": "Cleaver",
       "RightArmRotationSpeed": 500
     },
-    "Attributes": {
-      "HP": 4,
-      "RuneTime": 10
-    },
+  "Attributes": {
+    "HP": 4,
+    "RuneTime": 10,
+    "BloodSplatterTime": 1.2
+  },
     "Camera": {
 
     }

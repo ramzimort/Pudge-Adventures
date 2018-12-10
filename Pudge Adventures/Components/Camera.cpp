@@ -23,7 +23,7 @@ Camera::~Camera()
 
 void Camera::Init()
 {
-	rightBound = (float)gpGfxManager->getWindowWidth() / 4.0f;
+	rightBound = (float)gpGfxManager->getWindowWidth() * (0.15f);
 	upperBound = 0;
 
 	//upperBound = (float)gpGfxManager->getWindowHeight() / 4.0f;

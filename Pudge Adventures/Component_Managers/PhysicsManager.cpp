@@ -1,6 +1,7 @@
 #include "PhysicsManager.h"
 #include "CollisionManager.h"
 #include "EventManager.h"
+
 #include "..\Components\GameObject.h"
 #include "..\Components\Body.h"
 #include "..\Components\Attributes.h"
@@ -176,7 +177,7 @@ void InteractiveRigid(Body* pBody1, Body* pBody2, glm::vec2& offset)
 		if (offset.y > 0.f)
 		{
 			pInteractiveBody->mAcc.x +=										// Apply Friction
-				-0.1f*(pInteractiveBody->mVel.x)*(pInteractiveBody->mMass);
+				-0.15f*(pInteractiveBody->mVel.x)*(pInteractiveBody->mMass);
 			pInteractiveBody->mpOwner->HandleEvent(&Event(UNBLOCK_MOVE));	// Enable Movement													
 		}
 	}

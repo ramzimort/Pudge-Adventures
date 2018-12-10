@@ -28,7 +28,8 @@
   },
   "Attributes": {
     "HP": 8,
-    "RuneTime": 5
+    "RuneTime": 5,
+    "BloodSplatterTime":  1.2
   },
   "AI3": {
     "MoveSpeed": 100,

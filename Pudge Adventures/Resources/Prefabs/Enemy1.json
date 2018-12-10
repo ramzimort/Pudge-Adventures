@@ -23,7 +23,8 @@
     "Height": 65
   },
   "Attributes": {
-    "HP": 2
+    "HP": 2,
+    "BloodSplatterTime": 1.2
   },
   "AI": {
     "MoveInterval": 3.0,
