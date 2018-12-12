@@ -20,6 +20,7 @@ EventManager::~EventManager()
 	{
 		Event* pEvent = *it;
 		delete pEvent;
+		it = mTimedEvents.erase(it);
 	}
 }
 
