@@ -27,7 +27,7 @@
     "Height": 100
   },
   "Attributes": {
-    "HP": 8,
+    "HP": 16,
     "RuneTime": 5,
     "BloodSplatterTime":  1.2
   },

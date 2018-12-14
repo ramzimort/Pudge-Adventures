@@ -14,3 +14,5 @@ Creation date: 12/13/2018
 In order to test this assignment, 
 Run Pudge Adventures.sln in Visual Studio, 
 Run Solution
+
+To check debug (Shape drawing around bodies), press TAB
