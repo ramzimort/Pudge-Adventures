@@ -3,8 +3,8 @@
 Copyright (C) 2018 DigiPen Institute of Technology.
 Reproduction or disclosure of this file or its contents without the prior
 written consent of DigiPen Institute of Technology is prohibited.
-File Name: Resource Manager.h
-Purpose: Resource Manager header (uses an unordered map to store surfaces)
+File Name: ResourceManager.h
+Purpose: Resource Manager header (uses an unordered map to store textures)
 Language: C/C++
 Platform: Windows 10, MSC_VER:1912
 Project: Milestone 1

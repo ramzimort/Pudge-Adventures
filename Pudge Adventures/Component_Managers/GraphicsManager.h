@@ -1,5 +1,18 @@
 #pragma once
 
+/* Start Header -------------------------------------------------------
+Copyright (C) 2018 DigiPen Institute of Technology.
+Reproduction or disclosure of this file or its contents without the prior
+written consent of DigiPen Institute of Technology is prohibited.
+File Name: GraphicsManager.h
+Purpose: Handles rendering all objects having transforms, all attributes above objects, and all debug shapes
+Language: C/C++
+Platform: Windows 10, MSC_VER:1912
+Project: CS_529_FinalProject
+Author: Ramzi Mourtada, ramzi.mourtada, 60001618
+Creation date: 12/13/2018
+- End Header --------------------------------------------------------*/
+
 #include <GLAD/glad.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>

@@ -7,8 +7,6 @@
 #include <iostream>	
 
 
-
-
 Contact::Contact()
 {
 	mBodies[0] = nullptr;

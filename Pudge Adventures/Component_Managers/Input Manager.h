@@ -6,7 +6,7 @@ File Name: Input Manager.h
 Purpose: Input Manager header (provides check for if button is pressed, released, or triggered)
 Language: C/C++
 Platform: Windows 10, MSC_VER:1912
-Project: Milestone 1
+Project: CS_529_FinalProject 1
 Author: Ramzi Mourtada, ramzi.mourtada, 60001618
 Creation date: 10/18/2018
 - End Header --------------------------------------------------------*/

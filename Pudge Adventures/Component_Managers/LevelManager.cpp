@@ -55,7 +55,6 @@ void LevelManager::Update()
 		GameObject* Menu_Object = *(gpGameObjectManager->mGameObjects.begin());
 		int pointerX = gpInputManager->PointerLocation()[0];
 		int pointerY = gpInputManager->PointerLocation()[1];
-		std::cout << pointerX << " " << pointerY << std::endl;
 		if (pointerX > 1160 && pointerX < 1260  && pointerY > 650 && pointerY < 680)
 		{
 			static_cast<Sprite*>(Menu_Object->GetComponent(SPRITE))->SetAnimation(1);
