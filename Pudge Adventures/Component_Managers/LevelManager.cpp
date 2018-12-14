@@ -26,13 +26,13 @@ void LevelManager::Init(const std::string& levelName)
 
 void LevelManager::Update()
 {
-
+	
 	if (currentLevel == "Menu_Main")
 	{
 		GameObject* Menu_Object = *(gpGameObjectManager->mGameObjects.begin());
 		int pointerX = gpInputManager->PointerLocation()[0];
 		int pointerY = gpInputManager->PointerLocation()[1];
-
+		
 		if (pointerX > 120 && pointerX < 690 && pointerY > 350 && pointerY < 580)
 		{
 			static_cast<Sprite*>(Menu_Object->GetComponent(SPRITE))->SetAnimation(1);
@@ -55,8 +55,8 @@ void LevelManager::Update()
 		GameObject* Menu_Object = *(gpGameObjectManager->mGameObjects.begin());
 		int pointerX = gpInputManager->PointerLocation()[0];
 		int pointerY = gpInputManager->PointerLocation()[1];
-
-		if (pointerX > 120 && pointerX < 690 && pointerY > 350 && pointerY < 580)
+		std::cout << pointerX << " " << pointerY << std::endl;
+		if (pointerX > 1160 && pointerX < 1260  && pointerY > 650 && pointerY < 680)
 		{
 			static_cast<Sprite*>(Menu_Object->GetComponent(SPRITE))->SetAnimation(1);
 			if (gpInputManager->isMousePressed())
@@ -72,6 +72,16 @@ void LevelManager::Update()
 		}
 		else
 			static_cast<Sprite*>(Menu_Object->GetComponent(SPRITE))->ResetAnimation();
+	}
+	else if (currentLevel == "Lost")
+	{
+		if (gpInputManager->isMousePressed())
+			WinCondition();
+	}
+	else if (currentLevel == "Won")
+	{
+		if (gpInputManager->isMousePressed())
+			WinCondition();
 	}
 	else
 	{

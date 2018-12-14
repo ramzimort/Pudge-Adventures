@@ -1,0 +1,19 @@
+{
+  "WinLevel": "Won",
+  "LoseLevel": "Menu_Main",
+  "CameraEnd": 6600,
+  "Objects": [
+    {
+      "Name": "Pudge"
+    },
+    {
+      "Name": "Field"
+    },
+
+    {
+      "Name": "Platform2",
+      "PosX": 400.0
+    }
+
+  ]
+}
